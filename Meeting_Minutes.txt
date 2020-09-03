@@ -1,0 +1,19 @@
+9/3/2020, 9:00-9:30 am
+Meeting on Microsoft Teams
+Attended: Christopher Withers, Carson Stromberg, Jace Henwood, Kayden Mortensen, Walter Smith
+
+Went over roles previously assigned:
+Chris - GUI/Coding (General idea of GUI, comments)
+Carson - Coding/Testing (code comments and general idea of structure)
+Jace - Documentation/ Requirements and Graphic Design (Gannt, work breakdown structure)
+Kayden - Scheduling/Risk Management (Pert, specs of project)
+Walter ? Scribe, documentation
+
+Outline tools being used to Milestone 1
+Coding: Github
+Design: Docs, Lucidcharts
+Overall method for software dev: DSDM
+
+Set tentative meeting tomorrow Sept 4 @ 11 AM in Teams with Prof Sharp (the shareholder)
+
+
