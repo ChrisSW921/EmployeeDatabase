@@ -23,14 +23,17 @@ class Login:
 
     def loginUser(self):
         root.destroy()
-        menu = MainMenu(Tk())
+        #code to create user from data in username field
+        user = "Fake user"
+        menu = MainMenu(Tk(), user)
 
 #Set up home page, showing certain buttons to create user to only select access levels. Home page
 #will include option to update/delete/view employees as well as to create new users. 
 
 class MainMenu:
 
-    def __init__(self, root):
+    def __init__(self, root, user):
+        self.user = user
         self.root = root
         self.root.title("Main Menu")
         self.root.geometry('1000x1000')
