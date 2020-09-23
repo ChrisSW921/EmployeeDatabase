@@ -1,9 +1,8 @@
 """GUI Code File"""
-print("Why")
-
 from tkinter import *
 from tkinter import ttk
 
+#Set up login page with username and password
 class Login:
 
     def __init__(self,root):
@@ -26,6 +25,8 @@ class Login:
         root.destroy()
         menu = MainMenu(Tk())
 
+#Set up home page, showing certain buttons to create user to only select access levels. Home page
+#will include option to update/delete/view employees as well as to create new users. 
 
 class MainMenu:
 
@@ -35,6 +36,8 @@ class MainMenu:
         self.root.geometry('1000x1000')
         Label(text = ' Welcome ',font='Times 15').grid(row=1,column=1,pady=20)
 
+
+
 if __name__ == '__main__':
 
     root = Tk()
@@ -42,10 +45,3 @@ if __name__ == '__main__':
     application = Login(root)
 
     root.mainloop()
-
-
-#Set up home page, showing certain buttons to create user to only select access levels. Home page
-#will include option to update/delete/view employees as well as to create new users. 
-
-
-#Set up necessary pop ups for error validation, deleted and saved messages. 
