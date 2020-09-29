@@ -62,7 +62,8 @@ class MainMenu:
         searchResults.heading("Phone Number", text="Phone Number", anchor=W)
 
         #Add sample data into tree view
-        searchResults.insert(parent='', index='end', iid=0, text="", values=("John", "Smith", 123, 8017852099))
+        searchResults.insert(parent='', index='end', iid=0, text="", values=("John", "Smith", 123, 8017452099))
+        searchResults.insert(parent='', index='end', iid=1, text="", values=("Mary", "Oaks", 225, 8017052087))
         
         #Place tree view into frame
         searchResults.grid(row=0, column=0)
@@ -138,15 +139,15 @@ class MainMenu:
         frame4.pack()
 
         #Create Buttons and place in grid
-        paymentReportButton = Button(frame4, text="Generate Payment Report").grid(row=0, column=0, padx=5, pady=5)
+        paymentReportButton = Button(frame4, text="Generate Payment Report").grid(row=0, column=2, padx=5, pady=5)
         employeeReportButton = Button(frame4, text="Generate Employee Data Report").grid(row=0, column=1, padx=5, pady=5)
-        editButton = Button(frame4, text="Edit Selected Employee").grid(row=0, column=2, padx=5, pady=5)
+        editButton = Button(frame4, text="Edit Selected Employee").grid(row=0, column=0, padx=5, pady=5)
         changePasswordButton = Button(frame4, text="Change Password").grid(row=0, column=3, padx=5, pady=5)
         addEmployeeButton = Button(frame4, text="Add Employee").grid(row=0, column=4, padx=5, pady=5)
         archiveEmployeeButton = Button(frame4, text="Archive Employee").grid(row=1, column=0, padx=5, pady=5, sticky=W)
         unarchiveEmployeeButton = Button(frame4, text="Unarchive Employee").grid(row=1, column=1, padx=5, pady=5, sticky=W)
-        
-
+        saveChangesButton = Button(frame4, text="Save Changes").grid(row=1, column=2, padx=5, pady=5, sticky=W)
+        requestPTOButton = Button(frame4, text="Request PTO").grid(row=1, column=3, padx=5, pady=5, sticky=W)
         
         
 
