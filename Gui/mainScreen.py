@@ -1,35 +1,13 @@
-"""GUI Code File"""
-from tkinter import *
-from tkinter import ttk
-
-#Set up login page with username and password
-class Login:
-
-    def __init__(self):
-
-        self.root = Tk()
-        self.root.title('LOGIN SCREEN')
-
-        Label(text = ' Username ',font='Times 15').grid(row=1,column=1,pady=20)
-        self.username = Entry()
-        self.username.grid(row=1,column=2,columnspan=10)
-
-        Label(text = ' Password ',font='Times 15').grid(row=2,column=1,pady=10)
-        self.password = Entry(show='*')
-        self.password.grid(row=2,column=2,columnspan=10)
-
-        ttk.Button(text='LOGIN',command=self.loginUser).grid(row=3,column=2)
-        self.root.mainloop()
-
-
-    def loginUser(self):
-        self.root.destroy()
-        #code to create user from data in username field
-        user = "Fake user"
-        menu = MainMenu(user)
-
 #Set up home page, showing certain buttons to create user to only select access levels. Home page
 #will include option to update/delete/view employees as well as to create new users. 
+
+from tkinter import *
+from tkinter import ttk
+from changePayment import paymentWindow
+from lessPTO import usePTOWindow
+from morePTO import addPTOWindow
+from newEmp import addEmpWindow
+from newPassword import changePasswordWindow
 
 class MainMenu:
 
@@ -139,27 +117,28 @@ class MainMenu:
         frame4.pack()
 
         #Create Buttons and place in grid
-        paymentReportButton = Button(frame4, text="Generate Payment Report").grid(row=0, column=2, padx=5, pady=5)
-        employeeReportButton = Button(frame4, text="Generate Employee Data Report").grid(row=0, column=1, padx=5, pady=5)
-        editButton = Button(frame4, text="Edit Selected Employee").grid(row=0, column=0, padx=5, pady=5)
-        changePasswordButton = Button(frame4, text="Change Password").grid(row=0, column=3, padx=5, pady=5)
-        addEmployeeButton = Button(frame4, text="Add Employee").grid(row=0, column=4, padx=5, pady=5)
-        archiveEmployeeButton = Button(frame4, text="Archive Employee").grid(row=1, column=0, padx=5, pady=5, sticky=W)
-        unarchiveEmployeeButton = Button(frame4, text="Unarchive Employee").grid(row=1, column=1, padx=5, pady=5, sticky=W)
+        editButton = Button(frame4, text="Edit Employee Info").grid(row=0, column=0, padx=5, pady=5, sticky=W)
+        archiveEmployeeButton = Button(frame4, text="Archive Employee").grid(row=0, column=1, padx=5, pady=5, sticky=W)
+        unarchiveEmployeeButton = Button(frame4, text="Unarchive Employee").grid(row=0, column=2, padx=5, pady=5, sticky=W)
         saveChangesButton = Button(frame4, text="Save Changes").grid(row=1, column=2, padx=5, pady=5, sticky=W)
-        requestPTOButton = Button(frame4, text="Request PTO").grid(row=1, column=3, padx=5, pady=5, sticky=W)
-        
-        
+        addPTOButton = Button(frame4, text="Add PTO").grid(row=0, column=3, padx=5, pady=5, sticky=W)
+        changePaymentMethodButton = Button(frame4, text="Change Payment Method").grid(row=0, column=4, padx=5, pady=5, sticky=W)
 
+        #Create Company Buttons Frame
+        frame5 = LabelFrame(self.window, text="Company Actions", padx=20, pady=20)
+        frame5.pack()
 
-if __name__ == '__main__':
+        #Create Company Buttons and place in grid
+        addEmployeeButton = Button(frame5, text="Add Employee").grid(row=0, column=0, padx=5, pady=5)
+        paymentReportButton = Button(frame5, text="Generate Payment Report").grid(row=0, column=1, padx=5, pady=5)
+        employeeReportButton = Button(frame5, text="Generate Employee Data Report").grid(row=0, column=2, padx=5, pady=5)
 
-    test = Login()
+        #Create your actions button frame
+        frame6 = LabelFrame(self.window, text="Your Actions", padx=20, pady=20)
+        frame6.pack()
 
-    #root = Tk()
+        #Create your Buttons and place in grid
+        usePTOButton = Button(frame6, text="Use PTO").grid(row=0, column=0, padx=5, pady=5, sticky=W)
+        changePasswordButton = Button(frame6, text="Change Password").grid(row=0, column=1, padx=5, pady=5)
+        logOutButton = Button(frame6, text="Log Out").grid(row=0, column=2, padx=5, pady=5, sticky=W)
 
-    # root.geometry('425x225')
-    # application = Login(root)
-
-    #root.mainloop()
-   # test = MainMenu('jack')
