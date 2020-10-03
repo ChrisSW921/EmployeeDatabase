@@ -7,6 +7,7 @@ from lessPTO import usePTOWindow
 from newPassword import changePasswordWindow
 from newEmp import addEmpWindow
 from errorMessage import errorWindow
+from changePayment import paymentWindow
 
 #Set up login page with username and password
 class Login:
@@ -32,7 +33,7 @@ class Login:
         self.root.destroy()
         #code to create user from data in username field
         user = "Fake user"
-        menu = errorWindow("You must select a payment method")#MainMenu(user)
+        menu = MainMenu(user)
 
 
 
