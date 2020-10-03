@@ -93,7 +93,15 @@ class MainMenu:
         zipLabelText = Entry(frame3).grid(row=3, column=1)
         phoneLabelText = Entry(frame3).grid(row=3, column=2) 
         payTypeLabelText = Entry(frame3).grid(row=3, column=3)
-        payMethodLabelText = Entry(frame3).grid(row=3, column=4)
+
+        paymentOptions = ["Direct Deposit", "Mailed"]
+
+        paymentOption = StringVar(frame3)
+        paymentOption.set(paymentOptions[0])
+
+        paymentOptionMenu = OptionMenu(frame3, paymentOption, *paymentOptions).grid(row=3, column=4)
+
+        
         salaryLabelText = Entry(frame3).grid(row=5, column=0) 
         hourlyLabelText = Entry(frame3).grid(row=5, column=1) 
         commissionLabelText = Entry(frame3).grid(row=5, column=2)
@@ -122,7 +130,7 @@ class MainMenu:
         unarchiveEmployeeButton = Button(frame4, text="Unarchive Employee").grid(row=0, column=2, padx=5, pady=5, sticky=W)
         saveChangesButton = Button(frame4, text="Save Changes").grid(row=1, column=2, padx=5, pady=5, sticky=W)
         addPTOButton = Button(frame4, text="Add PTO").grid(row=0, column=3, padx=5, pady=5, sticky=W)
-        changePaymentMethodButton = Button(frame4, text="Change Payment Method").grid(row=0, column=4, padx=5, pady=5, sticky=W)
+        changePaymentTypeButton = Button(frame4, text="Change Payment Type").grid(row=0, column=4, padx=5, pady=5, sticky=W)
 
         #Create Company Buttons Frame
         frame5 = LabelFrame(self.window, text="Company Actions", padx=20, pady=20)
