@@ -2,6 +2,9 @@
 from tkinter import *
 from tkinter import ttk
 from mainScreen import MainMenu
+from morePTO import addPTOWindow
+from lessPTO import usePTOWindow
+from newPassword import changePasswordWindow
 
 #Set up login page with username and password
 class Login:
@@ -27,7 +30,7 @@ class Login:
         self.root.destroy()
         #code to create user from data in username field
         user = "Fake user"
-        menu = MainMenu(user)
+        menu = changePasswordWindow("Fake")#MainMenu(user)
 
 
 
