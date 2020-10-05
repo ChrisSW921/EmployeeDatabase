@@ -16,7 +16,6 @@ class MainMenu:
         self.user = user
         self.window = Tk()
         self.window.title("Main Menu")
-        #self.window.geometry("500x500")
         self.window.config(bg="sky blue")
 
         frame0 = ScrollableFrame(self.window)
@@ -154,5 +153,5 @@ class MainMenu:
         usePTOButton = Button(frame6, text="Use PTO").grid(row=0, column=0, padx=5, pady=5, sticky=W)
         changePasswordButton = Button(frame6, text="Change Password").grid(row=0, column=1, padx=5, pady=5)
         logOutButton = Button(frame6, text="Log Out").grid(row=0, column=2, padx=5, pady=5, sticky=W)
-        frame0.pack(expand=1, fill=BOTH)
+        frame0.pack(expand=1,  fill=Y)
 
