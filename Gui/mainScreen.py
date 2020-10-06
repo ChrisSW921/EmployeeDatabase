@@ -8,6 +8,7 @@ from lessPTO import usePTOWindow
 from morePTO import addPTOWindow
 from newEmp import addEmpWindow
 from newPassword import changePasswordWindow
+from scrollable import ScrollableFrame
 
 class MainMenu:
 
@@ -15,10 +16,13 @@ class MainMenu:
         self.user = user
         self.window = Tk()
         self.window.title("Main Menu")
-        self.window.geometry('1500x1000')
+        self.window.config(bg="sky blue")
+
+        frame0 = ScrollableFrame(self.window)
+        
 
         #Create tree view frame
-        frame1 = LabelFrame(self.window, text="")
+        frame1 = LabelFrame(frame0.scrollable_frame, text="")
         frame1.pack()
 
         #Create tree view
@@ -47,7 +51,7 @@ class MainMenu:
         searchResults.grid(row=0, column=0)
 
         #Add search bar frame
-        frame2 = LabelFrame(self.window, text="")
+        frame2 = LabelFrame(frame0.scrollable_frame, text="")
         frame2.pack()
 
         #Add search bar, search bar label and select button
@@ -57,8 +61,8 @@ class MainMenu:
         selectButton = Button(frame2, text="Select Record").grid(row=1, column=1)
 
         #Add employee information area
-        frame3 = LabelFrame(self.window, text="Employee Information")
-        frame3.pack()
+        frame3 = LabelFrame(frame0.scrollable_frame, text="Employee Information")
+        frame3.pack(pady=20)
 
         #Add employee information labels and put on grid
         IDLabel = Label(frame3, text="ID").grid(row=0, column=0) 
@@ -121,8 +125,8 @@ class MainMenu:
         managerCheck = Checkbutton(frame3, text="", variable=manager).grid(row=9, column=0)
 
         #Create Employee Action Button Frame
-        frame4 = LabelFrame(self.window, text="Employee Actions", padx=20, pady=20)
-        frame4.pack()
+        frame4 = LabelFrame(frame0.scrollable_frame, text="Employee Actions", padx=20, pady=20)
+        frame4.pack(pady=20)
 
         #Create Buttons and place in grid
         editButton = Button(frame4, text="Edit Employee Info").grid(row=0, column=0, padx=5, pady=5, sticky=W)
@@ -133,8 +137,8 @@ class MainMenu:
         changePaymentTypeButton = Button(frame4, text="Change Payment Type").grid(row=0, column=4, padx=5, pady=5, sticky=W)
 
         #Create Company Buttons Frame
-        frame5 = LabelFrame(self.window, text="Company Actions", padx=20, pady=20)
-        frame5.pack()
+        frame5 = LabelFrame(frame0.scrollable_frame, text="Company Actions", padx=20, pady=20)
+        frame5.pack(pady=20)
 
         #Create Company Buttons and place in grid
         addEmployeeButton = Button(frame5, text="Add Employee").grid(row=0, column=0, padx=5, pady=5)
@@ -142,11 +146,12 @@ class MainMenu:
         employeeReportButton = Button(frame5, text="Generate Employee Data Report").grid(row=0, column=2, padx=5, pady=5)
 
         #Create your actions button frame
-        frame6 = LabelFrame(self.window, text="Your Actions", padx=20, pady=20)
-        frame6.pack()
+        frame6 = LabelFrame(frame0.scrollable_frame, text="Your Actions", padx=20, pady=20)
+        frame6.pack(pady=20)
 
         #Create your Buttons and place in grid
         usePTOButton = Button(frame6, text="Use PTO").grid(row=0, column=0, padx=5, pady=5, sticky=W)
         changePasswordButton = Button(frame6, text="Change Password").grid(row=0, column=1, padx=5, pady=5)
         logOutButton = Button(frame6, text="Log Out").grid(row=0, column=2, padx=5, pady=5, sticky=W)
+        frame0.pack(expand=1,  fill=Y)
 
