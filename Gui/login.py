@@ -11,9 +11,10 @@ from changePayment import paymentWindow
 
 #Set up login page with username and password
 class Login:
+    """Login class. First class that employee will interact with.
+    They will login with ID and their password"""
 
     def __init__(self):
-
         self.root = Tk()
         self.root.title('LOGIN SCREEN')
 
