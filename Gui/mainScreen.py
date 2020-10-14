@@ -1,5 +1,5 @@
 #Set up home page, showing certain buttons to create user to only select access levels. Home page
-#will include option to update/delete/view employees as well as to create new users. 
+#will include access to all major and minor features of software. . 
 
 from tkinter import *
 from tkinter import ttk
@@ -13,6 +13,7 @@ from scrollable import ScrollableFrame
 class MainMenu:
 
     def __init__(self, user):
+        """Main menu screen. Instantiates with a user from login"""
         self.user = user
         self.window = Tk()
         self.window.title("Main Menu")
