@@ -52,8 +52,14 @@ class addEmpWindow:
 
         paymentOptionMenu = OptionMenu(frame3, paymentOption, *paymentOptions).grid(row=3, column=3)
 
+
+        paymentTypes = ["Direct Deposit", "Mailed"]
+
+        paymentType = StringVar()
+        paymentType.set(paymentTypes[0])
+
         #Rest of text boxes/checkmarks
-        payMethodLabelText = Entry(frame3).grid(row=3, column=4)
+        payMethodLabelText = OptionMenu(frame3, paymentType, *paymentTypes).grid(row=3, column=4)
         salaryLabelText = Entry(frame3).grid(row=5, column=0) 
         hourlyLabelText = Entry(frame3).grid(row=5, column=1) 
         commissionLabelText = Entry(frame3).grid(row=5, column=2)
