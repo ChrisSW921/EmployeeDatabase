@@ -81,3 +81,9 @@ class addEmpWindow:
         #Add save and cancel buttons
         saveButton = Button(frame3, text='Save').grid(row=10,column=1, padx=15)
         cancelButton = Button(frame3, text='Cancel').grid(row=10,column=3, padx=15)
+
+        def saveButtonPressed():
+            print("Saved")
+
+        def cancelButtonPressed():
+            print("canceled")

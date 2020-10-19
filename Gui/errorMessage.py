@@ -12,5 +12,7 @@ class errorWindow:
         okButton = Button(text='OK').grid(row=1,column=0, padx=15)
         
 
+        def okButtonPressed():
+            print("Done")
 
 

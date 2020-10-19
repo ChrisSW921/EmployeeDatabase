@@ -34,8 +34,8 @@ class Login:
         self.root.destroy()
         #code to create user from data in username field
         user = "Fake user"
-        new = addEmpWindow("f")
-        # menu = MainMenu(user)
+        #new = addEmpWindow("f")
+        menu = MainMenu(user)
 
 
 

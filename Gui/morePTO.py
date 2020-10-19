@@ -17,3 +17,9 @@ class addPTOWindow:
         inputTextBox = Entry(frame1).grid(row=1, column=1)
         saveButton = Button(frame1, text="Save").grid(row=2, column=0)
         cancelButton = Button(frame1, text="Cancel").grid(row=2, column=1)
+
+        def saveButtonPressed():
+            print("Saved")
+
+        def cancelButtonPressed():
+            print("canceled")
