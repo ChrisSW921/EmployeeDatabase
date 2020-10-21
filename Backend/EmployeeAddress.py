@@ -10,3 +10,10 @@
     Public Methods 
         - Properties will have getter and setter methods public
 '''
+
+class EmployeeAddress:
+    def __init__(self, streetAddress : str, city : str, state : str, zipCode : int):
+        self.Street_Address = streetAddress
+        self.City = city
+        self.State = state
+        self.Zip_Code = zipCode
