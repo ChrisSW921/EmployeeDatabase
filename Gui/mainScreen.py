@@ -156,3 +156,46 @@ class MainMenu:
         logOutButton = Button(frame6, text="Log Out").grid(row=0, column=2, padx=5, pady=5, sticky=W)
         frame0.pack(expand=1,  fill=Y)
 
+
+        #Functions
+        def goButtonPressed():
+            print("Go")
+
+        def selectRecordButtonPressed():
+            print("Select record")
+
+        def editButtonPressed():
+            print("Edit")
+
+        def archiveEmpButtonPressed():
+            print("Archived Emp")
+
+        def unArchiveEmpButtonPressed():
+            print("Unarchived Emp")
+
+        def addPTOButtonPressed():
+            print("added PTO")
+
+        def changePaymentTypePressed():
+            print("Changed payment type")
+
+        def saveButtonPressed():
+            print("Saved changes")
+
+        def addEmpButtonPressed():
+            print("Added Emp")
+
+        def paymentReportButtonPressed():
+            print("Payment report generated")
+
+        def empReportButtonPressed():
+            print("Emp report generated")
+
+        def usePTOButtonPressed():
+            print("PTO used")
+
+        def changePasswordButtonPressed():
+            print("Password changed")
+
+        def logoutButtonPressed():
+            print("Logged out")

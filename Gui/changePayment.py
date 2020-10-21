@@ -27,4 +27,18 @@ class paymentWindow:
         saveButton = Button(text='Save').grid(row=3,column=0, padx=15, pady=40)
         cancelButton = Button(text='Cancel').grid(row=3,column=2, padx=15, pady=40)
 
+        def makeSalariedButtonPressed():
+            print("Made salaried")
+
+        def makeCommissionedButtonPressed():
+            print("Made commissioned")
         
+        def makeHourlyButtonPressed():
+            print("Made Hourly")
+
+        def saveButtonPressed():
+            print("Saved")
+
+        def cancelButtonPressed():
+            print("canceled")
+            
