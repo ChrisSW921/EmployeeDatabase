@@ -117,15 +117,15 @@ class MainMenu:
         self.managerLabel.grid(row=8, column=0)
 
         #Add employee text boxes/checkmarks and put into frame
-        self.IDLabelText = Entry(self.frame3)
-        self.firstNameLabelText = Entry(self.frame3)
-        self.lastNameLabelText = Entry(self.frame3)
-        self.addressLabelText = Entry(self.frame3)
-        self.cityLabelText = Entry(self.frame3)
-        self.stateLabelText = Entry(self.frame3)
-        self.zipLabelText = Entry(self.frame3)
-        self.phoneLabelText = Entry(self.frame3)
-        self.payTypeLabelText = Entry(self.frame3)
+        self.IDLabelText = Entry(self.frame3, state='disabled')
+        self.firstNameLabelText = Entry(self.frame3, state='disabled')
+        self.lastNameLabelText = Entry(self.frame3, state='disabled')
+        self.addressLabelText = Entry(self.frame3, state='disabled')
+        self.cityLabelText = Entry(self.frame3, state='disabled')
+        self.stateLabelText = Entry(self.frame3, state='disabled')
+        self.zipLabelText = Entry(self.frame3, state='disabled')
+        self.phoneLabelText = Entry(self.frame3, state='disabled')
+        self.payTypeLabelText = Entry(self.frame3, state='disabled')
 
         self.IDLabelText.grid(row=1, column=0)
         self.firstNameLabelText.grid(row=1, column=1)
@@ -143,16 +143,17 @@ class MainMenu:
         self.paymentOption.set(self.paymentOptions[0])
 
         self.paymentOptionMenu = OptionMenu(self.frame3, self.paymentOption, *self.paymentOptions)
+        self.paymentOptionMenu.configure(state='disabled')
         self.paymentOptionMenu.grid(row=3, column=4)
 
         
-        self.salaryLabelText = Entry(self.frame3)
-        self.hourlyLabelText = Entry(self.frame3)
-        self.commissionLabelText = Entry(self.frame3)
-        self.currentPTOLabelText = Entry(self.frame3)
-        self.usedPTOLabelText = Entry(self.frame3)
-        self.limitPTOLabelText = Entry(self.frame3)
-        self.ssnLabelText= Entry(self.frame3)
+        self.salaryLabelText = Entry(self.frame3, state='disabled')
+        self.hourlyLabelText = Entry(self.frame3, state='disabled')
+        self.commissionLabelText = Entry(self.frame3, state='disabled')
+        self.currentPTOLabelText = Entry(self.frame3, state='disabled')
+        self.usedPTOLabelText = Entry(self.frame3, state='disabled')
+        self.limitPTOLabelText = Entry(self.frame3, state='disabled')
+        self.ssnLabelText= Entry(self.frame3, state='disabled')
 
         self.salaryLabelText.grid(row=5, column=0) 
         self.hourlyLabelText.grid(row=5, column=1) 
@@ -167,10 +168,10 @@ class MainMenu:
         self.accounting = IntVar()
         self.manager = IntVar()
 
-        self.editorCheck = Checkbutton(self.frame3, text="", variable=self.editor)
-        self.reporterCheck = Checkbutton(self.frame3, text="", variable=self.reporter)
-        self.accountingCheck = Checkbutton(self.frame3, text="", variable=self.accounting)
-        self.managerCheck = Checkbutton(self.frame3, text="", variable=self.manager)
+        self.editorCheck = Checkbutton(self.frame3, text="", variable=self.editor, state='disabled')
+        self.reporterCheck = Checkbutton(self.frame3, text="", variable=self.reporter, state='disabled')
+        self.accountingCheck = Checkbutton(self.frame3, text="", variable=self.accounting, state='disabled')
+        self.managerCheck = Checkbutton(self.frame3, text="", variable=self.manager, state='disabled')
 
         self.editorCheck.grid(row=7, column=2)
         self.reporterCheck.grid(row=7, column=3)
@@ -296,30 +297,22 @@ class MainMenu:
     def setState(self, loggedInUser):
         #Set up button states for loggedInUser
 
-        if self.loggedInUser.permissions.Reporting_Permission:
-            self.paymentReportButton['state'] = 'normal'
-            self.employeeReportButton['state'] = 'normal'
-        else:
+        if not self.loggedInUser.permissions.Reporting_Permission:
             self.paymentReportButton['state'] = 'disabled'
             self.employeeReportButton['state'] = 'disabled'
+            
 
-        if self.loggedInUser.permissions.Editing_Permission:
-            self.editButton['state'] = 'normal'
-            self.addPTOButton['state'] = 'normal'
-            self.changePaymentTypeButton['state'] = 'normal'
-        else:
+        if not self.loggedInUser.permissions.Editing_Permission:
             self.editButton['state'] = 'disabled'
             self.addPTOButton['state'] = 'disabled'
             self.changePaymentTypeButton['state'] = 'disabled'
+            
 
-        if self.loggedInUser.permissions.Manager_Permission:
-            self.archiveEmployeeButton['state'] = 'normal'
-            self.unarchiveEmployeeButton['state'] = 'normal'
-            self.addEmployeeButton['state'] = 'normal'
-        else:
+        if not self.loggedInUser.permissions.Manager_Permission:
             self.archiveEmployeeButton['state'] = 'disabled'
             self.unarchiveEmployeeButton['state'] = 'disabled'
             self.addEmployeeButton['state'] = 'disabled'
+            
 
     def showData(self, selectedUser):
         #This determines what things the user can see (I haven't written it yet)
