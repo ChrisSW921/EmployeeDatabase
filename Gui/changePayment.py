@@ -7,51 +7,60 @@ class paymentWindow:
         self.window = Tk()
         self.window.title("Change Payment Method")
 
-        frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
-        frame1.pack()
+        self.frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
+        self.frame1.pack()
 
         #Make and place main buttons
-        makeSalariedButton = Button(frame1, text='Make Salaried')
-        makeHourlyButton = Button(frame1, text='Make Hourly')
-        makeCommissionedButton = Button(frame1, text='Make Commissioned')
+        self.makeSalariedButton = Button(self.frame1, text='Make Salaried', command=self.makeSalariedButtonPressed)
+        self.makeHourlyButton = Button(self.frame1, text='Make Hourly', command=self.makeHourlyButtonPressed)
+        self.makeCommissionedButton = Button(self.frame1, text='Make Commissioned', command=self.makeCommissionedButtonPressed)
 
-        makeSalariedButton.grid(row=0,column=0, padx=15, pady=40)
-        makeHourlyButton.grid(row=0,column=1, padx=15, pady=40)
-        makeCommissionedButton.grid(row=0,column=2, padx=15, pady=40)
+        self.makeSalariedButton.grid(row=0,column=0, padx=15, pady=40)
+        self.makeHourlyButton.grid(row=0,column=1, padx=15, pady=40)
+        self.makeCommissionedButton.grid(row=0,column=2, padx=15, pady=40)
 
         #make and place labels
-        salaryLabel = Label(frame1, text="Salary")
-        hourlyLabel = Label(frame1, text="Hourly pay")
-        commissionLabel = Label(frame1, text="Commission rate") 
+        self.salaryLabel = Label(self.frame1, text="Salary")
+        self.hourlyLabel = Label(self.frame1, text="Hourly pay")
+        self.commissionLabel = Label(self.frame1, text="Commission rate") 
 
-        salaryLabel.grid(row=1, column=0)
-        hourlyLabel.grid(row=1, column=1)
-        commissionLabel.grid(row=1, column=2)
+        self.salaryLabel.grid(row=1, column=0)
+        self.hourlyLabel.grid(row=1, column=1)
+        self.commissionLabel.grid(row=1, column=2)
 
         #Make and place text areas
-        salaryLabelText = Entry(frame1) 
-        hourlyLabelText = Entry(frame1) 
-        commissionLabelText = Entry(frame1)
+        self.salaryLabelText = Entry(self.frame1) 
+        self.hourlyLabelText = Entry(self.frame1) 
+        self.commissionLabelText = Entry(self.frame1)
 
-        salaryLabelText.grid(row=2, column=0)
-        hourlyLabelText.grid(row=2, column=1)
-        commissionLabelText.grid(row=2, column=2)
+        self.salaryLabelText.grid(row=2, column=0)
+        self.hourlyLabelText.grid(row=2, column=1)
+        self.commissionLabelText.grid(row=2, column=2)
 
         #Make and place save and cancel buttons
-        saveButton = Button(frame1, text='Save')
-        cancelButton = Button(frame1, text='Cancel', command=self.cancelButtonPressed)
+        self.saveButton = Button(self.frame1, text='Save')
+        self.cancelButton = Button(self.frame1, text='Cancel', command=self.cancelButtonPressed)
 
-        saveButton.grid(row=3,column=0, padx=15, pady=40)
-        cancelButton.grid(row=3,column=2, padx=15, pady=40)
+        self.saveButton.grid(row=3,column=0, padx=15, pady=40)
+        self.cancelButton.grid(row=3,column=2, padx=15, pady=40)
 
     def makeSalariedButtonPressed(self):
-        print("Made salaried")
+        self.salaryLabelText['state'] = 'normal'
+        self.hourlyLabelText['state'] = 'disabled'
+        self.commissionLabelText['state'] = 'disabled'
+    
 
     def makeCommissionedButtonPressed(self):
-        print("Made commissioned")
+        self.salaryLabelText['state'] = 'disabled'
+        self.hourlyLabelText['state'] = 'normal'
+        self.commissionLabelText['state'] = 'normal'
+        
     
     def makeHourlyButtonPressed(self):
-        print("Made Hourly")
+        self.hourlyLabelText['state'] = 'normal'
+        self.commissionLabelText['state'] = 'disabled'
+        self.salaryLabelText['state'] = 'disabled'
+        
 
     def saveButtonPressed(self):
         print("Saved")
