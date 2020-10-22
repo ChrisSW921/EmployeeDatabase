@@ -14,188 +14,322 @@ class MainMenu:
 
     def __init__(self, user):
         """Main menu screen. Instantiates with a user from login"""
-        self.user = user
+        self.loggedInUser = user
+        self.selectedUser = "Generic user we will create"
         self.window = Tk()
         self.window.title("Main Menu")
         self.window.config(bg="sky blue")
 
-        frame0 = ScrollableFrame(self.window)
+        self.frame0 = ScrollableFrame(self.window)
         
 
         #Create tree view frame
-        frame1 = LabelFrame(frame0.scrollable_frame, text="")
-        frame1.pack()
+        self.frame1 = LabelFrame(self.frame0.scrollable_frame, text="")
+        self.frame1.pack()
 
         #Create tree view
-        searchResults = ttk.Treeview(frame1)
-        searchResults['columns'] = ("First Name", "Last Name", "ID", "Phone Number")
+        self.searchResults = ttk.Treeview(self.frame1)
+        self.searchResults['columns'] = ("First Name", "Last Name", "ID", "Phone Number")
 
         # Format tree view
-        searchResults.column("#0", width=0, minwidth=0)
-        searchResults.column("First Name", anchor=CENTER)
-        searchResults.column("Last Name", anchor=CENTER)    
-        searchResults.column("ID", anchor=CENTER)
-        searchResults.column("Phone Number", anchor=CENTER)
+        self.searchResults.column("#0", width=0, minwidth=0)
+        self.searchResults.column("First Name", anchor=CENTER)
+        self.searchResults.column("Last Name", anchor=CENTER)    
+        self.searchResults.column("ID", anchor=CENTER)
+        self.searchResults.column("Phone Number", anchor=CENTER)
 
         #Create Tree View Headings
-        searchResults.heading("#0", text="", anchor=W)
-        searchResults.heading("First Name", text="First Name", anchor=W)
-        searchResults.heading("Last Name", text="Last Name", anchor=W)
-        searchResults.heading("ID", text="ID", anchor=W)
-        searchResults.heading("Phone Number", text="Phone Number", anchor=W)
+        self.searchResults.heading("#0", text="", anchor=W)
+        self.searchResults.heading("First Name", text="First Name", anchor=W)
+        self.searchResults.heading("Last Name", text="Last Name", anchor=W)
+        self.searchResults.heading("ID", text="ID", anchor=W)
+        self.searchResults.heading("Phone Number", text="Phone Number", anchor=W)
 
         #Add sample data into tree view
-        searchResults.insert(parent='', index='end', iid=0, text="", values=("John", "Smith", 123, 8017452099))
-        searchResults.insert(parent='', index='end', iid=1, text="", values=("Mary", "Oaks", 225, 8017052087))
+        self.searchResults.insert(parent='', index='end', iid=0, text="", values=("John", "Smith", 123, 8017452099))
+        self.searchResults.insert(parent='', index='end', iid=1, text="", values=("Mary", "Oaks", 225, 8017052087))
         
         #Place tree view into frame
-        searchResults.grid(row=0, column=0)
+        self.searchResults.grid(row=0, column=0)
 
         #Add search bar frame
-        frame2 = LabelFrame(frame0.scrollable_frame, text="")
-        frame2.pack()
+        self.frame2 = LabelFrame(self.frame0.scrollable_frame, text="")
+        self.frame2.pack()
 
         #Add search bar, search bar label and select button
-        searchLabel = Label(frame2, text="Search:").grid(row=0, column=0)
-        searchBar = Entry(frame2).grid(row=0, column=1)
-        searchBarButton = Button(frame2, text="Go->").grid(row=0, column=2)
-        selectButton = Button(frame2, text="Select Record").grid(row=1, column=1)
+        self.searchLabel = Label(self.frame2, text="Search:")
+        self.searchBar = Entry(self.frame2)
+        self.searchBarButton = Button(self.frame2, text="Go->")
+        self.selectButton = Button(self.frame2, text="Select Record")
+
+        self.searchLabel.grid(row=0, column=0)
+        self.searchBar.grid(row=0, column=1)
+        self.searchBarButton.grid(row=0, column=2)
+        self.selectButton.grid(row=1, column=1)
 
         #Add employee information area
-        frame3 = LabelFrame(frame0.scrollable_frame, text="Employee Information")
-        frame3.pack(pady=20)
+        self.frame3 = LabelFrame(self.frame0.scrollable_frame, text="Employee Information")
+        self.frame3.pack(pady=20)
 
         #Add employee information labels and put on grid
-        IDLabel = Label(frame3, text="ID").grid(row=0, column=0) 
-        firstNameLabel = Label(frame3, text="First Name").grid(row=0, column=1)
-        lastNameLabel = Label(frame3, text="Last Name").grid(row=0, column=2)
-        addressLabel = Label(frame3, text="Adress").grid(row=0, column=3) 
-        cityLabel = Label(frame3, text="City").grid(row=0, column=4)
-        stateLabel = Label(frame3, text="State").grid(row=2, column=0)
-        zipLabel = Label(frame3, text="Zip").grid(row=2, column=1) 
-        phoneLabel = Label(frame3, text="Phone Number").grid(row=2, column=2)
-        payTypeLabel = Label(frame3, text="Pay Type").grid(row=2, column=3)
-        payMethodLabel = Label(frame3, text="Pay Method").grid(row=2, column=4)
-        salaryLabel = Label(frame3, text="Salary").grid(row=4, column=0)
-        hourlyLabel = Label(frame3, text="Hourly").grid(row=4, column=1)
-        commissionLabel = Label(frame3, text="Commission").grid(row=4, column=2) 
-        currentPTOLabel = Label(frame3, text="Current PTO").grid(row=4, column=3)
-        usedPTOLabel = Label(frame3, text="PTO Used").grid(row=4, column=4)
-        limitPTOLabel = Label(frame3, text="PTO Limit").grid(row=6, column=0)
-        ssnLabel = Label(frame3, text="SSN").grid(row=6, column=1)
-        editorLabel = Label(frame3, text="Editing Permission").grid(row=6, column=2)
-        reportLabel = Label(frame3, text="Reporting Permission").grid(row=6, column=3)
-        accountingLabel = Label(frame3, text="Accounting Permission").grid(row=6, column=4)
-        managerLabel = Label(frame3, text="Manager Permission").grid(row=8, column=0)
+        self.IDLabel = Label(self.frame3, text="ID")
+        self.firstNameLabel = Label(self.frame3, text="First Name")
+        self.lastNameLabel = Label(self.frame3, text="Last Name")
+        self.addressLabel = Label(self.frame3, text="Adress")
+        self.cityLabel = Label(self.frame3, text="City")
+        self.stateLabel = Label(self.frame3, text="State")
+        self.zipLabel = Label(self.frame3, text="Zip")
+        self.phoneLabel = Label(self.frame3, text="Phone Number")
+        self.payTypeLabel = Label(self.frame3, text="Pay Type")
+        self.payMethodLabel = Label(self.frame3, text="Pay Method")
+        self.salaryLabel = Label(self.frame3, text="Salary")
+        self.hourlyLabel = Label(self.frame3, text="Hourly")
+        self.commissionLabel = Label(self.frame3, text="Commission")
+        self.currentPTOLabel = Label(self.frame3, text="Current PTO")
+        self.usedPTOLabel = Label(self.frame3, text="PTO Used")
+        self.limitPTOLabel = Label(self.frame3, text="PTO Limit")
+        self.ssnLabel = Label(self.frame3, text="SSN")
+        self.editorLabel = Label(self.frame3, text="Editing Permission")
+        self.reportLabel = Label(self.frame3, text="Reporting Permission")
+        self.accountingLabel = Label(self.frame3, text="Accounting Permission")
+        self.managerLabel = Label(self.frame3, text="Manager Permission")
+
+        self.IDLabel.grid(row=0, column=0) 
+        self.firstNameLabel.grid(row=0, column=1)
+        self.lastNameLabel.grid(row=0, column=2)
+        self.addressLabel.grid(row=0, column=3) 
+        self.cityLabel.grid(row=0, column=4)
+        self.stateLabel.grid(row=2, column=0)
+        self.zipLabel.grid(row=2, column=1) 
+        self.phoneLabel.grid(row=2, column=2)
+        self.payTypeLabel.grid(row=2, column=3)
+        self.payMethodLabel.grid(row=2, column=4)
+        self.salaryLabel.grid(row=4, column=0)
+        self.hourlyLabel.grid(row=4, column=1)
+        self.commissionLabel.grid(row=4, column=2) 
+        self.currentPTOLabel.grid(row=4, column=3)
+        self.usedPTOLabel.grid(row=4, column=4)
+        self.limitPTOLabel.grid(row=6, column=0)
+        self.ssnLabel.grid(row=6, column=1)
+        self.editorLabel.grid(row=6, column=2)
+        self.reportLabel.grid(row=6, column=3)
+        self.accountingLabel.grid(row=6, column=4)
+        self.managerLabel.grid(row=8, column=0)
 
         #Add employee text boxes/checkmarks and put into frame
-        IDLabelText = Entry(frame3).grid(row=1, column=0)
-        firstNameLabelText = Entry(frame3).grid(row=1, column=1)
-        lastNameLabelText = Entry(frame3).grid(row=1, column=2)
-        addressLabelText = Entry(frame3).grid(row=1, column=3)
-        cityLabelText = Entry(frame3).grid(row=1, column=4) 
-        stateLabelText = Entry(frame3).grid(row=3, column=0)
-        zipLabelText = Entry(frame3).grid(row=3, column=1)
-        phoneLabelText = Entry(frame3).grid(row=3, column=2) 
-        payTypeLabelText = Entry(frame3).grid(row=3, column=3)
+        self.IDLabelText = Entry(self.frame3)
+        self.firstNameLabelText = Entry(self.frame3)
+        self.lastNameLabelText = Entry(self.frame3)
+        self.addressLabelText = Entry(self.frame3)
+        self.cityLabelText = Entry(self.frame3)
+        self.stateLabelText = Entry(self.frame3)
+        self.zipLabelText = Entry(self.frame3)
+        self.phoneLabelText = Entry(self.frame3)
+        self.payTypeLabelText = Entry(self.frame3)
 
-        paymentOptions = ["Direct Deposit", "Mailed"]
+        self.IDLabelText.grid(row=1, column=0)
+        self.firstNameLabelText.grid(row=1, column=1)
+        self.lastNameLabelText.grid(row=1, column=2)
+        self.addressLabelText.grid(row=1, column=3)
+        self.cityLabelText.grid(row=1, column=4) 
+        self.stateLabelText.grid(row=3, column=0)
+        self.zipLabelText.grid(row=3, column=1)
+        self.phoneLabelText.grid(row=3, column=2) 
+        self.payTypeLabelText.grid(row=3, column=3)
 
-        paymentOption = StringVar(frame3)
-        paymentOption.set(paymentOptions[0])
+        self.paymentOptions = ["Direct Deposit", "Mailed"]
 
-        paymentOptionMenu = OptionMenu(frame3, paymentOption, *paymentOptions).grid(row=3, column=4)
+        self.paymentOption = StringVar(self.frame3)
+        self.paymentOption.set(self.paymentOptions[0])
+
+        self.paymentOptionMenu = OptionMenu(self.frame3, self.paymentOption, *self.paymentOptions)
+        self.paymentOptionMenu.grid(row=3, column=4)
 
         
-        salaryLabelText = Entry(frame3).grid(row=5, column=0) 
-        hourlyLabelText = Entry(frame3).grid(row=5, column=1) 
-        commissionLabelText = Entry(frame3).grid(row=5, column=2)
-        currentPTOLabelText = Entry(frame3).grid(row=5, column=3)
-        usedPTOLabelText = Entry(frame3).grid(row=5, column=4)
-        limitPTOLabelText = Entry(frame3).grid(row=7, column=0)
-        ssnLabelText= Entry(frame3).grid(row=7, column=1)
+        self.salaryLabelText = Entry(self.frame3)
+        self.hourlyLabelText = Entry(self.frame3)
+        self.commissionLabelText = Entry(self.frame3)
+        self.currentPTOLabelText = Entry(self.frame3)
+        self.usedPTOLabelText = Entry(self.frame3)
+        self.limitPTOLabelText = Entry(self.frame3)
+        self.ssnLabelText= Entry(self.frame3)
 
-        editor = IntVar()
-        reporter = IntVar()
-        accounting = IntVar()
-        manager = IntVar()
+        self.salaryLabelText.grid(row=5, column=0) 
+        self.hourlyLabelText.grid(row=5, column=1) 
+        self.commissionLabelText.grid(row=5, column=2)
+        self.currentPTOLabelText.grid(row=5, column=3)
+        self.usedPTOLabelText.grid(row=5, column=4)
+        self.limitPTOLabelText.grid(row=7, column=0)
+        self.ssnLabelText.grid(row=7, column=1)
 
-        editorCheck = Checkbutton(frame3, text="", variable=editor).grid(row=7, column=2)
-        reporterCheck = Checkbutton(frame3, text="", variable=reporter).grid(row=7, column=3)
-        accountingCheck = Checkbutton(frame3, text="", variable=accounting).grid(row=7, column=4)
-        managerCheck = Checkbutton(frame3, text="", variable=manager).grid(row=9, column=0)
+        self.editor = IntVar()
+        self.reporter = IntVar()
+        self.accounting = IntVar()
+        self.manager = IntVar()
+
+        self.editorCheck = Checkbutton(self.frame3, text="", variable=self.editor)
+        self.reporterCheck = Checkbutton(self.frame3, text="", variable=self.reporter)
+        self.accountingCheck = Checkbutton(self.frame3, text="", variable=self.accounting)
+        self.managerCheck = Checkbutton(self.frame3, text="", variable=self.manager)
+
+        self.editorCheck.grid(row=7, column=2)
+        self.reporterCheck.grid(row=7, column=3)
+        self.accountingCheck.grid(row=7, column=4)
+        self.managerCheck.grid(row=9, column=0)
 
         #Create Employee Action Button Frame
-        frame4 = LabelFrame(frame0.scrollable_frame, text="Employee Actions", padx=20, pady=20)
-        frame4.pack(pady=20)
+        self.frame4 = LabelFrame(self.frame0.scrollable_frame, text="Employee Actions", padx=20, pady=20)
+        self.frame4.pack(pady=20)
 
         #Create Buttons and place in grid
-        editButton = Button(frame4, text="Edit Employee Info").grid(row=0, column=0, padx=5, pady=5, sticky=W)
-        archiveEmployeeButton = Button(frame4, text="Archive Employee").grid(row=0, column=1, padx=5, pady=5, sticky=W)
-        unarchiveEmployeeButton = Button(frame4, text="Unarchive Employee").grid(row=0, column=2, padx=5, pady=5, sticky=W)
-        saveChangesButton = Button(frame4, text="Save Changes").grid(row=1, column=2, padx=5, pady=5, sticky=W)
-        addPTOButton = Button(frame4, text="Add PTO").grid(row=0, column=3, padx=5, pady=5, sticky=W)
-        changePaymentTypeButton = Button(frame4, text="Change Payment Type").grid(row=0, column=4, padx=5, pady=5, sticky=W)
+        self.editButton = Button(self.frame4, text="Edit Employee Info")
+        self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee")
+        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee")
+        self.saveChangesButton = Button(self.frame4, text="Save Changes")
+        self.addPTOButton = Button(self.frame4, text="Add PTO")
+        self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type")
+
+        self.editButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
+        self.archiveEmployeeButton.grid(row=0, column=1, padx=5, pady=5, sticky=W)
+        self.unarchiveEmployeeButton.grid(row=0, column=2, padx=5, pady=5, sticky=W)
+        self.saveChangesButton.grid(row=1, column=2, padx=5, pady=5, sticky=W)
+        self.addPTOButton.grid(row=0, column=3, padx=5, pady=5, sticky=W)
+        self.changePaymentTypeButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
 
         #Create Company Buttons Frame
-        frame5 = LabelFrame(frame0.scrollable_frame, text="Company Actions", padx=20, pady=20)
-        frame5.pack(pady=20)
+        self.frame5 = LabelFrame(self.frame0.scrollable_frame, text="Company Actions", padx=20, pady=20)
+        self.frame5.pack(pady=20)
 
         #Create Company Buttons and place in grid
-        addEmployeeButton = Button(frame5, text="Add Employee").grid(row=0, column=0, padx=5, pady=5)
-        paymentReportButton = Button(frame5, text="Generate Payment Report").grid(row=0, column=1, padx=5, pady=5)
-        employeeReportButton = Button(frame5, text="Generate Employee Data Report").grid(row=0, column=2, padx=5, pady=5)
+        self.addEmployeeButton = Button(self.frame5, text="Add Employee")
+        self.paymentReportButton = Button(self.frame5, text="Generate Payment Report")
+        self.employeeReportButton = Button(self.frame5, text="Generate Employee Data Report")
+
+        self.addEmployeeButton.grid(row=0, column=0, padx=5, pady=5)
+        self.paymentReportButton.grid(row=0, column=1, padx=5, pady=5)
+        self.employeeReportButton.grid(row=0, column=2, padx=5, pady=5)
 
         #Create your actions button frame
-        frame6 = LabelFrame(frame0.scrollable_frame, text="Your Actions", padx=20, pady=20)
-        frame6.pack(pady=20)
+        self.frame6 = LabelFrame(self.frame0.scrollable_frame, text="Your Actions", padx=20, pady=20)
+        self.frame6.pack(pady=20)
 
         #Create your Buttons and place in grid
-        usePTOButton = Button(frame6, text="Use PTO").grid(row=0, column=0, padx=5, pady=5, sticky=W)
-        changePasswordButton = Button(frame6, text="Change Password").grid(row=0, column=1, padx=5, pady=5)
-        logOutButton = Button(frame6, text="Log Out").grid(row=0, column=2, padx=5, pady=5, sticky=W)
-        frame0.pack(expand=1,  fill=Y)
+        self.usePTOButton = Button(self.frame6, text="Use PTO")
+        self.changePasswordButton = Button(self.frame6, text="Change Password")
+        self.logOutButton = Button(self.frame6, text="Log Out")
+
+        self.usePTOButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
+        self.changePasswordButton.grid(row=0, column=1, padx=5, pady=5)
+        self.logOutButton.grid(row=0, column=2, padx=5, pady=5, sticky=W)
+
+        self.frame0.pack(expand=1,  fill=Y)
+
+        self.setInitialState()
 
 
-        #Functions
-        def goButtonPressed():
-            print("Go")
+   
+        
 
-        def selectRecordButtonPressed():
-            print("Select record")
+    #Functions
 
-        def editButtonPressed():
-            print("Edit")
+    def setInitialState(self):
+        #This function sets up initial state of buttons before selecting an employee
+        self.paymentReportButton['state'] = 'disabled'
+        self.employeeReportButton['state'] = 'disabled'
+        self.editButton['state'] = 'disabled'
+        self.addPTOButton['state'] = 'disabled'
+        self.changePaymentTypeButton['state'] = 'disabled'
+        self.archiveEmployeeButton['state'] = 'disabled'
+        self.unarchiveEmployeeButton['state'] = 'disabled'
+        self.addEmployeeButton['state'] = 'disabled'
+        self.saveChangesButton['state'] = 'disabled'
 
-        def archiveEmpButtonPressed():
-            print("Archived Emp")
 
-        def unArchiveEmpButtonPressed():
-            print("Unarchived Emp")
+    def goButtonPressed(self):
+        print("Go")
+        #searchBarButton['state'] = 'disabled'
+        
 
-        def addPTOButtonPressed():
-            print("added PTO")
+    def selectRecordButtonPressed(self):
+        print("Select record")
+        #selectedRecord would equal the one we find in database
+        selectedRecord = "The one we clicked on"
+        self.setState(selectedRecord)
 
-        def changePaymentTypePressed():
-            print("Changed payment type")
+    def editButtonPressed(self):
+        print("Edit")
+    
+    def archiveEmpButtonPressed(self):
+        print("Archived Emp")
 
-        def saveButtonPressed():
-            print("Saved changes")
+    def unArchiveEmpButtonPressed(self):
+        print("Unarchived Emp")
 
-        def addEmpButtonPressed():
-            print("Added Emp")
+    def addPTOButtonPressed(self):
+        print("added PTO")
 
-        def paymentReportButtonPressed():
-            print("Payment report generated")
+    def changePaymentTypePressed(self):
+        print("Changed payment type")
 
-        def empReportButtonPressed():
-            print("Emp report generated")
+    def saveButtonPressed(self):
+        print("Saved changes")
 
-        def usePTOButtonPressed():
-            print("PTO used")
+    def addEmpButtonPressed(self):
+        print("Added Emp")
 
-        def changePasswordButtonPressed():
-            print("Password changed")
+    def paymentReportButtonPressed(self):
+        print("Payment report generated")
 
-        def logoutButtonPressed():
-            print("Logged out")
+    def empReportButtonPressed(self):
+        print("Emp report generated")
+
+    def usePTOButtonPressed(self):
+        print("PTO used")
+
+    def changePasswordButtonPressed(self):
+        print("Password changed")
+
+    def logoutButtonPressed(self):
+        print("Logged out")
+
+
+    def setState(self, loggedInUser):
+        #Set up button states for loggedInUser
+
+        if self.loggedInUser.permissions.Reporting_Permission:
+            self.paymentReportButton['state'] = 'normal'
+            self.employeeReportButton['state'] = 'normal'
+        else:
+            self.paymentReportButton['state'] = 'disabled'
+            self.employeeReportButton['state'] = 'disabled'
+
+        if self.loggedInUser.permissions.Editing_Permission:
+            self.editButton['state'] = 'normal'
+            self.addPTOButton['state'] = 'normal'
+            self.changePaymentTypeButton['state'] = 'normal'
+        else:
+            self.editButton['state'] = 'disabled'
+            self.addPTOButton['state'] = 'disabled'
+            self.changePaymentTypeButton['state'] = 'disabled'
+
+        if self.loggedInUser.permissions.Manager_Permission:
+            self.archiveEmployeeButton['state'] = 'normal'
+            self.unarchiveEmployeeButton['state'] = 'normal'
+            self.addEmployeeButton['state'] = 'normal'
+        else:
+            self.archiveEmployeeButton['state'] = 'disabled'
+            self.unarchiveEmployeeButton['state'] = 'disabled'
+            self.addEmployeeButton['state'] = 'disabled'
+
+    def showData(self, selectedUser):
+        #This determines what things the user can see (I haven't written it yet)
+        if self.loggedInUser.permissions.Accounting_Permission:
+            #give accounting permision
+            print("no")
+        else:
+            #Don't let them see stuff
+            print("Ok")
+
+    
+        
+        

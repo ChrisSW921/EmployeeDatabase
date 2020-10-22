@@ -9,6 +9,7 @@ from newEmp import addEmpWindow
 from errorMessage import errorWindow
 from changePayment import paymentWindow
 
+
 #Set up login page with username and password
 class Login:
     """Login class. First class that employee will interact with.
@@ -18,7 +19,7 @@ class Login:
         self.root = Tk()
         self.root.title('LOGIN SCREEN')
 
-        Label(text = ' Username ',font='Times 15').grid(row=1,column=1,pady=20)
+        Label(text = ' Employee ID ',font='Times 15').grid(row=1,column=1,pady=20)
         self.username = Entry()
         self.username.grid(row=1,column=2,columnspan=10)
 
@@ -31,10 +32,11 @@ class Login:
 
 
     def loginUser(self):
+
+        #query database and make user from ID found if matches password
+        user = "The new user you made"
         self.root.destroy()
-        #code to create user from data in username field
-        user = "Fake user"
-        #new = addEmpWindow("f")
+       
         menu = MainMenu(user)
 
 
