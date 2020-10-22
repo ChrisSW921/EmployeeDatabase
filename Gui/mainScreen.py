@@ -188,8 +188,8 @@ class MainMenu:
         self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee")
         self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee")
         self.saveChangesButton = Button(self.frame4, text="Save Changes")
-        self.addPTOButton = Button(self.frame4, text="Add PTO")
-        self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type")
+        self.addPTOButton = Button(self.frame4, text="Add PTO", command=self.addPTOButtonPressed)
+        self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type", command=self.changePaymentTypePressed)
 
         self.editButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
         self.archiveEmployeeButton.grid(row=0, column=1, padx=5, pady=5, sticky=W)
@@ -203,7 +203,7 @@ class MainMenu:
         self.frame5.pack(pady=20)
 
         #Create Company Buttons and place in grid
-        self.addEmployeeButton = Button(self.frame5, text="Add Employee")
+        self.addEmployeeButton = Button(self.frame5, text="Add Employee", command=self.addEmpButtonPressed)
         self.paymentReportButton = Button(self.frame5, text="Generate Payment Report")
         self.employeeReportButton = Button(self.frame5, text="Generate Employee Data Report")
 
@@ -216,8 +216,8 @@ class MainMenu:
         self.frame6.pack(pady=20)
 
         #Create your Buttons and place in grid
-        self.usePTOButton = Button(self.frame6, text="Use PTO")
-        self.changePasswordButton = Button(self.frame6, text="Change Password")
+        self.usePTOButton = Button(self.frame6, text="Use PTO", command=self.usePTOButtonPressed)
+        self.changePasswordButton = Button(self.frame6, text="Change Password", command=self.changePasswordButtonPressed)
         self.logOutButton = Button(self.frame6, text="Log Out", command=self.logoutButtonPressed)
 
         self.usePTOButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
@@ -226,7 +226,7 @@ class MainMenu:
 
         self.frame0.pack(expand=1,  fill=Y)
 
-        self.setInitialState()
+       # self.setInitialState()
 
 
    
@@ -268,15 +268,18 @@ class MainMenu:
         print("Unarchived Emp")
 
     def addPTOButtonPressed(self):
+        morePTO = addPTOWindow('user')
         print("added PTO")
 
     def changePaymentTypePressed(self):
+        newPayment = paymentWindow('user')
         print("Changed payment type")
 
     def saveButtonPressed(self):
         print("Saved changes")
 
     def addEmpButtonPressed(self):
+        newEmp = addEmpWindow('user')
         print("Added Emp")
 
     def paymentReportButtonPressed(self):
@@ -286,9 +289,11 @@ class MainMenu:
         print("Emp report generated")
 
     def usePTOButtonPressed(self):
+        lessPTO = usePTOWindow('user')
         print("PTO used")
 
     def changePasswordButtonPressed(self):
+        newPassword = changePasswordWindow('user')
         print("Password changed")
 
     def logoutButtonPressed(self):
