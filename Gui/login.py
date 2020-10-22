@@ -34,10 +34,14 @@ class LoginScreen:
     def loginUser(self):
 
         #query database and make user from ID found if matches password
-        user = "The new user you made"
+        userID = self.username.get()
+        password = self.password.get()
+
+        #Code to verify if user/password is correct. Then make a mainscreen with that user that matches it
+
         self.root.destroy()
        
-        menu = MainMenu(user)
+        menu = MainMenu('user')
 
 
 
