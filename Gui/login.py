@@ -11,7 +11,7 @@ from changePayment import paymentWindow
 
 
 #Set up login page with username and password
-class Login:
+class LoginScreen:
     """Login class. First class that employee will interact with.
     They will login with ID and their password"""
 
@@ -44,4 +44,4 @@ class Login:
 
 
 if __name__ == '__main__':
-    test = Login()
+    test = LoginScreen()

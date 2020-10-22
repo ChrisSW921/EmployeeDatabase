@@ -10,6 +10,7 @@ from newEmp import addEmpWindow
 from newPassword import changePasswordWindow
 from scrollable import ScrollableFrame
 
+
 class MainMenu:
 
     def __init__(self, user):
@@ -217,7 +218,7 @@ class MainMenu:
         #Create your Buttons and place in grid
         self.usePTOButton = Button(self.frame6, text="Use PTO")
         self.changePasswordButton = Button(self.frame6, text="Change Password")
-        self.logOutButton = Button(self.frame6, text="Log Out")
+        self.logOutButton = Button(self.frame6, text="Log Out", command=self.logoutButtonPressed)
 
         self.usePTOButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
         self.changePasswordButton.grid(row=0, column=1, padx=5, pady=5)
@@ -291,7 +292,9 @@ class MainMenu:
         print("Password changed")
 
     def logoutButtonPressed(self):
-        print("Logged out")
+        from login import LoginScreen
+        self.window.destroy()
+        login = LoginScreen()
 
 
     def setState(self, loggedInUser):
