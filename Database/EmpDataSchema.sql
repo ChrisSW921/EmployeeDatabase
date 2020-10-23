@@ -1,11 +1,12 @@
 CREATE TABLE IF NOT EXISTS EMPLOYEES ( 
     emp_id INTEGER PRIMARY KEY AUTOINCREMENT, 
     first_name TEXT, last_name TEXT, 
-    phone_number INTEGER, 
+    phone_number TEXT, 
     pay_method INTEGER, 
     salary REAL, 
     hourly REAL, 
-    commission REAL 
+    commission REAL,
+    archived BOOLEAN 
 );
 
 CREATE TABLE IF NOT EXISTS EMPLOYEE_CREDENTIALS ( 
@@ -40,3 +41,5 @@ CREATE TABLE IF NOT EXISTS EMPLOYEE_PERMISSIONS (
     manager_permissions BOOLEAN, 
     FOREIGN KEY(emp_id) REFERENCES EMPLOYEES(emp_id) 
 );
+
+DROP TRIGGER IF EXISTS TRG_CREATE_EMP_DETAILS;
