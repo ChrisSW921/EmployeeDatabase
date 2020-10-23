@@ -12,14 +12,21 @@ class usePTOWindow:
         frame1.pack()
 
         #Create labels/text areas and buttons and put on screen
-        titleLabel = Label(frame1, text="Use PTO").grid(row=0, column=1)
-        hoursLabel = Label(frame1, text="Hours:").grid(row=1, column=0)
-        inputTextBox = Entry(frame1).grid(row=1, column=1)
-        saveButton = Button(frame1, text="Save").grid(row=2, column=0)
-        cancelButton = Button(frame1, text="Cancel").grid(row=2, column=1)
+        titleLabel = Label(frame1, text="Use PTO")
+        hoursLabel = Label(frame1, text="Hours:")
+        inputTextBox = Entry(frame1)
+        saveButton = Button(frame1, text="Save")
+        cancelButton = Button(frame1, text="Cancel", command=self.cancelButtonPressed)
 
-        def saveButtonPressed():
-            print("Saved")
+        titleLabel.grid(row=0, column=1)
+        hoursLabel.grid(row=1, column=0)
+        inputTextBox.grid(row=1, column=1)
+        saveButton.grid(row=2, column=0)
+        cancelButton.grid(row=2, column=1)
 
-        def cancelButtonPressed():
-            print("canceled")
+    def saveButtonPressed(self):
+        print("Saved")
+
+    def cancelButtonPressed(self):
+        self.window.destroy()
+        print("canceled")
