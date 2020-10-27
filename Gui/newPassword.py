@@ -12,15 +12,23 @@ class changePasswordWindow:
         frame1.pack()
 
         #Create labels/text areas and buttons and put on screen
-        oldPasswordLabel = Label(frame1, text="Old Password:").grid(row=0, column=0)
-        newPasswordLabel = Label(frame1, text="New Password").grid(row=1, column=0)
-        oldPasswordTextBox = Entry(frame1).grid(row=0, column=1)
-        newPasswordTextBox = Entry(frame1).grid(row=1, column=1)
-        saveButton = Button(frame1, text="Save").grid(row=2, column=0)
-        cancelButton = Button(frame1, text="Cancel").grid(row=2, column=1)
+        oldPasswordLabel = Label(frame1, text="Old Password:")
+        newPasswordLabel = Label(frame1, text="New Password")
+        oldPasswordTextBox = Entry(frame1)
+        newPasswordTextBox = Entry(frame1)
+        saveButton = Button(frame1, text="Save")
+        cancelButton = Button(frame1, text="Cancel", command=self.cancelButtonPressed)
 
-        def saveButtonPressed():
-            print("Saved")
+        oldPasswordLabel.grid(row=0, column=0)
+        newPasswordLabel.grid(row=1, column=0)
+        oldPasswordTextBox.grid(row=0, column=1)
+        newPasswordTextBox.grid(row=1, column=1)
+        saveButton.grid(row=2, column=0)
+        cancelButton.grid(row=2, column=1)
 
-        def cancelButtonPressed():
-            print("canceled")
+    def saveButtonPressed(self):
+        print("Saved")
+
+    def cancelButtonPressed(self):
+        self.window.destroy()
+        print("canceled")
