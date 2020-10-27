@@ -32,8 +32,11 @@ def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3
     cursor.execute(database_triggers)
     database.commit()
 
-    # Make some qualifiers to only execute if there is no data in the database
-    generate_employees()
+    dataCheck = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES')
+    numOfRows = dataCheck.fetchone()[0]
+    dataCheck.close()
+    if(numOfRows <= 0):
+        generate_employees()
 
 def generate_employees():
     with open('Database/employees.csv') as employeeFile:
@@ -75,3 +78,5 @@ database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
 
 initialize_employee_database(database, cursor)
+
+cursor.close()
