@@ -32,9 +32,7 @@ def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3
     cursor.execute(database_triggers)
     database.commit()
 
-    dataCheck = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES')
-    numOfRows = dataCheck.fetchone()[0]
-    dataCheck.close()
+    numOfRows = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES').fetchone()[0]
     if(numOfRows <= 0):
         generate_employees()
 
@@ -78,5 +76,8 @@ database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
 
 initialize_employee_database(database, cursor)
+
+for row in cursor.execute('SELECT * FROM EMPLOYEE_TIMECARDS'):
+    print(row)
 
 cursor.close()
