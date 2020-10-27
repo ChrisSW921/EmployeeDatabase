@@ -8,6 +8,7 @@ from newPassword import changePasswordWindow
 from newEmp import addEmpWindow
 from errorMessage import errorWindow
 from changePayment import paymentWindow
+from empReport import empReporting
 
 
 #Set up login page with username and password
@@ -41,7 +42,8 @@ class LoginScreen:
 
         self.root.destroy()
        
-        menu = MainMenu('user')
+        menu = empReporting('user')
+        #menu = MainMenu('user')
 
 
 
