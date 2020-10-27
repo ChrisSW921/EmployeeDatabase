@@ -18,14 +18,13 @@
         - Properties will have getter and setter methods public
 '''
 import sqlite3
-from Backend import Employee
-from Backend import EmployeeAddress
-from Backend import EmployeePTO
-from Backend import EmployeePermissions
-from Backend import EmployeeCredentials
+from Backend.employee_address import EmployeeAddress
+from Backend.employee_pto import EmployeePTO
+from Backend.employee_permissions import EmployeePermissions
+from Backend.employee_credentials import EmployeeCredentials
 
 class Employee:
-    def __init__(self, firstName : str, lastName : str, phoneNumber : str, salary : float, hourly : float, commission : float, payType : int, archived : bool, address : EmployeeAddress, permissions : EmployeePermissions, pto : EmployeePTO, credentials : EmployeeCredentials):
+    def __init__(self, firstName : str, lastName : str, phoneNumber : str, salary : float, hourly : float, commission : float, payType : int, payMethod : int, archived : bool, address : EmployeeAddress, permissions : EmployeePermissions, pto : EmployeePTO, credentials : EmployeeCredentials):
         self.First_Name = firstName
         self.Last_Name = lastName
         self.Full_Name = self.get_full_name()
@@ -34,6 +33,7 @@ class Employee:
         self.Hourly = hourly
         self.Commission = commission
         self.Pay_Type = payType
+        self.Pay_Method = payMethod
         self.Address = address
         self.Archived = archived
         self.Permissions = permissions
