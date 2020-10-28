@@ -1,5 +1,7 @@
 import sqlite3
 import random
+import string
+import hashlib
 
 from Backend.employee import Employee
 from Backend.employee_address import EmployeeAddress
@@ -54,6 +56,9 @@ def generate_employees():
 
                 for timecard in generate_timecards():
                     newEmp.add_timecard(timecard)
+
+                tempPassword = ''.join(random.choice(string.ascii_letters) for i in range(8))
+                newEmp.set_password(tempPassword)
                     
             lineCount += 1
     
@@ -72,12 +77,20 @@ def generate_timecards():
         numOfTimecards = numOfTimecards - 1
     return timecards
 
+def verify_credentials(empId : int, password : str):
+    currentDataContext = sqlite3.connect('Database/empdata.db')
+    cursor = currentDataContext.cursor()
+
+    currentEmpPassword = cursor.execute('SELECT emp_password, emp_password_salt FROM EMPLOYEE_CREDENTIALS WHERE emp_id=?', (empId,)).fetchone()
+    comparedPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), currentEmpPassword[1], 1000)
+
+    currentDataContext.close()
+
+    return currentEmpPassword[0] == comparedPassword
+
 database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
 
 initialize_employee_database(database, cursor)
-
-for row in cursor.execute('SELECT * FROM EMPLOYEE_TIMECARDS'):
-    print(row)
 
 cursor.close()
