@@ -17,7 +17,10 @@
     Public Methods 
         - Properties will have getter and setter methods public
 '''
+import os
+import hashlib
 import sqlite3
+
 from Backend.employee_address import EmployeeAddress
 from Backend.employee_pto import EmployeePTO
 from Backend.employee_permissions import EmployeePermissions
@@ -64,6 +67,18 @@ class Employee:
         cursor = currentDataContext.cursor()
 
         cursor.execute('INSERT INTO EMPLOYEE_TIMECARDS VALUES (?,?)', (self.EmpId, timecard.Hours))
+
+        currentDataContext.commit()
+        currentDataContext.close()
+
+    def set_password(self, password : str):
+        currentDataContext = sqlite3.connect('Database/empdata.db')
+        cursor = currentDataContext.cursor()
+
+        salt = os.urandom(32)
+        hashedPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 1000)
+
+        cursor.execute('UPDATE EMPLOYEE_CREDENTIALS SET emp_password=?, emp_password_salt=? WHERE emp_id=?', (hashedPassword, salt, self.EmpId))
 
         currentDataContext.commit()
         currentDataContext.close()
