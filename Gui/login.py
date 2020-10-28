@@ -45,12 +45,18 @@ class LoginScreen:
         userID = self.username.get()
         password = self.password.get()
 
-        #Code to verify if user/password is correct. Then make a mainscreen with that user that matches it
-
-        self.root.destroy()
+        if userID == 'admin' and password == 'admin':
+            #create user (who would be admin in this case)
+            user = 'user'
+            newpassword = changePasswordWindow(user)
+            self.root.destroy()
+        else:
+            self.root.destroy()
+            menu = MainMenu('user')
+            
        
         #menu = empReporting('user')
-        menu = MainMenu('user')
+        
 
     def newPassword(self):
         user = 'user'
