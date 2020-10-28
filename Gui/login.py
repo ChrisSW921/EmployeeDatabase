@@ -9,6 +9,9 @@ from newEmp import addEmpWindow
 from errorMessage import errorWindow
 from changePayment import paymentWindow
 from empReport import empReporting
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 
 
 #Set up login page with username and password

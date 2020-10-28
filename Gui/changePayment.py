@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import ttk
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 
 class paymentWindow:
     def __init__(self, user):

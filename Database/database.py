@@ -2,6 +2,9 @@ import sqlite3
 import random
 import string
 import hashlib
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 
 from Backend.employee import Employee
 from Backend.employee_address import EmployeeAddress
