@@ -31,7 +31,11 @@ class LoginScreen:
         self.password = Entry(show='*')
         self.password.grid(row=2,column=2,columnspan=10)
 
-        ttk.Button(text='LOGIN',command=self.loginUser).grid(row=3,column=2)
+        loginButton = Button(text='Login',command=self.loginUser)
+        loginButton.grid(row=3,column=1)
+
+        forgotPasswordButton = Button(text='Forgot Password', command=self.newPassword)
+        forgotPasswordButton.grid(row=3, column=2)
         self.root.mainloop()
 
 
@@ -45,8 +49,12 @@ class LoginScreen:
 
         self.root.destroy()
        
-        menu = empReporting('user')
-        #menu = MainMenu('user')
+        #menu = empReporting('user')
+        menu = MainMenu('user')
+
+    def newPassword(self):
+        user = 'user'
+        newpassword = changePasswordWindow(user)
 
 
 
