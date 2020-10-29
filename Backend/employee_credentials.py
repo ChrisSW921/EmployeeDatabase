@@ -1,5 +1,5 @@
 class EmployeeCredentials:
-    def __init__(self, password : str, ssn : str):
+    def __init__(self, password : bytes, ssn : str):
         self.Password = password
         self.SSN = ssn
 
