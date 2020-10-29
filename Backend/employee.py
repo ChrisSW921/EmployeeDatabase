@@ -17,6 +17,10 @@
     Public Methods 
         - Properties will have getter and setter methods public
 '''
+import sys
+import os
+sys.path.insert(0,os.getcwd())
+
 import os
 import hashlib
 import sqlite3

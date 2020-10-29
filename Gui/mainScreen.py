@@ -9,7 +9,9 @@ from morePTO import addPTOWindow
 from newEmp import addEmpWindow
 from newPassword import changePasswordWindow
 from scrollable import ScrollableFrame
-
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 
 class MainMenu:
 

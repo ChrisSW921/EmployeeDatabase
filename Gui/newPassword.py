@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import ttk
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 
 class changePasswordWindow:
     def __init__(self, user):
@@ -12,8 +15,8 @@ class changePasswordWindow:
         frame1.pack()
 
         #Create labels/text areas and buttons and put on screen
-        oldPasswordLabel = Label(frame1, text="Old Password:")
-        newPasswordLabel = Label(frame1, text="New Password")
+        oldPasswordLabel = Label(frame1, text="Change Password:")
+        newPasswordLabel = Label(frame1, text="Confirm Password")
         oldPasswordTextBox = Entry(frame1)
         newPasswordTextBox = Entry(frame1)
         saveButton = Button(frame1, text="Save")

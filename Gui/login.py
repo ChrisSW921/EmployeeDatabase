@@ -9,6 +9,9 @@ from newEmp import addEmpWindow
 from errorMessage import errorWindow
 from changePayment import paymentWindow
 from empReport import empReporting
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 
 
 #Set up login page with username and password
@@ -28,7 +31,11 @@ class LoginScreen:
         self.password = Entry(show='*')
         self.password.grid(row=2,column=2,columnspan=10)
 
-        ttk.Button(text='LOGIN',command=self.loginUser).grid(row=3,column=2)
+        loginButton = Button(text='Login',command=self.loginUser)
+        loginButton.grid(row=3,column=1)
+
+        forgotPasswordButton = Button(text='Forgot Password', command=self.newPassword)
+        forgotPasswordButton.grid(row=3, column=2)
         self.root.mainloop()
 
 
@@ -38,12 +45,22 @@ class LoginScreen:
         userID = self.username.get()
         password = self.password.get()
 
-        #Code to verify if user/password is correct. Then make a mainscreen with that user that matches it
-
-        self.root.destroy()
+        if userID == 'admin' and password == 'admin':
+            #create user (who would be admin in this case)
+            user = 'user'
+            newpassword = changePasswordWindow(user)
+            self.root.destroy()
+        else:
+            self.root.destroy()
+            menu = MainMenu('user')
+            
        
-        menu = empReporting('user')
-        #menu = MainMenu('user')
+        #menu = empReporting('user')
+        
+
+    def newPassword(self):
+        user = 'user'
+        newpassword = changePasswordWindow(user)
 
 
 
