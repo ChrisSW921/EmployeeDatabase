@@ -63,9 +63,7 @@ class LoginScreen:
             errorWindow("Could not find employee under id: " + str(userId))
 
     def newPassword(self):
-        user = 'user'
-        newpassword = changePasswordWindow(user)
-
+        changePasswordWindow()
 
 
 
