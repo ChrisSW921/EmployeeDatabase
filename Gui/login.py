@@ -51,7 +51,8 @@ class LoginScreen:
             
             if(credentialsVerified):
                 currentUser = database.get_employee(userId)
-                print(currentUser)
+                self.root.destroy()
+                MainMenu(currentUser)
             else:
                 errorWindow("Username or password was wrong, please try again")
 
