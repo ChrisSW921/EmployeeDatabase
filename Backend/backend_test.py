@@ -20,3 +20,8 @@ newEmployee.set_password('password')
 
 result = database.verify_credentials(newEmployee.EmpId, 'password')
 print(result)
+
+# Tests we should build
+# -- Adding new Employee works
+# -- Setting new Passwords works
+# -- Verification of Passwords works

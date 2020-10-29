@@ -116,7 +116,8 @@ def get_employee(empId : int):
     empPto = EmployeePTO(empData[20], empData[21], empData[22])
     empCredentials = EmployeeCredentials(empData[24], empData[26])
     employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], False, empAddress, empPermissions, empPto, empCredentials)
-
+    employee.EmpId = empData[0]
+    
     currentDataContext.close()
 
     return employee
