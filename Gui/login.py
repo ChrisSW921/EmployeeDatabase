@@ -62,23 +62,6 @@ class LoginScreen:
         except TypeError:
             errorWindow("Could not find employee under id: " + str(userId))
 
-    # #query database and make user from ID found if matches password
-    # userID = self.username.get()
-    # password = self.password.get()
-
-    # if userID == 'admin' and password == 'admin':
-    #     #create user (who would be admin in this case)
-    #     user = 'user'
-    #     newpassword = changePasswordWindow(user)
-    #     self.root.destroy()
-    # else:
-    #     self.root.destroy()
-    #     menu = MainMenu('user')
-        
-       
-        #menu = empReporting('user')
-        
-
     def newPassword(self):
         user = 'user'
         newpassword = changePasswordWindow(user)

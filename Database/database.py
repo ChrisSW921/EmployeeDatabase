@@ -42,6 +42,14 @@ def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3
         generate_employees()
 
 def generate_employees():
+    adminAddress = EmployeeAddress(None, None, None, None)
+    adminPermissions = EmployeePermissions(True, True, True, True)
+    adminPTO = EmployeePTO(50, 0, 100)
+    adminCredentials = EmployeeCredentials(None, None)
+    admin = Employee("System", "Admin", None, None, None, None, None, None, False, adminAddress, adminPermissions, adminPTO, adminCredentials)
+    admin.save()
+    admin.set_password('admin')
+
     with open('Database/employees.csv') as employeeFile:
         lineCount = 0
         for emp in employeeFile:
