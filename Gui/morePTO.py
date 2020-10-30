@@ -11,21 +11,21 @@ class addPTOWindow:
         self.window.title("Add PTO")
 
         #Create frame
-        frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
-        frame1.pack()
+        self.frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
+        self.frame1.pack()
 
         #Create labels/text areas and buttons and put on screen
-        titleLabel = Label(frame1, text="Add PTO")
-        hoursLabel = Label(frame1, text="Hours:")
-        inputTextBox = Entry(frame1)
-        saveButton = Button(frame1, text="Save")
-        cancelButton = Button(frame1, text="Cancel", command=self.cancelButtonPressed)
+        self.titleLabel = Label(self.frame1, text="Add PTO")
+        self.hoursLabel = Label(self.frame1, text="Hours:")
+        self.inputTextBox = Entry(self.frame1)
+        self.saveButton = Button(self.frame1, text="Save")
+        self.cancelButton = Button(self.frame1, text="Cancel", command=self.cancelButtonPressed)
 
-        titleLabel.grid(row=0, column=1)
-        hoursLabel.grid(row=1, column=0)
-        inputTextBox.grid(row=1, column=1)
-        saveButton.grid(row=2, column=0)
-        cancelButton.grid(row=2, column=1)
+        self.titleLabel.grid(row=0, column=1)
+        self.hoursLabel.grid(row=1, column=0)
+        self.inputTextBox.grid(row=1, column=1)
+        self.saveButton.grid(row=2, column=0)
+        self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
         print("Saved")
