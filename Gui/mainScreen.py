@@ -9,6 +9,8 @@ from morePTO import addPTOWindow
 from newEmp import addEmpWindow
 from newPassword import changePasswordWindow
 from scrollable import ScrollableFrame
+from Backend.employee import Employee
+from Database import database
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -229,6 +231,7 @@ class MainMenu:
         self.frame0.pack(expand=1,  fill=Y)
 
         self.setInitialState()
+        self.selectRecordButtonPressed()
 
 
    
@@ -245,14 +248,14 @@ class MainMenu:
         self.saveChangesButton['state'] = 'disabled'
         self.changePaymentTypeButton['state'] = 'disabled'
 
-        if not self.loggedInUser.permissions.Reporting_Permission or not self.loggedInUser.Permissions.Manager_Permission:
+        if not self.loggedInUser.Permissions.Reporting_Permission or not self.loggedInUser.Permissions.Manager_Permission:
             self.paymentReportButton['state'] = 'disabled'
             self.employeeReportButton['state'] = 'disabled'
             
 
-        if not self.loggedInUser.permissions.Manager_Permission:
+        if not self.loggedInUser.Permissions.Manager_Permission:
             self.addEmployeeButton['state'] = 'disabled'
-            self.logOutButton['state'] = 'disabled'
+            
     
 
 
@@ -262,9 +265,105 @@ class MainMenu:
         
 
     def selectRecordButtonPressed(self):
-        print("Select record")
-        #selectedRecord would equal the one we find in database
-        selectedRecord = "The one we clicked on"
+        
+        userID = '5'
+        selectedUser = database.get_employee(userID)
+
+
+        #Set states to normal to be able to populate them with data
+        self.IDLabelText['state'] = 'normal'
+        self.firstNameLabelText['state'] = 'normal'
+        self.lastNameLabelText['state'] = 'normal'
+        self.addressLabelText['state'] = 'normal'
+        self.cityLabelText['state'] = 'normal'
+        self.stateLabelText['state'] = 'normal'
+        self.zipLabelText['state'] = 'normal'
+        self.phoneLabelText['state'] = 'normal'
+        self.payTypeLabelText['state'] = 'normal'
+
+        self.salaryLabelText['state'] = 'normal'
+        self.commissionLabelText['state'] = 'normal'
+        self.hourlyLabelText['state'] = 'normal'
+        self.ssnLabelText['state'] = 'normal'
+        self.currentPTOLabelText['state'] = 'normal'
+        self.usedPTOLabelText['state'] = 'normal'
+        self.limitPTOLabelText['state'] = 'normal'
+
+        #Populate data
+        self.IDLabelText.insert(0, selectedUser.EmpId) 
+        self.firstNameLabelText.insert(0, selectedUser.First_Name)
+        self.lastNameLabelText.insert(0, selectedUser.Last_Name)
+        self.addressLabelText.insert(0, selectedUser.Address.Street_Address)
+        self.cityLabelText.insert(0, selectedUser.Address.City)
+        self.stateLabelText.insert(0, selectedUser.Address.State)
+        self.zipLabelText.insert(0, selectedUser.Address.Zip_Code)
+        self.phoneLabelText.insert(0, selectedUser.Phone_Number)
+        self.payTypeLabelText.insert(0, selectedUser.Pay_Type)
+
+        self.salaryLabelText.insert(0, selectedUser.Salary)
+        self.commissionLabelText.insert(0, selectedUser.Commission)
+        self.hourlyLabelText.insert(0, selectedUser.Hourly)
+        #self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) For some reason it won't populate the SSN
+        self.currentPTOLabelText.insert(0, selectedUser.PTO.Current_PTO)
+        self.usedPTOLabelText.insert(0, selectedUser.PTO.Used_PTO)
+        self.limitPTOLabelText.insert(0, selectedUser.PTO.PTO_Limit)
+
+        #Disable areas again to prevent editing
+        self.IDLabelText['state'] = 'disabled'
+        self.firstNameLabelText['state'] = 'disabled'
+        self.lastNameLabelText['state'] = 'disabled'
+        self.addressLabelText['state'] = 'disabled'
+        self.cityLabelText['state'] = 'disabled'
+        self.stateLabelText['state'] = 'disabled'
+        self.zipLabelText['state'] = 'disabled'
+        self.phoneLabelText['state'] = 'disabled'
+        self.payTypeLabelText['state'] = 'disabled'
+
+        self.salaryLabelText['state'] = 'disabled'
+        self.commissionLabelText['state'] = 'disabled'
+        self.hourlyLabelText['state'] = 'disabled'
+        self.ssnLabelText['state'] = 'disabled'
+        self.currentPTOLabelText['state'] = 'disabled'
+        self.usedPTOLabelText['state'] = 'disabled'
+        self.limitPTOLabelText['state'] = 'disabled'
+
+        #Display selected employees permissions
+        if selectedUser.Permissions.Editing_Permission:
+            self.editorCheck['state'] = 'normal'
+            self.editorCheck.select()
+            self.editorCheck['state'] = 'disabled'
+
+        if selectedUser.Permissions.Accounting_Permission:
+            self.accountingCheck['state'] = 'normal'
+            self.accountingCheck.select()
+            self.accountingCheck['state'] = 'disabled'
+
+        if selectedUser.Permissions.Reporting_Permission:
+            self.reporterCheck['state'] = 'normal'
+            self.reporterCheck.select()
+            self.reporterCheck['state'] = 'disabled'
+
+        if selectedUser.Permissions.Manager_Permission:
+            self.managerCheck['state'] = 'normal'
+            self.managerCheck.select()
+            self.managerCheck['state'] = 'disabled'
+
+
+        #Display certain buttons to logged in employee after selecting an employee
+
+        if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Editing_Permission:
+            self.editButton['state'] = 'normal'
+            self.archiveEmployeeButton['state'] = 'normal'
+            self.unarchiveEmployeeButton['state'] = 'normal'
+            self.addPTOButton['state'] = 'normal'
+            self.changePaymentTypeButton['state'] = 'normal'
+            self.saveChangesButton['state'] = 'normal'
+        
+
+
+        print(selectedUser.First_Name)
+        print(selectedUser.Pay_Method) #Why do some emps have paymethod of 0? 
+
         
 
     def editButtonPressed(self):
@@ -318,17 +417,6 @@ class MainMenu:
             self.paymentReportButton['state'] = 'disabled'
             self.employeeReportButton['state'] = 'disabled'
             
-
-        if not self.loggedInUser.permissions.Editing_Permission:
-            self.editButton['state'] = 'disabled'
-            self.addPTOButton['state'] = 'disabled'
-            self.changePaymentTypeButton['state'] = 'disabled'
-            
-
-        if not self.loggedInUser.permissions.Manager_Permission:
-            self.archiveEmployeeButton['state'] = 'disabled'
-            self.unarchiveEmployeeButton['state'] = 'disabled'
-            self.addEmployeeButton['state'] = 'disabled'
             
 
     def showData(self, selectedUser):
