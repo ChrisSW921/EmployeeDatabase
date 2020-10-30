@@ -1,4 +1,8 @@
 """GUI Code File"""
+import sys
+import os
+sys.path.insert(0,os.getcwd())
+
 from tkinter import *
 from tkinter import ttk
 from mainScreen import MainMenu
@@ -9,9 +13,9 @@ from newEmp import addEmpWindow
 from errorMessage import errorWindow
 from changePayment import paymentWindow
 from empReport import empReporting
-import sys
-import os
-sys.path.insert(0,os.getcwd())
+
+from Backend.employee import Employee
+from Database import database
 
 
 #Set up login page with username and password
@@ -40,28 +44,26 @@ class LoginScreen:
 
 
     def loginUser(self):
-
-        #query database and make user from ID found if matches password
-        userID = self.username.get()
-        password = self.password.get()
-
-        if userID == 'admin' and password == 'admin':
-            #create user (who would be admin in this case)
-            user = 'user'
-            newpassword = changePasswordWindow(user)
-            self.root.destroy()
-        else:
-            self.root.destroy()
-            menu = MainMenu('user')
+        try:
+            userId = int(self.username.get())
+            password = self.password.get()
+            credentialsVerified = database.verify_credentials(userId, password)
             
-       
-        #menu = empReporting('user')
-        
+            if(credentialsVerified):
+                currentUser = database.get_employee(userId)
+                self.root.destroy()
+                MainMenu(currentUser)
+            else:
+                errorWindow("Username or password was wrong, please try again")
+
+        except ValueError:
+            errorWindow("Please enter an integer in the id field")
+
+        except TypeError:
+            errorWindow("Could not find employee under id: " + str(userId))
 
     def newPassword(self):
-        user = 'user'
-        newpassword = changePasswordWindow(user)
-
+        changePasswordWindow()
 
 
 

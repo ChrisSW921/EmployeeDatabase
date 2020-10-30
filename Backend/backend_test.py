@@ -16,7 +16,12 @@ newEmployeeCrednetials = (None, None)
 newEmployee = Employee('Carson', 'Stromberg', '801-554-4967', 80450.40, 00.00, 00.00, 1, 2, False, newEmployeeAddress, newEmployeePermissions, newEmployeePTO, newEmployeeCrednetials)
 
 newEmployee.save()
-newEmployee.set_password('test')
+newEmployee.set_password('password')
 
-result = database.verify_credentials(newEmployee.EmpId, 'false')
+result = database.verify_credentials(newEmployee.EmpId, 'password')
 print(result)
+
+# Tests we should build
+# -- Adding new Employee works
+# -- Setting new Passwords works
+# -- Verification of Passwords works
