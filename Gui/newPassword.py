@@ -51,6 +51,7 @@ class changePasswordWindow:
                     errorWindow("Could not find employee with id" + str(empId))
                 else:
                     selectedEmployee.set_password(newPass)
+                    errorWindow("Password saved!")
                     # Maybe have a success window appear??
                     self.window.destroy()
                     print("saved")

@@ -228,7 +228,7 @@ class MainMenu:
 
         self.frame0.pack(expand=1,  fill=Y)
 
-       # self.setInitialState()
+        self.setInitialState()
 
 
    
@@ -238,15 +238,22 @@ class MainMenu:
 
     def setInitialState(self):
         #This function sets up initial state of buttons before selecting an employee
-        self.paymentReportButton['state'] = 'disabled'
-        self.employeeReportButton['state'] = 'disabled'
         self.editButton['state'] = 'disabled'
         self.addPTOButton['state'] = 'disabled'
-        self.changePaymentTypeButton['state'] = 'disabled'
         self.archiveEmployeeButton['state'] = 'disabled'
         self.unarchiveEmployeeButton['state'] = 'disabled'
-        self.addEmployeeButton['state'] = 'disabled'
         self.saveChangesButton['state'] = 'disabled'
+        self.changePaymentTypeButton['state'] = 'disabled'
+
+        if not self.loggedInUser.permissions.Reporting_Permission or not self.loggedInUser.Permissions.Manager_Permission:
+            self.paymentReportButton['state'] = 'disabled'
+            self.employeeReportButton['state'] = 'disabled'
+            
+
+        if not self.loggedInUser.permissions.Manager_Permission:
+            self.addEmployeeButton['state'] = 'disabled'
+            self.logOutButton['state'] = 'disabled'
+    
 
 
     def goButtonPressed(self):
@@ -258,7 +265,7 @@ class MainMenu:
         print("Select record")
         #selectedRecord would equal the one we find in database
         selectedRecord = "The one we clicked on"
-        self.setState(selectedRecord)
+        
 
     def editButtonPressed(self):
         print("Edit")
@@ -295,7 +302,7 @@ class MainMenu:
         print("PTO used")
 
     def changePasswordButtonPressed(self):
-        newPassword = changePasswordWindow('user')
+        newPassword = self.changePasswordWindow('user')
         print("Password changed")
 
     def logoutButtonPressed(self):

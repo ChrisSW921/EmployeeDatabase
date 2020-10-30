@@ -6,7 +6,7 @@ class errorWindow:
     def __init__(self, message):
         self.message = message
         self.window = Tk()
-        self.window.title("ERROR")
+        self.window.title("Attention")
 
         self.frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
 
