@@ -2,10 +2,11 @@ CREATE TABLE IF NOT EXISTS EMPLOYEES (
     emp_id INTEGER PRIMARY KEY AUTOINCREMENT, 
     first_name TEXT, last_name TEXT, 
     phone_number TEXT, 
-    pay_method INTEGER, 
     salary REAL, 
     hourly REAL, 
     commission REAL,
+    pay_type INTEGER,
+    pay_method INTEGER,
     archived BOOLEAN 
 );
 

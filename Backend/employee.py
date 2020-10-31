@@ -56,7 +56,7 @@ class Employee:
         currentDataContext = sqlite3.connect('Database/empdata.db')
         cursor = currentDataContext.cursor()
 
-        cursor.execute('INSERT INTO EMPLOYEES (first_name, last_name, phone_number, pay_method, salary, hourly, commission, archived) VALUES (?,?,?,?,?,?,?,?)', (self.First_Name, self.Last_Name, self.Phone_Number, self.Pay_Type, self.Salary, self.Hourly, self.Commission, self.Archived))
+        cursor.execute('INSERT INTO EMPLOYEES (first_name, last_name, phone_number, salary, hourly, commission, pay_type, pay_method, archived) VALUES (?,?,?,?,?,?,?,?,?)', (self.First_Name, self.Last_Name, self.Phone_Number, self.Salary, self.Hourly, self.Commission, self.Pay_Type, self.Pay_Method, self.Archived))
         self.EmpId = int(cursor.lastrowid)
         
         cursor.execute('UPDATE EMPLOYEE_ADDRESS SET street_address = ?, address_city = ?, address_state = ?, address_zip = ? WHERE emp_id = ?', (self.Address.Street_Address, self.Address.City, self.Address.State, self.Address.Zip_Code, self.EmpId))
