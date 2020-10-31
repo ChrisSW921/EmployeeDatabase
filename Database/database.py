@@ -117,10 +117,33 @@ def get_employee(empId : int):
     empCredentials = EmployeeCredentials(empData[24], empData[26])
     employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], False, empAddress, empPermissions, empPto, empCredentials)
     employee.EmpId = empData[0]
-    
+
     currentDataContext.close()
 
     return employee
+
+def search_employees(searchParam : str):
+    currentDataContext = sqlite3.connect('Database/empdata.db')
+    cursor = currentDataContext.cursor()
+    employeeList = []
+
+    if (searchParam.isdigit()):
+        empId = int(searchParam)
+        employee = get_employee(empId)
+        employeeList.append(employee)
+
+    else:
+        query = '''
+            SELECT DISTINCT * FROM EMPLOYEES 
+            WHERE EMPLOYEES.first_name = ?
+        '''
+
+        for emp in cursor.execute(query, (searchParam,)):
+            employeeList.append(emp)
+
+    currentDataContext.close()
+    
+    return employeeList
 
 database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
