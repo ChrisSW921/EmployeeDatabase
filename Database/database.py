@@ -61,7 +61,7 @@ def generate_employees():
                 newEmpCredentials = EmployeeCredentials(None, None)
                 phoneNum = generate_phone_dashes(random.randint(2000000000, 9999999999))
                 payType = random.randint(1, 2)
-                payMethod = random.randint(1, 3)
+                payMethod = int(emp[7])
                 newEmp = Employee(emp[1], emp[2], phoneNum, float(emp[8]), float(emp[10]), float(emp[9]), payType, payMethod, False, newEmpAddress, newEmpPermissions, newEmpPTO, newEmpCredentials)
                 newEmp.save()
 
@@ -117,10 +117,35 @@ def get_employee(empId : int):
     empCredentials = EmployeeCredentials(empData[24], empData[26])
     employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], False, empAddress, empPermissions, empPto, empCredentials)
     employee.EmpId = empData[0]
-    
+
     currentDataContext.close()
 
     return employee
+
+def search_employees(searchParam : str):
+    currentDataContext = sqlite3.connect('Database/empdata.db')
+    cursor = currentDataContext.cursor()
+    employeeList = []
+
+    if (searchParam.isdigit()):
+        empId = int(searchParam)
+        employee = get_employee(empId)
+        employeeList.append(employee)
+
+    else:
+        query = '''
+            SELECT DISTINCT * FROM EMPLOYEES 
+            WHERE EMPLOYEES.first_name = ? OR EMPLOYEES.last_name = ?
+        '''
+
+        for emp in cursor.execute(query, (searchParam, searchParam)):
+            employee = Employee(emp[1], emp[2], emp[3], emp[4], emp[5], emp[6], emp[7], emp[8], emp[9], None, None, None, None)
+            employee.EmpId = emp[0]
+            employeeList.append(employee)
+
+    currentDataContext.close()
+    
+    return employeeList
 
 database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
