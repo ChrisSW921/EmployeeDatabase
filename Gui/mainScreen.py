@@ -405,11 +405,13 @@ class MainMenu:
 
         if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Editing_Permission:
             self.editButton['state'] = 'normal'
-            self.archiveEmployeeButton['state'] = 'normal'
-            self.unarchiveEmployeeButton['state'] = 'normal'
             self.addPTOButton['state'] = 'normal'
             self.changePaymentTypeButton['state'] = 'normal'
             self.saveChangesButton['state'] = 'normal' 
+            if selectedUser.Archived:
+                self.unarchiveEmployeeButton['state'] = 'normal'
+            else:
+                self.archiveEmployeeButton['state'] = 'normal'
     
 
     def editButtonPressed(self):
