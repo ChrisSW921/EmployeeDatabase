@@ -135,11 +135,13 @@ def search_employees(searchParam : str):
     else:
         query = '''
             SELECT DISTINCT * FROM EMPLOYEES 
-            WHERE EMPLOYEES.first_name = ?
+            WHERE EMPLOYEES.first_name = ? OR EMPLOYEES.last_name = ?
         '''
 
-        for emp in cursor.execute(query, (searchParam,)):
-            employeeList.append(emp)
+        for emp in cursor.execute(query, (searchParam, searchParam)):
+            employee = Employee(emp[1], emp[2], emp[3], emp[4], emp[5], emp[6], emp[7], emp[8], emp[9], None, None, None, None)
+            employee.EmpId = emp[0]
+            employeeList.append(employee)
 
     currentDataContext.close()
     

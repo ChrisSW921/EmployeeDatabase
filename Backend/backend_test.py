@@ -9,17 +9,8 @@ from Backend.employee_pto import EmployeePTO
 from Backend.employee_credentials import EmployeeCredentials
 from Database import database
 
-newEmployeeAddress = EmployeeAddress('1234 W 123 S', 'Test', 'YT', 83133)
-newEmployeePermissions = EmployeePermissions(False, False, False, False)
-newEmployeePTO = EmployeePTO(50, 10, 100)
-newEmployeeCrednetials = (None, None)
-newEmployee = Employee('Carson', 'Stromberg', '801-554-4967', 80450.40, 00.00, 00.00, 1, 2, False, newEmployeeAddress, newEmployeePermissions, newEmployeePTO, newEmployeeCrednetials)
-
-newEmployee.save()
-newEmployee.set_password('password')
-
-result = database.verify_credentials(newEmployee.EmpId, 'password')
-print(result)
+for emp in database.search_employees('Burger'):
+    print(emp.First_Name)
 
 # Tests we should build
 # -- Adding new Employee works
