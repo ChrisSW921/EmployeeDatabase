@@ -11,6 +11,7 @@ from newPassword import changePasswordWindow
 from scrollable import ScrollableFrame
 from Backend.employee import Employee
 from Database import database
+from errorMessage import errorWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -34,13 +35,13 @@ class MainMenu:
 
         #Create tree view
         self.searchResults = ttk.Treeview(self.frame1)
-        self.searchResults['columns'] = ("First Name", "Last Name", "ID", "Phone Number")
+        self.searchResults['columns'] = ("ID", "First Name", "Last Name", "Phone Number")
 
         # Format tree view
         self.searchResults.column("#0", width=0, minwidth=0)
+        self.searchResults.column("ID", anchor=CENTER)
         self.searchResults.column("First Name", anchor=CENTER)
         self.searchResults.column("Last Name", anchor=CENTER)    
-        self.searchResults.column("ID", anchor=CENTER)
         self.searchResults.column("Phone Number", anchor=CENTER)
 
         #Create Tree View Headings
@@ -49,10 +50,6 @@ class MainMenu:
         self.searchResults.heading("Last Name", text="Last Name", anchor=W)
         self.searchResults.heading("ID", text="ID", anchor=W)
         self.searchResults.heading("Phone Number", text="Phone Number", anchor=W)
-
-        #Add sample data into tree view
-        self.searchResults.insert(parent='', index='end', iid=0, text="", values=("John", "Smith", 123, 8017452099))
-        self.searchResults.insert(parent='', index='end', iid=1, text="", values=("Mary", "Oaks", 225, 8017052087))
         
         #Place tree view into frame
         self.searchResults.grid(row=0, column=0)
@@ -64,8 +61,8 @@ class MainMenu:
         #Add search bar, search bar label and select button
         self.searchLabel = Label(self.frame2, text="Search:")
         self.searchBar = Entry(self.frame2)
-        self.searchBarButton = Button(self.frame2, text="Go->")
-        self.selectButton = Button(self.frame2, text="Select Record")
+        self.searchBarButton = Button(self.frame2, text="Go->", command=self.goButtonPressed)
+        self.selectButton = Button(self.frame2, text="Select Record", command=self.selectRecordButtonPressed)
 
         self.searchLabel.grid(row=0, column=0)
         self.searchBar.grid(row=0, column=1)
@@ -231,7 +228,7 @@ class MainMenu:
         self.frame0.pack(expand=1,  fill=Y)
 
         self.setInitialState()
-        self.selectRecordButtonPressed()
+        #self.selectRecordButtonPressed()
 
 
    
@@ -260,15 +257,31 @@ class MainMenu:
 
 
     def goButtonPressed(self):
-        print("Go")
-        #searchBarButton['state'] = 'disabled'
+
+        #Clear former rows
+        formerRows = self.searchResults.get_children()
+        for row in formerRows:
+            self.searchResults.delete(row)
+
+        #Find the list of employees you searched for 
+        queryResults = database.search_employees(self.searchBar.get())
         
+        #Put employees into treeview
+        iid = 0
+        for item in queryResults:
+             self.searchResults.insert(parent='', index='end', iid=iid, text="", values=(item.EmpId,item.First_Name, item.Last_Name, item.Phone_Number))
+             iid += 1
 
     def selectRecordButtonPressed(self):
-        
-        userID = '5'
-        selectedUser = database.get_employee(userID)
 
+        try:
+            curEmp = self.searchResults.focus()
+            userID = self.searchResults.item(curEmp)['values'][0]  
+            selectedUser = database.get_employee(userID)
+        except:
+            errorWindow("Please select a record")
+
+        
 
         #Set states to normal to be able to populate them with data
         self.IDLabelText['state'] = 'normal'
@@ -288,6 +301,29 @@ class MainMenu:
         self.currentPTOLabelText['state'] = 'normal'
         self.usedPTOLabelText['state'] = 'normal'
         self.limitPTOLabelText['state'] = 'normal'
+        self.paymentOptionMenu.configure(state='normal')
+
+
+        #Delete former selected items
+        self.IDLabelText.delete(0, 'end') 
+        self.firstNameLabelText.delete(0, 'end')
+        self.lastNameLabelText.delete(0, 'end')
+        self.addressLabelText.delete(0, 'end')
+        self.cityLabelText.delete(0, 'end')
+        self.stateLabelText.delete(0, 'end')
+        self.zipLabelText.delete(0, 'end')
+        self.phoneLabelText.delete(0, 'end')
+        self.payTypeLabelText.delete(0, 'end')
+
+        self.salaryLabelText.delete(0, 'end')
+        self.commissionLabelText.delete(0, 'end')
+        self.hourlyLabelText.delete(0, 'end')
+        #self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) For some reason it won't populate the SSN
+        self.currentPTOLabelText.delete(0, 'end')
+        self.usedPTOLabelText.delete(0, 'end')
+        self.limitPTOLabelText.delete(0, 'end')
+
+
 
         #Populate data
         self.IDLabelText.insert(0, selectedUser.EmpId) 
@@ -298,15 +334,30 @@ class MainMenu:
         self.stateLabelText.insert(0, selectedUser.Address.State)
         self.zipLabelText.insert(0, selectedUser.Address.Zip_Code)
         self.phoneLabelText.insert(0, selectedUser.Phone_Number)
-        self.payTypeLabelText.insert(0, selectedUser.Pay_Type)
 
-        self.salaryLabelText.insert(0, selectedUser.Salary)
-        self.commissionLabelText.insert(0, selectedUser.Commission)
-        self.hourlyLabelText.insert(0, selectedUser.Hourly)
+        if selectedUser.Pay_Type == 1:
+            self.payTypeLabelText.insert(0, "Salaried")
+            if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
+                self.salaryLabelText.insert(0, selectedUser.Salary)
+        elif selectedUser.Pay_Type == 2:
+            self.payTypeLabelText.insert(0, "Commissioned")
+            if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
+                self.commissionLabelText.insert(0, selectedUser.Commission)
+                self.salaryLabelText.insert(0, selectedUser.Salary)
+        else:
+            self.payTypeLabelText.insert(0, "Hourly")
+            if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
+                self.hourlyLabelText.insert(0, selectedUser.Hourly)
+        
         #self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) For some reason it won't populate the SSN
         self.currentPTOLabelText.insert(0, selectedUser.PTO.Current_PTO)
         self.usedPTOLabelText.insert(0, selectedUser.PTO.Used_PTO)
         self.limitPTOLabelText.insert(0, selectedUser.PTO.PTO_Limit)
+
+        if selectedUser.Pay_Method == 1:
+            self.paymentOption.set(self.paymentOptions[0])
+        else:
+            self.paymentOption.set(self.paymentOptions[1])
 
         #Disable areas again to prevent editing
         self.IDLabelText['state'] = 'disabled'
@@ -326,6 +377,7 @@ class MainMenu:
         self.currentPTOLabelText['state'] = 'disabled'
         self.usedPTOLabelText['state'] = 'disabled'
         self.limitPTOLabelText['state'] = 'disabled'
+        self.paymentOptionMenu.configure(state='disabled')
 
         #Display selected employees permissions
         if selectedUser.Permissions.Editing_Permission:
@@ -353,18 +405,14 @@ class MainMenu:
 
         if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Editing_Permission:
             self.editButton['state'] = 'normal'
-            self.archiveEmployeeButton['state'] = 'normal'
-            self.unarchiveEmployeeButton['state'] = 'normal'
             self.addPTOButton['state'] = 'normal'
             self.changePaymentTypeButton['state'] = 'normal'
-            self.saveChangesButton['state'] = 'normal'
-        
-
-
-        print(selectedUser.First_Name)
-        print(selectedUser.Pay_Method) #Why do some emps have paymethod of 0? 
-
-        
+            self.saveChangesButton['state'] = 'normal' 
+            if selectedUser.Archived:
+                self.unarchiveEmployeeButton['state'] = 'normal'
+            else:
+                self.archiveEmployeeButton['state'] = 'normal'
+    
 
     def editButtonPressed(self):
         print("Edit")
