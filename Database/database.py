@@ -169,8 +169,8 @@ def generate_employee_report(includeArchived : bool):
 
     currentDataContext.close()
 
-    columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived']
-    dataframe =pandas.DataFrame(empList)
+    columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
+    dataframe =pandas.DataFrame(empList, columns=columnNames)
     writer = pandas.ExcelWriter('new.xlsx')
     dataframe.to_excel(writer, sheet_name='Employee Records')
     writer.save()
