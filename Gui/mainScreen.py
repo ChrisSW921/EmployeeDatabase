@@ -185,9 +185,9 @@ class MainMenu:
         self.frame4.pack(pady=20)
 
         #Create Buttons and place in grid
-        self.editButton = Button(self.frame4, text="Edit Employee Info")
-        self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee")
-        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee")
+        self.editButton = Button(self.frame4, text="Edit Employee Info", command=self.editButtonPressed)
+        self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee", command=self.archiveEmpButtonPressed)
+        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee", command=self.unArchiveEmpButtonPressed)
         self.saveChangesButton = Button(self.frame4, text="Save Changes")
         self.addPTOButton = Button(self.frame4, text="Add PTO", command=self.addPTOButtonPressed)
         self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type", command=self.changePaymentTypePressed)
@@ -331,6 +331,7 @@ class MainMenu:
         self.firstNameLabelText.insert(0, selectedUser.First_Name)
         self.lastNameLabelText.insert(0, selectedUser.Last_Name)
         self.addressLabelText.insert(0, selectedUser.Address.Street_Address)
+        print(selectedUser.Address.Street_Address)
         self.cityLabelText.insert(0, selectedUser.Address.City)
         self.stateLabelText.insert(0, selectedUser.Address.State)
         self.zipLabelText.insert(0, selectedUser.Address.Zip_Code)
@@ -404,25 +405,127 @@ class MainMenu:
 
         #Display certain buttons to logged in employee after selecting an employee
 
-        if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Editing_Permission:
+        if self.loggedInUser.Permissions.Manager_Permission:
             self.editButton['state'] = 'normal'
             self.addPTOButton['state'] = 'normal'
+            self.saveChangesButton['state'] = 'normal'
             self.changePaymentTypeButton['state'] = 'normal'
-            self.saveChangesButton['state'] = 'normal' 
             if selectedUser.Archived:
                 self.unarchiveEmployeeButton['state'] = 'normal'
             else:
                 self.archiveEmployeeButton['state'] = 'normal'
+
+        if self.loggedInUser.Permissions.Editing_Permission:
+            self.editButton['state'] = 'normal'
+            self.addPTOButton['state'] = 'normal'
+            self.saveChangesButton['state'] = 'normal'
     
 
     def editButtonPressed(self):
-        print("Edit")
+
+        #Set the text entry states to normal
+        self.firstNameLabelText['state'] = 'normal'
+        self.lastNameLabelText['state'] = 'normal'
+        self.addressLabelText['state'] = 'normal'
+        self.cityLabelText['state'] = 'normal'
+        self.stateLabelText['state'] = 'normal'
+        self.zipLabelText['state'] = 'normal'
+        self.phoneLabelText['state'] = 'normal'
+        #self.ssnLabelText['state'] = 'normal'
+        self.paymentOptionMenu.configure(state='normal')
+        self.editorCheck['state'] = 'normal'
+        self.accountingCheck['state'] = 'normal'
+        self.reporterCheck['state'] = 'normal'
+        self.managerCheck['state'] = 'normal'
+
+        #Initialize variables for text entry spaces
+        firstName = self.firstNameLabelText.get()
+        lastName = self.lastNameLabelText.get()
+        address = self.addressLabelText.get()
+        city = self.cityLabelText.get()
+        state = self.stateLabelText.get()
+        zipcode = self.zipLabelText.get()
+        phone = self.phoneLabelText.get()
+        editing = self.editor.get()
+        reporting = self.reporter.get()
+        accounting = self.accounting.get()
+        manager = self.manager.get()
+
+        allFields = [firstName, lastName, address, city, state, zipcode, phone] 
+
+        states = ['alaska', 'alabama', 'arkansas', 'american samoa', 'arizona', ' alifornia', 'colorado',
+         'connecticut', 'district of columbia', 'delaware', 'florida', 'georgia', 'guam', 'hawaii', 'iowa',
+          'idaho', 'illinois', 'indiana', 'kansas', 'kentucky', 'louisiana', 'massachusetts', 'maryland', 
+          'maine', 'michigan', 'minnesota', 'missouri', 'mississippi', 'montana', 'north carolina', 
+          ' north dakota', 'nebraska', 'new hampshire', 'new jersey', 'new mexico', 'nevada', 'new york',
+           'ohio', 'oklahoma', 'oregon', 'pennsylvania', 'puerto rico', 'rhode island', 'south carolina', 
+           'south dakota', 'tennessee', 'texas', 'utah', 'virginia', 'virgin islands', 'vermont', 'washington', 
+           'wisconsin', 'west virginia', 'wyoming']
+        
+        #Error checking to make sure state is valid and all fields are filled out
+        empty = 0
+
+        for field in allFields:
+            if len(field) == 0:
+                empty += 1
+        
+        if empty > 0:
+            errorWindow("Please fill out all fields")
+        elif state.lower() not in states:
+            errorWindow("Please type a valid state-also no abbreviations")
+        elif re.search('[a-zA-Z]', phone):
+            errorWindow("Only numbers allowed for phone number")
+        elif re.search('[a-zA-Z]', zipcode):
+            errorWindow("Only numbers allowed for zipcode")
+        elif not zipcode.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for zipcode')
+        else:
+            #Update employee
+            managerperm = False
+            accountperm = False
+            reportperm = False
+            editperm = False
+
+            if manager == 1:
+                managerperm = True
+            if accounting == 1:
+                accountperm = True
+            if reporting == 1:
+                reportperm = True
+            if editing == 1:
+                editperm = True
+
+            self.selectedUser.First_Name = firstName
+            self.selectedUser.Last_Name = lastName
+            self.selectedUser.Phone_Number = phone
+            self.selectedUser.Address.Street_Address = address
+            self.selectedUser.Address.City = city
+            self.selectedUser.Address.State = state
+            self.selectedUser.Address.Zip_Code = zipcode
+            self.selectedUser.Permissions.Accounting_Permission = accountperm
+            self.selectedUser.Permissions.Editing_Permission = editperm
+            self.selectedUser.Permissions.Reporting_Permission = reportperm
+            self.selectedUser.Permissions.Manager_Permission = managerperm
+
+            self.selectedUser.save()
+            errorWindow("Employee info updated!")
+            self.selectRecordButtonPressed()
+        
+
+
     
     def archiveEmpButtonPressed(self):
-        print("Archived Emp")
+        employee = self.selectedUser
+        self.selectedUser.Archived == True
+        employee.save()
+        errorWindow('Employee Archived!')
 
     def unArchiveEmpButtonPressed(self):
-        print("Unarchived Emp")
+        employee = self.selectedUser
+        self.selectedUser.Archived == False
+        employee.save()
+        errorWindow('Employee Unarchived!')
+        
 
     def addPTOButtonPressed(self):
         morePTO = addPTOWindow(self.selectedUser)
