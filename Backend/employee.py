@@ -23,7 +23,6 @@ sys.path.insert(0,os.getcwd())
 
 import hashlib
 import sqlite3
-import re
 
 from Backend.employee_address import EmployeeAddress
 from Backend.employee_pto import EmployeePTO
