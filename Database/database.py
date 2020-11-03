@@ -2,6 +2,7 @@ import sqlite3
 import random
 import string
 import hashlib
+import pandas
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -149,6 +150,30 @@ def search_employees(searchParam : str):
     currentDataContext.close()
     
     return employeeList
+
+def generate_employee_report(includeArchived : bool):
+    currentDataContext = sqlite3.connect('Database/empdata.db')
+    cursor = currentDataContext.cursor()
+    empList = []
+
+    query = '''SELECT EMPLOYEES.*, EMPLOYEE_PERMISSIONS.reporting_permissions, EMPLOYEE_PERMISSIONS.accounting_permissions, 
+        EMPLOYEE_PERMISSIONS.editing_permissions, EMPLOYEE_PERMISSIONS.manager_permissions, 
+        EMPLOYEE_PTO.current_pto, EMPLOYEE_PTO.used_pto, EMPLOYEE_PTO.pto_limit,
+        EMPLOYEE_CREDENTIALS.emp_social_last FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
+        LEFT JOIN EMPLOYEE_PERMISSIONS ON EMPLOYEE_PERMISSIONS.emp_id = EMPLOYEES.emp_id
+        LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
+        LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
+
+    for emp in cursor.execute(query):
+        empList.append(emp)
+
+    currentDataContext.close()
+
+    columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived']
+    dataframe =pandas.DataFrame(empList)
+    writer = pandas.ExcelWriter('new.xlsx')
+    dataframe.to_excel(writer, sheet_name='Employee Records')
+    writer.save()
 
 database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
