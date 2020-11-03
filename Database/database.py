@@ -117,7 +117,7 @@ def get_employee(empId : int):
     empAddress = EmployeeAddress(empData[10], empData[11], empData[12], empData[13])
     empPermissions = EmployeePermissions(empData[15], empData[16], empData[17], empData[18])
     empPto = EmployeePTO(empData[20], empData[21], empData[22])
-    empCredentials = EmployeeCredentials(empData[24], empData[26])
+    empCredentials = EmployeeCredentials(empData[25], empData[29])
     employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], False, empAddress, empPermissions, empPto, empCredentials)
     employee.EmpId = empData[0]
 
