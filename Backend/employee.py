@@ -21,7 +21,6 @@ import sys
 import os
 sys.path.insert(0,os.getcwd())
 
-import os
 import hashlib
 import sqlite3
 
@@ -89,7 +88,21 @@ class Employee:
         salt = os.urandom(32)
         hashedPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 1000)
 
-        cursor.execute('UPDATE EMPLOYEE_CREDENTIALS SET emp_password=?, emp_password_salt=? WHERE emp_id=?', (hashedPassword, salt, self.EmpId))
+        cursor.execute('UPDATE EMPLOYEE_CREDENTIALS SET emp_password = ?, emp_password_salt = ? WHERE emp_id = ?', (hashedPassword, salt, self.EmpId))
 
+        currentDataContext.commit()
+        currentDataContext.close()
+
+    def set_social_security(self, social : str):
+        # The number passed into this function needs to be a 9-digit integer casted to a string... We should do parsing on the front end
+        currentDataContext = sqlite3.connect('Database/empdata.db')
+        cursor = currentDataContext.cursor()
+        initialSocial = social[:5]
+        lastSocial = social[5:9]
+        salt = os.urandom(32)
+        hashedSocial = hashlib.pbkdf2_hmac('sha256', initialSocial.encode('utf-8'), salt, 1000)
+
+        cursor.execute('UPDATE EMPLOYEE_CREDENTIALS SET emp_social_inital = ?, emp_social_salt = ?, emp_social_last = ? WHERE emp_id = ?', (hashedSocial, salt, lastSocial, self.EmpId))
+        
         currentDataContext.commit()
         currentDataContext.close()
