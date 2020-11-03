@@ -152,6 +152,8 @@ def search_employees(searchParam : str):
     return employeeList
 
 def generate_employee_report(includeArchived : bool):
+    # May need to check and see if the user has that filename open?
+    # Should user be able to name file?
     currentDataContext = sqlite3.connect('Database/empdata.db')
     cursor = currentDataContext.cursor()
     empList = []
