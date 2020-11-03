@@ -60,14 +60,14 @@ class Employee:
 
             cursor.execute('UPDATE EMPLOYEE_ADDRESS SET street_address = ?, address_city = ?, address_state = ?, address_zip = ? WHERE emp_id = ?', (self.Address.Street_Address, self.Address.City, self.Address.State, self.Address.Zip_Code, self.EmpId))
             cursor.execute('UPDATE EMPLOYEE_PERMISSIONS SET reporting_permissions = ?, accounting_permissions = ?, editing_permissions = ?, manager_permissions = ? WHERE emp_id = ?', (self.Permissions.Reporting_Permission, self.Permissions.Accounting_Permission, self.Permissions.Editing_Permission, self.Permissions.Manager_Permission, self.EmpId))
-            cursor.execute('UPDATE EMPLOYEE_PTO SET current_pto = ?, used_pto = ?, pto_remaining = ? WHERE emp_id = ?', (self.PTO.Current_PTO, self.PTO.Used_PTO, self.PTO.PTO_Limit, self.EmpId))
+            cursor.execute('UPDATE EMPLOYEE_PTO SET current_pto = ?, used_pto = ?, pto_limit = ? WHERE emp_id = ?', (self.PTO.Current_PTO, self.PTO.Used_PTO, self.PTO.PTO_Limit, self.EmpId))
         else:
             cursor.execute('INSERT INTO EMPLOYEES (first_name, last_name, phone_number, salary, hourly, commission, pay_type, pay_method, archived) VALUES (?,?,?,?,?,?,?,?,?)', (self.First_Name, self.Last_Name, self.Phone_Number, self.Salary, self.Hourly, self.Commission, self.Pay_Type, self.Pay_Method, self.Archived))
             self.EmpId = int(cursor.lastrowid)
             
             cursor.execute('UPDATE EMPLOYEE_ADDRESS SET street_address = ?, address_city = ?, address_state = ?, address_zip = ? WHERE emp_id = ?', (self.Address.Street_Address, self.Address.City, self.Address.State, self.Address.Zip_Code, self.EmpId))
             cursor.execute('UPDATE EMPLOYEE_PERMISSIONS SET reporting_permissions = ?, accounting_permissions = ?, editing_permissions = ?, manager_permissions = ? WHERE emp_id = ?', (self.Permissions.Reporting_Permission, self.Permissions.Accounting_Permission, self.Permissions.Editing_Permission, self.Permissions.Manager_Permission, self.EmpId))
-            cursor.execute('UPDATE EMPLOYEE_PTO SET current_pto = ?, used_pto = ?, pto_remaining = ? WHERE emp_id = ?', (self.PTO.Current_PTO, self.PTO.Used_PTO, self.PTO.PTO_Limit, self.EmpId))
+            cursor.execute('UPDATE EMPLOYEE_PTO SET current_pto = ?, used_pto = ?, pto_limit = ? WHERE emp_id = ?', (self.PTO.Current_PTO, self.PTO.Used_PTO, self.PTO.PTO_Limit, self.EmpId))
 
         currentDataContext.commit()
         currentDataContext.close()

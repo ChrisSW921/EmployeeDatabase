@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS EMPLOYEE_PTO (
     emp_id INTEGER NOT NULL, 
     current_pto INTEGER, 
     used_pto INTEGER, 
-    pto_remaining INTEGER, 
+    pto_limit INTEGER, 
     FOREIGN KEY(emp_id) REFERENCES EMPLOYEES(emp_id)
 );
 
