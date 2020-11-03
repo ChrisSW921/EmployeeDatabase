@@ -13,8 +13,10 @@ CREATE TABLE IF NOT EXISTS EMPLOYEES (
 CREATE TABLE IF NOT EXISTS EMPLOYEE_CREDENTIALS ( 
     emp_id INTEGER NOT NULL, 
     emp_password TEXT,
-    emp_password_salt TEXT, 
-    social_security TEXT, 
+    emp_password_salt TEXT,
+    emp_social_inital TEXT,
+    emp_social_salt TEXT, 
+    emp_social_last TEXT, 
     FOREIGN KEY(emp_id) REFERENCES EMPLOYEES(emp_id) 
 );
 

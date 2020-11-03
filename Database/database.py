@@ -70,6 +70,9 @@ def generate_employees():
 
                 tempPassword = ''.join(random.choice(string.ascii_letters) for i in range(8))
                 newEmp.set_password(tempPassword)
+
+                socialSecurity = str(random.randint(100000000, 900000000))
+                newEmp.set_social_security(socialSecurity)
                     
             lineCount += 1
     
