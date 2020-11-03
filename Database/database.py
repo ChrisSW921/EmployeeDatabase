@@ -108,7 +108,7 @@ def get_employee(empId : int):
     query = '''
         SELECT * FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
         LEFT JOIN EMPLOYEE_PERMISSIONS ON EMPLOYEE_PERMISSIONS.emp_id = EMPLOYEES.emp_id
-        LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEE_PTO.emp_id
+        LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id
         WHERE EMPLOYEES.emp_id=?
     '''
@@ -116,7 +116,7 @@ def get_employee(empId : int):
     empData = cursor.execute(query, (empId,)).fetchone()
     empAddress = EmployeeAddress(empData[10], empData[11], empData[12], empData[13])
     empPermissions = EmployeePermissions(empData[15], empData[16], empData[17], empData[18])
-    empPto = EmployeePTO(empData[20], empData[21], empData[22])
+    empPto = EmployeePTO(empData[21], empData[22], empData[23])
     empCredentials = EmployeeCredentials(empData[25], empData[29])
     employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], False, empAddress, empPermissions, empPto, empCredentials)
     employee.EmpId = empData[0]
