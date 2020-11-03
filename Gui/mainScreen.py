@@ -188,7 +188,7 @@ class MainMenu:
         self.editButton = Button(self.frame4, text="Edit Employee Info", command=self.editButtonPressed)
         self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee", command=self.archiveEmpButtonPressed)
         self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee", command=self.unArchiveEmpButtonPressed)
-        self.saveChangesButton = Button(self.frame4, text="Save Changes")
+        self.saveChangesButton = Button(self.frame4, text="Save Changes", command=self.saveButtonPressed)
         self.addPTOButton = Button(self.frame4, text="Add PTO", command=self.addPTOButtonPressed)
         self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type", command=self.changePaymentTypePressed)
 
@@ -331,7 +331,6 @@ class MainMenu:
         self.firstNameLabelText.insert(0, selectedUser.First_Name)
         self.lastNameLabelText.insert(0, selectedUser.Last_Name)
         self.addressLabelText.insert(0, selectedUser.Address.Street_Address)
-        print(selectedUser.Address.Street_Address)
         self.cityLabelText.insert(0, selectedUser.Address.City)
         self.stateLabelText.insert(0, selectedUser.Address.State)
         self.zipLabelText.insert(0, selectedUser.Address.Zip_Code)
@@ -438,6 +437,34 @@ class MainMenu:
         self.reporterCheck['state'] = 'normal'
         self.managerCheck['state'] = 'normal'
 
+        
+        
+
+
+    
+    def archiveEmpButtonPressed(self):
+        employee = self.selectedUser
+        self.selectedUser.Archived == True
+        employee.save()
+        errorWindow('Employee Archived!')
+
+    def unArchiveEmpButtonPressed(self):
+        employee = self.selectedUser
+        self.selectedUser.Archived == False
+        employee.save()
+        errorWindow('Employee Unarchived!')
+        
+
+    def addPTOButtonPressed(self):
+        morePTO = addPTOWindow(self.selectedUser)
+       
+
+    def changePaymentTypePressed(self):
+        newPayment = paymentWindow('user')
+        
+
+    def saveButtonPressed(self):
+
         #Initialize variables for text entry spaces
         firstName = self.firstNameLabelText.get()
         lastName = self.lastNameLabelText.get()
@@ -510,33 +537,6 @@ class MainMenu:
             self.selectedUser.save()
             errorWindow("Employee info updated!")
             self.selectRecordButtonPressed()
-        
-
-
-    
-    def archiveEmpButtonPressed(self):
-        employee = self.selectedUser
-        self.selectedUser.Archived == True
-        employee.save()
-        errorWindow('Employee Archived!')
-
-    def unArchiveEmpButtonPressed(self):
-        employee = self.selectedUser
-        self.selectedUser.Archived == False
-        employee.save()
-        errorWindow('Employee Unarchived!')
-        
-
-    def addPTOButtonPressed(self):
-        morePTO = addPTOWindow(self.selectedUser)
-       
-
-    def changePaymentTypePressed(self):
-        newPayment = paymentWindow('user')
-        
-
-    def saveButtonPressed(self):
-        print("Saved changes")
 
     def addEmpButtonPressed(self):
         newEmp = addEmpWindow()

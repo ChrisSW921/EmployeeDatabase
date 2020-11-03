@@ -115,7 +115,7 @@ def get_employee(empId : int):
     '''
     
     empData = cursor.execute(query, (empId,)).fetchone()
-    empAddress = EmployeeAddress(empData[10], empData[11], empData[12], empData[13])
+    empAddress = EmployeeAddress(empData[11], empData[12], empData[13], empData[14])
     empPermissions = EmployeePermissions(bool(empData[16]), bool(empData[17]), bool(empData[18]), bool(empData[19]))
     empPto = EmployeePTO(empData[21], empData[22], empData[23])
     empCredentials = EmployeeCredentials(empData[25], empData[29])
