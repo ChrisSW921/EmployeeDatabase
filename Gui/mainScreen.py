@@ -319,7 +319,7 @@ class MainMenu:
         self.salaryLabelText.delete(0, 'end')
         self.commissionLabelText.delete(0, 'end')
         self.hourlyLabelText.delete(0, 'end')
-        #self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) For some reason it won't populate the SSN
+        self.ssnLabelText.delete(0, 'end')
         self.currentPTOLabelText.delete(0, 'end')
         self.usedPTOLabelText.delete(0, 'end')
         self.limitPTOLabelText.delete(0, 'end')
@@ -350,7 +350,7 @@ class MainMenu:
             if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
                 self.hourlyLabelText.insert(0, selectedUser.Hourly)
         
-        #self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) For some reason it won't populate the SSN
+        self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) 
         self.currentPTOLabelText.insert(0, selectedUser.PTO.Current_PTO)
         self.usedPTOLabelText.insert(0, selectedUser.PTO.Used_PTO)
         self.limitPTOLabelText.insert(0, selectedUser.PTO.PTO_Limit)
