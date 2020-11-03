@@ -450,7 +450,7 @@ class MainMenu:
         
 
     def changePasswordButtonPressed(self):
-        newPassword = self.changePasswordWindow('user')
+        newPassword = changePasswordWindow()
         print("Password changed")
 
     def logoutButtonPressed(self):
