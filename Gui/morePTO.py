@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from erroMessage import errorWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -28,8 +29,14 @@ class addPTOWindow:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
-        print("Saved")
+        pto = self.inputTextBox.get()
+        if pto.isdigit():
+            #update the emp
+            print("update")
+        else:
+            errorWindow("Only whole numbers allowed")
+        
 
     def cancelButtonPressed(self):
         self.window.destroy()
-        print("canceled")
+        

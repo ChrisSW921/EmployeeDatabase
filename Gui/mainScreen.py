@@ -278,6 +278,7 @@ class MainMenu:
             curEmp = self.searchResults.focus()
             userID = self.searchResults.item(curEmp)['values'][0]  
             selectedUser = database.get_employee(userID)
+            self.selectedUser = selectedUser
         except:
             errorWindow("Please select a record")
 
@@ -424,7 +425,7 @@ class MainMenu:
         print("Unarchived Emp")
 
     def addPTOButtonPressed(self):
-        morePTO = addPTOWindow('user')
+        morePTO = addPTOWindow(self.selectedUser)
         print("added PTO")
 
     def changePaymentTypePressed(self):
@@ -435,7 +436,7 @@ class MainMenu:
         print("Saved changes")
 
     def addEmpButtonPressed(self):
-        newEmp = addEmpWindow('user')
+        newEmp = addEmpWindow()
         print("Added Emp")
 
     def paymentReportButtonPressed(self):
@@ -445,8 +446,8 @@ class MainMenu:
         print("Emp report generated")
 
     def usePTOButtonPressed(self):
-        lessPTO = usePTOWindow('user')
-        print("PTO used")
+        lessPTO = usePTOWindow(self.selectedUser)
+        
 
     def changePasswordButtonPressed(self):
         newPassword = self.changePasswordWindow('user')

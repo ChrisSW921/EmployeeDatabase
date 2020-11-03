@@ -14,8 +14,7 @@ from Database import database
 
 
 class addEmpWindow:
-    def __init__(self, user):
-        self.user = user
+    def __init__(self):
         self.window = Tk()
         self.window.title("Add New Employee")
         
