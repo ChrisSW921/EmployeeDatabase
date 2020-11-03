@@ -25,3 +25,4 @@ print(result)
 # -- Adding new Employee works
 # -- Setting new Passwords works
 # -- Verification of Passwords works
+# -- Saving a new Employee works
