@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from erroMessage import errorWindow
+from errorMessage import errorWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -19,7 +19,7 @@ class addPTOWindow:
         self.titleLabel = Label(self.frame1, text="Add PTO")
         self.hoursLabel = Label(self.frame1, text="Hours:")
         self.inputTextBox = Entry(self.frame1)
-        self.saveButton = Button(self.frame1, text="Save")
+        self.saveButton = Button(self.frame1, text="Save", command=self.saveButtonPressed)
         self.cancelButton = Button(self.frame1, text="Cancel", command=self.cancelButtonPressed)
 
         self.titleLabel.grid(row=0, column=1)
@@ -29,12 +29,16 @@ class addPTOWindow:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
-        pto = self.inputTextBox.get()
-        if pto.isdigit():
-            #update the emp
-            print("update")
+        ptoAdded = self.inputTextBox.get()
+        if ptoAdded.isdigit():
+            self.user.PTO.Current_PTO += int(ptoAdded)
+            self.user.save()
+            self.window.destroy()
+            errorWindow("PTO Added!")
+
         else:
             errorWindow("Only whole numbers allowed")
+
         
 
     def cancelButtonPressed(self):
