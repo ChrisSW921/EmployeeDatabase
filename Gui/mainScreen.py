@@ -426,18 +426,18 @@ class MainMenu:
 
     def addPTOButtonPressed(self):
         morePTO = addPTOWindow(self.selectedUser)
-        print("added PTO")
+       
 
     def changePaymentTypePressed(self):
         newPayment = paymentWindow('user')
-        print("Changed payment type")
+        
 
     def saveButtonPressed(self):
         print("Saved changes")
 
     def addEmpButtonPressed(self):
         newEmp = addEmpWindow()
-        print("Added Emp")
+        
 
     def paymentReportButtonPressed(self):
         print("Payment report generated")
@@ -446,7 +446,7 @@ class MainMenu:
         print("Emp report generated")
 
     def usePTOButtonPressed(self):
-        lessPTO = usePTOWindow(self.selectedUser)
+        lessPTO = usePTOWindow(self.loggedInUser)
         
 
     def changePasswordButtonPressed(self):
