@@ -205,16 +205,18 @@ class addEmpWindow:
             errorWindow("Only numbers allowed for current PTO")
         elif re.search('[a-zA-Z]', ptoLimit):
             errorWindow("Only numbers allowed for PTO limit")
-        elif re.search('[!@#$%^&*(),.?":{}|<>]', salary):
-            errorWindow('Only enter numbers, no special characters for salary')
-        elif re.search('[!@#$%^&*(),.?":{}|<>]', commission):
-            errorWindow('Only enter numbers, no special characters for commission')
-        elif re.search('[!@#$%^&*(),.?":{}|<>-]', hourly):
-            errorWindow('Only enter numbers, no special characters for hourly')
-        elif re.search('[!@#$%^&*(),.?":{}|<>-]', currentPTO):
-            errorWindow('Only enter numbers, no special characters for current PTO')
-        elif re.search('[!@#$%^&*(),.?":{}|<>-]', ptoLimit):
-            errorWindow('Only enter numbers, no special characters for PTO limit')   
+        elif not salary.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for salary')
+        elif not commission.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for commission')
+        elif not hourly.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for hourly')
+        elif not currentPTO.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for current PTO')
+        elif not ptoLimit.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for PTO limit')
+        elif not zipcode.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for zipcode')
         else:
             #Creating new employee and saving to database
             managerperm = False
@@ -260,4 +262,4 @@ class addEmpWindow:
 
     def cancelButtonPressed(self):
         self.window.destroy()
-        print("canceled")
+        
