@@ -172,9 +172,10 @@ class addEmpWindow:
         reporting = self.reporter.get()
         accounting = self.accounting.get()
         manager = self.manager.get()
+        ssn = self.ssnLabelText.get()
 
         allFields = [firstName, lastName, address, city, state, zipcode, phone, payType, payMethod,
-        salary, commission, hourly, currentPTO, ptoLimit] 
+        salary, commission, hourly, currentPTO, ptoLimit, ssn] 
         
         #Error checking to make sure state is valid and all fields are filled out
         empty = 0
@@ -204,6 +205,8 @@ class addEmpWindow:
             errorWindow("Only numbers allowed for current PTO")
         elif re.search('[a-zA-Z]', ptoLimit):
             errorWindow("Only numbers allowed for PTO limit")
+        elif re.search('[a-zA-Z]', ssn):
+            errorWindow("Only numbers allowed for SSN")
         elif not salary.isalnum():
             errorWindow('Only enter numbers, no special characters or spaces for salary')
         elif not commission.isalnum():
@@ -216,6 +219,8 @@ class addEmpWindow:
             errorWindow('Only enter numbers, no special characters or spaces for PTO limit')
         elif not zipcode.isalnum():
             errorWindow('Only enter numbers, no special characters or spaces for zipcode')
+        elif not ssn.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for SSN')
         else:
             #Creating new employee and saving to database
             managerperm = False

@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from errorMessage import errorWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -18,7 +19,7 @@ class usePTOWindow:
         self.titleLabel = Label(self.frame1, text="Use PTO")
         self.hoursLabel = Label(self.frame1, text="Hours:")
         self.inputTextBox = Entry(self.frame1)
-        self.saveButton = Button(self.frame1, text="Save")
+        self.saveButton = Button(self.frame1, text="Save", command=self.saveButtonPressed)
         self.cancelButton = Button(self.frame1, text="Cancel", command=self.cancelButtonPressed)
 
         self.titleLabel.grid(row=0, column=1)
@@ -28,8 +29,19 @@ class usePTOWindow:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
-        print("Saved")
+        ptoUsed = self.inputTextBox.get()
+        if ptoUsed.isdigit():
+            if (self.user.PTO.Used_PTO + int(ptoUsed)) > self.user.PTO.PTO_Limit:
+                errorWindow(f"Can't add that much PTO, only {self.user.PTO.PTO_Limit - self.user.PTO.Current_PTO} hours left")
+            else:
+                self.user.PTO.Current_PTO -= int(ptoUsed)
+                self.user.PTO.Used_PTO += int(ptoUsed)
+                self.user.save()
+                self.window.destroy()
+                errorWindow("PTO Added!")
+        else:
+            errorWindow("Only whole numbers allowed")
 
     def cancelButtonPressed(self):
         self.window.destroy()
-        print("canceled")
+   
