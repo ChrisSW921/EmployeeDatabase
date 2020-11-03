@@ -9,7 +9,7 @@ from Backend.employee_pto import EmployeePTO
 from Backend.employee_credentials import EmployeeCredentials
 from Database import database
 
-emp = database.get_employee(2)
+database.generate_employee_report(False)
 # Tests we should build
 # -- Adding new Employee works
 # -- Setting new Passwords works
