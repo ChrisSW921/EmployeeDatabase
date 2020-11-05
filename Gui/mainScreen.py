@@ -565,7 +565,6 @@ class MainMenu:
 
     def changePasswordButtonPressed(self):
         newPassword = changePasswordWindow()
-        print("Password changed")
 
     def logoutButtonPressed(self):
         from login import LoginScreen

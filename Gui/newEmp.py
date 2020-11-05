@@ -256,7 +256,7 @@ class addEmpWindow:
             newEmployeeAddress = EmployeeAddress(address, city, state, int(zipcode))
             newEmployeePermissions = EmployeePermissions(reportperm, accountperm, editperm, managerperm)
             newEmployeePTO = EmployeePTO(int(currentPTO), 0, int(ptoLimit))
-            newEmployeeCrednetials = (None, None)
+            newEmployeeCrednetials = (None, ssn)
 
             newEmployee = Employee(firstName, lastName, phone, float(salary), float(hourly), float(commission), intPayType, intPayMethod, False, newEmployeeAddress, newEmployeePermissions, newEmployeePTO, newEmployeeCrednetials) 
             newEmployee.save()
