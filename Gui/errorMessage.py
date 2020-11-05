@@ -20,6 +20,7 @@ class errorWindow:
         
 
     def okButtonPressed(self):
+        """Cancels process"""
         self.window.destroy()
         print("Done")
 

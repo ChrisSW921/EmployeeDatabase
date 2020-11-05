@@ -12,6 +12,7 @@ from scrollable import ScrollableFrame
 from Backend.employee import Employee
 from Database import database
 from errorMessage import errorWindow
+from empReport import empReporting
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -207,8 +208,8 @@ class MainMenu:
 
         #Create Company Buttons and place in grid
         self.addEmployeeButton = Button(self.frame5, text="Add Employee", command=self.addEmpButtonPressed)
-        self.paymentReportButton = Button(self.frame5, text="Generate Payment Report")
-        self.employeeReportButton = Button(self.frame5, text="Generate Employee Data Report")
+        self.paymentReportButton = Button(self.frame5, text="Generate Payment Report", command=self.paymentReportButtonPressed)
+        self.employeeReportButton = Button(self.frame5, text="Generate Employee Data Report", command=self.empReportButtonPressed)
 
         self.addEmployeeButton.grid(row=0, column=0, padx=5, pady=5)
         self.paymentReportButton.grid(row=0, column=1, padx=5, pady=5)
@@ -563,10 +564,12 @@ class MainMenu:
 
     def paymentReportButtonPressed(self):
         """This function brings up the payment report button"""
+        empReporting(self.selectedUser, 'payment')
         print("Payment report generated")
 
     def empReportButtonPressed(self):
         """This function brings up the employee report button"""
+        empReporting(self.selectedUser, 'employee')
         print("Emp report generated")
 
     def usePTOButtonPressed(self):
