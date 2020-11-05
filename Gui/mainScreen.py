@@ -190,6 +190,7 @@ class MainMenu:
         self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee", command=self.unArchiveEmpButtonPressed)
         self.saveChangesButton = Button(self.frame4, text="Save Changes", command=self.saveButtonPressed)
         self.addPTOButton = Button(self.frame4, text="Add PTO", command=self.addPTOButtonPressed)
+        self.resetPTOButton = Button(self.frame4, text="Reset Used PTO to 0", command=self.resetPTOButtonPressed)
         self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type", command=self.changePaymentTypePressed)
 
         self.editButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
@@ -197,7 +198,8 @@ class MainMenu:
         self.unarchiveEmployeeButton.grid(row=0, column=2, padx=5, pady=5, sticky=W)
         self.saveChangesButton.grid(row=1, column=2, padx=5, pady=5, sticky=W)
         self.addPTOButton.grid(row=0, column=3, padx=5, pady=5, sticky=W)
-        self.changePaymentTypeButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
+        self.resetPTOButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
+        self.changePaymentTypeButton.grid(row=0, column=5, padx=5, pady=5, sticky=W)
 
         #Create Company Buttons Frame
         self.frame5 = LabelFrame(self.frame0.scrollable_frame, text="Company Actions", padx=20, pady=20)
@@ -244,6 +246,7 @@ class MainMenu:
         self.unarchiveEmployeeButton['state'] = 'disabled'
         self.saveChangesButton['state'] = 'disabled'
         self.changePaymentTypeButton['state'] = 'disabled'
+        self.resetPTOButton['state'] = 'disabled'
 
         if not self.loggedInUser.Permissions.Reporting_Permission or not self.loggedInUser.Permissions.Manager_Permission:
             self.paymentReportButton['state'] = 'disabled'
@@ -409,6 +412,7 @@ class MainMenu:
             self.addPTOButton['state'] = 'normal'
             self.saveChangesButton['state'] = 'normal'
             self.changePaymentTypeButton['state'] = 'normal'
+            self.resetPTOButton['state'] = 'normal'
             if selectedUser.Archived:
                 self.unarchiveEmployeeButton['state'] = 'normal'
             else:
@@ -430,6 +434,7 @@ class MainMenu:
         self.stateLabelText['state'] = 'normal'
         self.zipLabelText['state'] = 'normal'
         self.phoneLabelText['state'] = 'normal'
+        self.usedPTOLabelText['state'] = 'normal'
         #self.ssnLabelText['state'] = 'normal'
         self.paymentOptionMenu.configure(state='normal')
         self.editorCheck['state'] = 'normal'
@@ -575,14 +580,10 @@ class MainMenu:
             
             
 
-    def showData(self, selectedUser):
-        #This determines what things the user can see (I haven't written it yet)
-        if self.loggedInUser.permissions.Accounting_Permission:
-            #give accounting permision
-            print("no")
-        else:
-            #Don't let them see stuff
-            print("Ok")
+    def resetPTOButtonPressed(self):
+        self.selectedUser.PTO.Used_PTO = 0
+        self.selectedUser.save()
+        errorWindow("Used PTO reset to 0! Select record again to see update")
 
     
         

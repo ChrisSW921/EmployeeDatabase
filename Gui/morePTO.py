@@ -34,7 +34,7 @@ class addPTOWindow:
             self.user.PTO.Current_PTO += int(ptoAdded)
             self.user.save()
             self.window.destroy()
-            errorWindow("PTO Added!")
+            errorWindow("PTO Added! Select record again to see updates")
 
         else:
             errorWindow("Only whole numbers allowed")

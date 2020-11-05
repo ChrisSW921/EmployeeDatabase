@@ -32,13 +32,13 @@ class usePTOWindow:
         ptoUsed = self.inputTextBox.get()
         if ptoUsed.isdigit():
             if (self.user.PTO.Used_PTO + int(ptoUsed)) > self.user.PTO.PTO_Limit:
-                errorWindow(f"Can't add that much PTO, only {self.user.PTO.PTO_Limit - self.user.PTO.Current_PTO} hours left")
+                errorWindow(f"Can't use that much PTO, only {self.user.PTO.PTO_Limit - self.user.PTO.Current_PTO} hours left")
             else:
                 self.user.PTO.Current_PTO -= int(ptoUsed)
                 self.user.PTO.Used_PTO += int(ptoUsed)
                 self.user.save()
                 self.window.destroy()
-                errorWindow("PTO Added!")
+                errorWindow("PTO Used!")
         else:
             errorWindow("Only whole numbers allowed")
 
