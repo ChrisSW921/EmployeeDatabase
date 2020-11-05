@@ -207,6 +207,8 @@ class addEmpWindow:
             errorWindow("Only numbers allowed for PTO limit")
         elif re.search('[a-zA-Z]', ssn):
             errorWindow("Only numbers allowed for SSN")
+        elif len(self.snn) != 9:
+            errorWindow('SSN must be 9 digits')
         elif not salary.isalnum():
             errorWindow('Only enter numbers, no special characters or spaces for salary')
         elif not commission.isalnum():
@@ -256,10 +258,11 @@ class addEmpWindow:
             newEmployeeAddress = EmployeeAddress(address, city, state, int(zipcode))
             newEmployeePermissions = EmployeePermissions(reportperm, accountperm, editperm, managerperm)
             newEmployeePTO = EmployeePTO(int(currentPTO), 0, int(ptoLimit))
-            newEmployeeCrednetials = (None, ssn)
+            newEmployeeCrednetials = (None, None)
 
             newEmployee = Employee(firstName, lastName, phone, float(salary), float(hourly), float(commission), intPayType, intPayMethod, False, newEmployeeAddress, newEmployeePermissions, newEmployeePTO, newEmployeeCrednetials) 
             newEmployee.save()
+            newEmployee.set_social_security(ssn)
             errorWindow("Employee saved!")
             self.window.destroy()
 
