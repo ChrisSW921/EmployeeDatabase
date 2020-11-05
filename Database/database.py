@@ -2,7 +2,7 @@ import sqlite3
 import random
 import string
 import hashlib
-#import pandas
+# import pandas
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -173,6 +173,29 @@ def search_employees(searchParam : str):
 
 #     columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
 #     dataframe =pandas.DataFrame(empList, columns=columnNames)
+#     writer = pandas.ExcelWriter('new.xlsx')
+#     dataframe.to_excel(writer, sheet_name='Employee Records')
+#     writer.save()
+
+# def generate_payment_report():
+#     currentDataContext = sqlite3.connect('Database/empdata.db')
+#     cursor = currentDataContext.cursor()
+#     empList = []
+
+#     query = '''
+#         SELECT EMPLOYEE_TIMECARDS.emp_id, ROUND(SUM(timecard_hours), 2) AS hours, EMPLOYEES.hourly AS rate, 
+#         ROUND((ROUND(SUM(timecard_hours), 2) * EMPLOYEES.hourly), 2) AS total_pay 
+#         FROM EMPLOYEE_TIMECARDS LEFT JOIN EMPLOYEES ON EMPLOYEES.emp_id = EMPLOYEE_TIMECARDS.emp_id 
+#         GROUP BY EMPLOYEE_TIMECARDS.emp_id;
+#     '''
+
+#     for emp in cursor.execute(query):
+#         empList.append(emp)
+
+#     currentDataContext.close()
+
+#     columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
+#     dataframe = pandas.DataFrame(empList, columns=columnNames)
 #     writer = pandas.ExcelWriter('new.xlsx')
 #     dataframe.to_excel(writer, sheet_name='Employee Records')
 #     writer.save()
