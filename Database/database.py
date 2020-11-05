@@ -2,7 +2,7 @@ import sqlite3
 import random
 import string
 import hashlib
-import pandas
+#import pandas
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -115,7 +115,7 @@ def get_employee(empId : int):
     '''
     
     empData = cursor.execute(query, (empId,)).fetchone()
-    empAddress = EmployeeAddress(empData[10], empData[11], empData[12], empData[13])
+    empAddress = EmployeeAddress(empData[11], empData[12], empData[13], empData[14])
     empPermissions = EmployeePermissions(bool(empData[16]), bool(empData[17]), bool(empData[18]), bool(empData[19]))
     empPto = EmployeePTO(empData[21], empData[22], empData[23])
     empCredentials = EmployeeCredentials(empData[25], empData[29])
@@ -151,31 +151,31 @@ def search_employees(searchParam : str):
     
     return employeeList
 
-def generate_employee_report(includeArchived : bool):
-    # May need to check and see if the user has that filename open?
-    # Should user be able to name file?
-    currentDataContext = sqlite3.connect('Database/empdata.db')
-    cursor = currentDataContext.cursor()
-    empList = []
+# def generate_employee_report(includeArchived : bool):
+#     # May need to check and see if the user has that filename open?
+#     # Should user be able to name file?
+#     currentDataContext = sqlite3.connect('Database/empdata.db')
+#     cursor = currentDataContext.cursor()
+#     empList = []
 
-    query = '''SELECT EMPLOYEES.*, EMPLOYEE_PERMISSIONS.reporting_permissions, EMPLOYEE_PERMISSIONS.accounting_permissions, 
-        EMPLOYEE_PERMISSIONS.editing_permissions, EMPLOYEE_PERMISSIONS.manager_permissions, 
-        EMPLOYEE_PTO.current_pto, EMPLOYEE_PTO.used_pto, EMPLOYEE_PTO.pto_limit,
-        EMPLOYEE_CREDENTIALS.emp_social_last FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
-        LEFT JOIN EMPLOYEE_PERMISSIONS ON EMPLOYEE_PERMISSIONS.emp_id = EMPLOYEES.emp_id
-        LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
-        LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
+#     query = '''SELECT EMPLOYEES.*, EMPLOYEE_PERMISSIONS.reporting_permissions, EMPLOYEE_PERMISSIONS.accounting_permissions, 
+#         EMPLOYEE_PERMISSIONS.editing_permissions, EMPLOYEE_PERMISSIONS.manager_permissions, 
+#         EMPLOYEE_PTO.current_pto, EMPLOYEE_PTO.used_pto, EMPLOYEE_PTO.pto_limit,
+#         EMPLOYEE_CREDENTIALS.emp_social_last FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
+#         LEFT JOIN EMPLOYEE_PERMISSIONS ON EMPLOYEE_PERMISSIONS.emp_id = EMPLOYEES.emp_id
+#         LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
+#         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
 
-    for emp in cursor.execute(query):
-        empList.append(emp)
+#     for emp in cursor.execute(query):
+#         empList.append(emp)
 
-    currentDataContext.close()
+#     currentDataContext.close()
 
-    columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
-    dataframe =pandas.DataFrame(empList, columns=columnNames)
-    writer = pandas.ExcelWriter('new.xlsx')
-    dataframe.to_excel(writer, sheet_name='Employee Records')
-    writer.save()
+#     columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
+#     dataframe =pandas.DataFrame(empList, columns=columnNames)
+#     writer = pandas.ExcelWriter('new.xlsx')
+#     dataframe.to_excel(writer, sheet_name='Employee Records')
+#     writer.save()
 
 database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()

@@ -185,19 +185,21 @@ class MainMenu:
         self.frame4.pack(pady=20)
 
         #Create Buttons and place in grid
-        self.editButton = Button(self.frame4, text="Edit Employee Info")
-        self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee")
-        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee")
-        self.saveChangesButton = Button(self.frame4, text="Save Changes")
+        self.editButton = Button(self.frame4, text="Edit Employee Info", command=self.editButtonPressed)
+        self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee", command=self.archiveEmpButtonPressed)
+        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee", command=self.unArchiveEmpButtonPressed)
+        self.saveChangesButton = Button(self.frame4, text="Save Changes", command=self.saveButtonPressed)
         self.addPTOButton = Button(self.frame4, text="Add PTO", command=self.addPTOButtonPressed)
+        self.resetPTOButton = Button(self.frame4, text="Reset Used PTO to 0", command=self.resetPTOButtonPressed)
         self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type", command=self.changePaymentTypePressed)
 
         self.editButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
         self.archiveEmployeeButton.grid(row=0, column=1, padx=5, pady=5, sticky=W)
         self.unarchiveEmployeeButton.grid(row=0, column=2, padx=5, pady=5, sticky=W)
-        self.saveChangesButton.grid(row=1, column=2, padx=5, pady=5, sticky=W)
+        self.saveChangesButton.grid(row=1, column=2, padx=5, pady=5, sticky=EW, columnspan=2)
         self.addPTOButton.grid(row=0, column=3, padx=5, pady=5, sticky=W)
-        self.changePaymentTypeButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
+        self.resetPTOButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
+        self.changePaymentTypeButton.grid(row=0, column=5, padx=5, pady=5, sticky=W)
 
         #Create Company Buttons Frame
         self.frame5 = LabelFrame(self.frame0.scrollable_frame, text="Company Actions", padx=20, pady=20)
@@ -244,6 +246,7 @@ class MainMenu:
         self.unarchiveEmployeeButton['state'] = 'disabled'
         self.saveChangesButton['state'] = 'disabled'
         self.changePaymentTypeButton['state'] = 'disabled'
+        self.resetPTOButton['state'] = 'disabled'
 
         if not self.loggedInUser.Permissions.Reporting_Permission or not self.loggedInUser.Permissions.Manager_Permission:
             self.paymentReportButton['state'] = 'disabled'
@@ -281,6 +284,7 @@ class MainMenu:
             self.selectedUser = selectedUser
         except:
             errorWindow("Please select a record")
+            self.setInitialState()
 
         
 
@@ -350,7 +354,9 @@ class MainMenu:
             if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
                 self.hourlyLabelText.insert(0, selectedUser.Hourly)
         
-        self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) 
+        if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
+            self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) 
+
         self.currentPTOLabelText.insert(0, selectedUser.PTO.Current_PTO)
         self.usedPTOLabelText.insert(0, selectedUser.PTO.Used_PTO)
         self.limitPTOLabelText.insert(0, selectedUser.PTO.PTO_Limit)
@@ -404,25 +410,57 @@ class MainMenu:
 
         #Display certain buttons to logged in employee after selecting an employee
 
-        if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Editing_Permission:
+        if self.loggedInUser.Permissions.Manager_Permission:
             self.editButton['state'] = 'normal'
             self.addPTOButton['state'] = 'normal'
+            self.saveChangesButton['state'] = 'normal'
             self.changePaymentTypeButton['state'] = 'normal'
-            self.saveChangesButton['state'] = 'normal' 
+            self.resetPTOButton['state'] = 'normal'
             if selectedUser.Archived:
                 self.unarchiveEmployeeButton['state'] = 'normal'
             else:
                 self.archiveEmployeeButton['state'] = 'normal'
+
+        if self.loggedInUser.Permissions.Editing_Permission:
+            self.editButton['state'] = 'normal'
+            self.addPTOButton['state'] = 'normal'
+            self.saveChangesButton['state'] = 'normal'
     
 
     def editButtonPressed(self):
-        print("Edit")
+
+        #Set the text entry states to normal
+        self.firstNameLabelText['state'] = 'normal'
+        self.lastNameLabelText['state'] = 'normal'
+        self.addressLabelText['state'] = 'normal'
+        self.cityLabelText['state'] = 'normal'
+        self.stateLabelText['state'] = 'normal'
+        self.zipLabelText['state'] = 'normal'
+        self.phoneLabelText['state'] = 'normal'
+        self.usedPTOLabelText['state'] = 'normal'
+        self.paymentOptionMenu.configure(state='normal')
+        self.editorCheck['state'] = 'normal'
+        self.accountingCheck['state'] = 'normal'
+        self.reporterCheck['state'] = 'normal'
+        self.managerCheck['state'] = 'normal'
+
+        
+        
+
+
     
     def archiveEmpButtonPressed(self):
-        print("Archived Emp")
+        employee = self.selectedUser
+        self.selectedUser.Archived == True
+        employee.save()
+        errorWindow('Employee Archived!')
 
     def unArchiveEmpButtonPressed(self):
-        print("Unarchived Emp")
+        employee = self.selectedUser
+        self.selectedUser.Archived == False
+        employee.save()
+        errorWindow('Employee Unarchived!')
+        
 
     def addPTOButtonPressed(self):
         morePTO = addPTOWindow(self.selectedUser)
@@ -433,7 +471,83 @@ class MainMenu:
         
 
     def saveButtonPressed(self):
-        print("Saved changes")
+
+        #Initialize variables for text entry spaces
+        firstName = self.firstNameLabelText.get()
+        lastName = self.lastNameLabelText.get()
+        address = self.addressLabelText.get()
+        city = self.cityLabelText.get()
+        state = self.stateLabelText.get()
+        zipcode = self.zipLabelText.get()
+        phone = self.phoneLabelText.get()
+        editing = self.editor.get()
+        reporting = self.reporter.get()
+        accounting = self.accounting.get()
+        manager = self.manager.get()
+
+        allFields = [firstName, lastName, address, city, state, zipcode, phone] 
+
+        states = ['alaska', 'alabama', 'arkansas', 'american samoa', 'arizona', ' alifornia', 'colorado',
+         'connecticut', 'district of columbia', 'delaware', 'florida', 'georgia', 'guam', 'hawaii', 'iowa',
+          'idaho', 'illinois', 'indiana', 'kansas', 'kentucky', 'louisiana', 'massachusetts', 'maryland', 
+          'maine', 'michigan', 'minnesota', 'missouri', 'mississippi', 'montana', 'north carolina', 
+          ' north dakota', 'nebraska', 'new hampshire', 'new jersey', 'new mexico', 'nevada', 'new york',
+           'ohio', 'oklahoma', 'oregon', 'pennsylvania', 'puerto rico', 'rhode island', 'south carolina', 
+           'south dakota', 'tennessee', 'texas', 'utah', 'virginia', 'virgin islands', 'vermont', 'washington', 
+           'wisconsin', 'west virginia', 'wyoming']
+        
+        #Error checking to make sure state is valid and all fields are filled out
+        empty = 0
+
+        for field in allFields:
+            if len(field) == 0:
+                empty += 1
+        
+        if empty > 0:
+            errorWindow("Please fill out all fields")
+        elif state.lower() not in states:
+            errorWindow("Please type a valid state-also no abbreviations")
+        elif re.search('[a-zA-Z]', phone):
+            errorWindow("Only numbers allowed for phone number")
+        elif re.search('[a-zA-Z]', zipcode):
+            errorWindow("Only numbers allowed for zipcode")
+        elif not zipcode.isalnum():
+            errorWindow('Only enter numbers, no special characters or spaces for zipcode')
+        else:
+            #Update employee
+            managerperm = False
+            accountperm = False
+            reportperm = False
+            editperm = False
+
+            if manager == 1:
+                managerperm = True
+            if accounting == 1:
+                accountperm = True
+            if reporting == 1:
+                reportperm = True
+            if editing == 1:
+                editperm = True
+
+            self.selectedUser.First_Name = firstName
+            self.selectedUser.Last_Name = lastName
+            self.selectedUser.Phone_Number = phone
+            self.selectedUser.Address.Street_Address = address
+            self.selectedUser.Address.City = city
+            self.selectedUser.Address.State = state
+            self.selectedUser.Address.Zip_Code = zipcode
+            self.selectedUser.Permissions.Accounting_Permission = accountperm
+            self.selectedUser.Permissions.Editing_Permission = editperm
+            self.selectedUser.Permissions.Reporting_Permission = reportperm
+            self.selectedUser.Permissions.Manager_Permission = managerperm
+            if self.paymentOption.get() == "Direct Deposit":
+                self.selectedUser.Pay_Method = 1
+            else:
+                self.selectedUser.Pay_Method = 2
+
+            self.selectedUser.save()
+            errorWindow("Employee info updated!")
+            self.selectRecordButtonPressed()
 
     def addEmpButtonPressed(self):
         newEmp = addEmpWindow()
@@ -451,7 +565,6 @@ class MainMenu:
 
     def changePasswordButtonPressed(self):
         newPassword = changePasswordWindow()
-        print("Password changed")
 
     def logoutButtonPressed(self):
         from login import LoginScreen
@@ -468,14 +581,10 @@ class MainMenu:
             
             
 
-    def showData(self, selectedUser):
-        #This determines what things the user can see (I haven't written it yet)
-        if self.loggedInUser.permissions.Accounting_Permission:
-            #give accounting permision
-            print("no")
-        else:
-            #Don't let them see stuff
-            print("Ok")
+    def resetPTOButtonPressed(self):
+        self.selectedUser.PTO.Used_PTO = 0
+        self.selectedUser.save()
+        errorWindow("Used PTO reset to 0! Select record again to see update")
 
     
         
