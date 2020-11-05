@@ -2,7 +2,7 @@ import sqlite3
 import random
 import string
 import hashlib
-# import pandas
+import pandas
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -25,7 +25,10 @@ from Backend.employee_timecard import EmployeeTimecard
 
 '''
 
-def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3.Cursor):
+def initialize_employee_database():
+    database = sqlite3.connect('Database/EmpData.db')
+    cursor = database.cursor()
+
     with open('Database/EmpDataSchema.sql') as databaseFile:
         database_commands = databaseFile.read().replace('\n', ' ').split(';')
 
@@ -41,6 +44,8 @@ def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3
     numOfRows = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES').fetchone()[0]
     if(numOfRows <= 0):
         generate_employees()
+    
+    database.close()
 
 def generate_employees():
     adminAddress = EmployeeAddress(None, None, None, None)
@@ -151,58 +156,58 @@ def search_employees(searchParam : str):
     
     return employeeList
 
-# def generate_employee_report(includeArchived : bool):
-#     # May need to check and see if the user has that filename open?
-#     # Should user be able to name file?
-#     currentDataContext = sqlite3.connect('Database/empdata.db')
-#     cursor = currentDataContext.cursor()
-#     empList = []
+def generate_employee_report(includeArchived : bool):
+    # May need to check and see if the user has that filename open?
+    # Should user be able to name file?
+    currentDataContext = sqlite3.connect('Database/empdata.db')
+    cursor = currentDataContext.cursor()
+    empList = []
 
-#     query = '''SELECT EMPLOYEES.*, EMPLOYEE_PERMISSIONS.reporting_permissions, EMPLOYEE_PERMISSIONS.accounting_permissions, 
-#         EMPLOYEE_PERMISSIONS.editing_permissions, EMPLOYEE_PERMISSIONS.manager_permissions, 
-#         EMPLOYEE_PTO.current_pto, EMPLOYEE_PTO.used_pto, EMPLOYEE_PTO.pto_limit,
-#         EMPLOYEE_CREDENTIALS.emp_social_last FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
-#         LEFT JOIN EMPLOYEE_PERMISSIONS ON EMPLOYEE_PERMISSIONS.emp_id = EMPLOYEES.emp_id
-#         LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
-#         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
+    query = '''SELECT EMPLOYEES.*, EMPLOYEE_PERMISSIONS.reporting_permissions, EMPLOYEE_PERMISSIONS.accounting_permissions, 
+        EMPLOYEE_PERMISSIONS.editing_permissions, EMPLOYEE_PERMISSIONS.manager_permissions, 
+        EMPLOYEE_PTO.current_pto, EMPLOYEE_PTO.used_pto, EMPLOYEE_PTO.pto_limit,
+        EMPLOYEE_CREDENTIALS.emp_social_last FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
+        LEFT JOIN EMPLOYEE_PERMISSIONS ON EMPLOYEE_PERMISSIONS.emp_id = EMPLOYEES.emp_id
+        LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
+        LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
 
-#     for emp in cursor.execute(query):
-#         empList.append(emp)
+    for emp in cursor.execute(query):
+        empList.append(emp)
 
-#     currentDataContext.close()
+    currentDataContext.close()
 
-#     columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
-#     dataframe =pandas.DataFrame(empList, columns=columnNames)
-#     writer = pandas.ExcelWriter('new.xlsx')
-#     dataframe.to_excel(writer, sheet_name='Employee Records')
-#     writer.save()
+    columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
+    dataframe =pandas.DataFrame(empList, columns=columnNames)
+    writer = pandas.ExcelWriter('new.xlsx')
+    dataframe.to_excel(writer, sheet_name='Employee Records')
+    writer.save()
 
-# def generate_payment_report():
-#     currentDataContext = sqlite3.connect('Database/empdata.db')
-#     cursor = currentDataContext.cursor()
-#     empList = []
+def generate_payment_report():
+    currentDataContext = sqlite3.connect('Database/empdata.db')
+    cursor = currentDataContext.cursor()
+    empList = []
 
-#     query = '''
-#         SELECT EMPLOYEE_TIMECARDS.emp_id, ROUND(SUM(timecard_hours), 2) AS hours, EMPLOYEES.hourly AS rate, 
-#         ROUND((ROUND(SUM(timecard_hours), 2) * EMPLOYEES.hourly), 2) AS total_pay 
-#         FROM EMPLOYEE_TIMECARDS LEFT JOIN EMPLOYEES ON EMPLOYEES.emp_id = EMPLOYEE_TIMECARDS.emp_id 
-#         GROUP BY EMPLOYEE_TIMECARDS.emp_id;
-#     '''
+    query = '''
+        SELECT EMPLOYEE_TIMECARDS.emp_id, ROUND(SUM(timecard_hours), 2) AS hours, EMPLOYEES.hourly AS rate, 
+        ROUND((ROUND(SUM(timecard_hours), 2) * EMPLOYEES.hourly), 2) AS total_pay 
+        FROM EMPLOYEE_TIMECARDS LEFT JOIN EMPLOYEES ON EMPLOYEES.emp_id = EMPLOYEE_TIMECARDS.emp_id 
+        GROUP BY EMPLOYEE_TIMECARDS.emp_id;
+    '''
 
-#     for emp in cursor.execute(query):
-#         empList.append(emp)
+    for emp in cursor.execute(query):
+        empList.append(emp)
 
-#     currentDataContext.close()
+    currentDataContext.close()
 
-#     columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
-#     dataframe = pandas.DataFrame(empList, columns=columnNames)
-#     writer = pandas.ExcelWriter('new.xlsx')
-#     dataframe.to_excel(writer, sheet_name='Employee Records')
-#     writer.save()
+    columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
+    dataframe = pandas.DataFrame(empList, columns=columnNames)
+    writer = pandas.ExcelWriter('new.xlsx')
+    dataframe.to_excel(writer, sheet_name='Employee Records')
+    writer.save()
 
 database = sqlite3.connect('Database/empdata.db')
 cursor = database.cursor()
 
-initialize_employee_database(database, cursor)
 
+initialize_employee_database()
 cursor.close()
