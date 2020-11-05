@@ -29,6 +29,7 @@ class usePTOWindow:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
+        """Saves info to database"""
         ptoUsed = self.inputTextBox.get()
         if ptoUsed.isdigit():
             if (self.user.PTO.Used_PTO + int(ptoUsed)) > self.user.PTO.PTO_Limit:
@@ -43,5 +44,6 @@ class usePTOWindow:
             errorWindow("Only whole numbers allowed")
 
     def cancelButtonPressed(self):
+        """Cancels process"""
         self.window.destroy()
    

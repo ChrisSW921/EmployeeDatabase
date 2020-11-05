@@ -29,6 +29,7 @@ class addPTOWindow:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
+        """Saves info to database"""
         ptoAdded = self.inputTextBox.get()
         if ptoAdded.isdigit():
             self.user.PTO.Current_PTO += int(ptoAdded)
@@ -42,5 +43,6 @@ class addPTOWindow:
         
 
     def cancelButtonPressed(self):
+        """Cancels process"""
         self.window.destroy()
         

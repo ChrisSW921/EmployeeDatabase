@@ -144,7 +144,7 @@ class addEmpWindow:
         self.cancelButton.grid(row=10,column=3, padx=15)
 
     def saveButtonPressed(self):
-
+        """Error checks and saves info to database"""
         states = ['alaska', 'alabama', 'arkansas', 'american samoa', 'arizona', ' alifornia', 'colorado',
          'connecticut', 'district of columbia', 'delaware', 'florida', 'georgia', 'guam', 'hawaii', 'iowa',
           'idaho', 'illinois', 'indiana', 'kansas', 'kentucky', 'louisiana', 'massachusetts', 'maryland', 
@@ -269,5 +269,6 @@ class addEmpWindow:
 
 
     def cancelButtonPressed(self):
+        """Cancels process"""
         self.window.destroy()
         

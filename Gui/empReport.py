@@ -5,6 +5,7 @@ import os
 sys.path.insert(0,os.getcwd())
 
 class empReporting:
+
     def __init__(self, user):
         self.user = user
         self.window = Tk()
@@ -31,8 +32,10 @@ class empReporting:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
+        """Processes the employee report/payment report"""
         print("Saved")
 
     def cancelButtonPressed(self):
+        """Cancels current process"""
         self.window.destroy()
         
