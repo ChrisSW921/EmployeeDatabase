@@ -207,7 +207,7 @@ class addEmpWindow:
             errorWindow("Only numbers allowed for PTO limit")
         elif re.search('[a-zA-Z]', ssn):
             errorWindow("Only numbers allowed for SSN")
-        elif len(self.snn) != 9:
+        elif len(ssn) != 9:
             errorWindow('SSN must be 9 digits')
         elif not salary.isalnum():
             errorWindow('Only enter numbers, no special characters or spaces for salary')
