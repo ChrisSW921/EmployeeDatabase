@@ -61,6 +61,6 @@ class changePasswordWindow:
             errorWindow("Please enter an integer in the id field")
 
     def cancelButtonPressed(self):
-        """Cancels process
+        """Cancels process"""
         self.window.destroy()
         print("canceled")
