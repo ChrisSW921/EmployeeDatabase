@@ -467,7 +467,7 @@ class MainMenu:
        
 
     def changePaymentTypePressed(self):
-        newPayment = paymentWindow('user')
+        newPayment = paymentWindow(self.selectedUser)
         
 
     def saveButtonPressed(self):
