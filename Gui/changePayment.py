@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from errorMessage import errorWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -9,6 +10,8 @@ class paymentWindow:
         self.user = user
         self.window = Tk()
         self.window.title("Change Payment Method")
+
+        self.chosen = ''
 
         self.frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
         self.frame1.pack()
@@ -41,7 +44,7 @@ class paymentWindow:
         self.commissionLabelText.grid(row=2, column=2)
 
         #Make and place save and cancel buttons
-        self.saveButton = Button(self.frame1, text='Save')
+        self.saveButton = Button(self.frame1, text='Save', command=self.saveButtonPressed)
         self.cancelButton = Button(self.frame1, text='Cancel', command=self.cancelButtonPressed)
 
         self.saveButton.grid(row=3,column=0, padx=15, pady=40)
@@ -51,24 +54,59 @@ class paymentWindow:
         self.salaryLabelText['state'] = 'normal'
         self.hourlyLabelText['state'] = 'disabled'
         self.commissionLabelText['state'] = 'disabled'
+        self.chosen = 'Salaried'
     
 
     def makeCommissionedButtonPressed(self):
         self.salaryLabelText['state'] = 'disabled'
         self.hourlyLabelText['state'] = 'normal'
         self.commissionLabelText['state'] = 'normal'
+        self.chosen = 'Commissioned'
         
     
     def makeHourlyButtonPressed(self):
         self.hourlyLabelText['state'] = 'normal'
         self.commissionLabelText['state'] = 'disabled'
         self.salaryLabelText['state'] = 'disabled'
+        self.chosen = 'Hourly'
         
 
     def saveButtonPressed(self):
-        print("Saved")
+
+        if self.chosen == 'Salaried':
+            if not self.salaryLabelText.get().isalnum():
+                errorWindow('Only enter numbers, no special characters or spaces for salary')
+            else:
+                self.user.Salary = self.salaryLabelText.get()
+                self.user.Pay_Type = 1
+                self.user.save()
+                self.window.destroy()
+                errorWindow('Employee Salary Updated! Select employee again to see changes')
+        elif self.chosen == 'Commissioned':
+            if not self.salaryLabelText.get().isalnum():
+                errorWindow('Only enter numbers, no special characters or spaces for salary')
+            elif not self.commissionLabelText.get().isalnm():
+                errorWindow('Only enter numbers, no special characters or spaces for Commission')
+            else:
+                self.user.Salary = self.salaryLabelText.get()
+                self.user.Commission = self.commissionLabelText.get()
+                self.user.Pay_Type = 2
+                self.user.save()
+                self.window.destroy()
+                errorWindow('Employee Salary and Commission Updated! Select employee again to see changes')
+        elif self.chosen == 'Hourly':
+            if not self.hourlyLabelText.get().isalnum():
+                errorWindow('Only enter numbers, no special characters or spaces for Hourly')
+            else:
+                self.user.Hourly = self.hourlyLabelText.get()
+                self.user.Pay_Type = 3
+                self.user.save()
+                self.window.destroy()
+                errorWindow('Employee Hourly Updated! Select employee again to see changes')
+        else:
+            errorWindow('Please choose which pay type and input values before saving.')
 
     def cancelButtonPressed(self):
         self.window.destroy()
-        print("canceled")
+        
             
