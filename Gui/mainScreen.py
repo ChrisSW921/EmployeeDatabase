@@ -196,7 +196,7 @@ class MainMenu:
         self.editButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
         self.archiveEmployeeButton.grid(row=0, column=1, padx=5, pady=5, sticky=W)
         self.unarchiveEmployeeButton.grid(row=0, column=2, padx=5, pady=5, sticky=W)
-        self.saveChangesButton.grid(row=1, column=2, padx=5, pady=5, sticky=W)
+        self.saveChangesButton.grid(row=1, column=2, padx=5, pady=5, sticky=EW, columnspan=2)
         self.addPTOButton.grid(row=0, column=3, padx=5, pady=5, sticky=W)
         self.resetPTOButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
         self.changePaymentTypeButton.grid(row=0, column=5, padx=5, pady=5, sticky=W)
