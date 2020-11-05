@@ -354,7 +354,9 @@ class MainMenu:
             if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
                 self.hourlyLabelText.insert(0, selectedUser.Hourly)
         
-        self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) 
+        if self.loggedInUser.Permissions.Manager_Permission or self.loggedInUser.Permissions.Accounting_Permission:
+            self.ssnLabelText.insert(0, selectedUser.Credentials.SSN) 
+
         self.currentPTOLabelText.insert(0, selectedUser.PTO.Current_PTO)
         self.usedPTOLabelText.insert(0, selectedUser.PTO.Used_PTO)
         self.limitPTOLabelText.insert(0, selectedUser.PTO.PTO_Limit)
@@ -436,7 +438,6 @@ class MainMenu:
         self.zipLabelText['state'] = 'normal'
         self.phoneLabelText['state'] = 'normal'
         self.usedPTOLabelText['state'] = 'normal'
-        #self.ssnLabelText['state'] = 'normal'
         self.paymentOptionMenu.configure(state='normal')
         self.editorCheck['state'] = 'normal'
         self.accountingCheck['state'] = 'normal'
