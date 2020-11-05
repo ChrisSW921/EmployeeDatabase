@@ -284,6 +284,7 @@ class MainMenu:
             self.selectedUser = selectedUser
         except:
             errorWindow("Please select a record")
+            self.setInitialState()
 
         
 
