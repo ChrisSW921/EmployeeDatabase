@@ -25,7 +25,10 @@ from Backend.employee_timecard import EmployeeTimecard
 
 '''
 
-def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3.Cursor):
+def initialize_employee_database():
+    database = sqlite3.connect('Database/EmpData.db')
+    cursor = database.cursor()
+
     with open('Database/EmpDataSchema.sql') as databaseFile:
         database_commands = databaseFile.read().replace('\n', ' ').split(';')
 
@@ -41,6 +44,8 @@ def initialize_employee_database(database : sqlite3.Connection, cursor : sqlite3
     numOfRows = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES').fetchone()[0]
     if(numOfRows <= 0):
         generate_employees()
+    
+    database.close()
 
 def generate_employees():
     adminAddress = EmployeeAddress(None, None, None, None)
@@ -176,10 +181,3 @@ def search_employees(searchParam : str):
 #     writer = pandas.ExcelWriter('new.xlsx')
 #     dataframe.to_excel(writer, sheet_name='Employee Records')
 #     writer.save()
-
-database = sqlite3.connect('Database/empdata.db')
-cursor = database.cursor()
-
-initialize_employee_database(database, cursor)
-
-cursor.close()
