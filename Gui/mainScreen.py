@@ -533,6 +533,10 @@ class MainMenu:
             self.selectedUser.Permissions.Editing_Permission = editperm
             self.selectedUser.Permissions.Reporting_Permission = reportperm
             self.selectedUser.Permissions.Manager_Permission = managerperm
+            if self.paymentOption.get() == "Direct Deposit":
+                self.selectedUser.Pay_Method = 1
+            else:
+                self.selectedUser.Pay_Method = 2
 
             self.selectedUser.save()
             errorWindow("Employee info updated!")
