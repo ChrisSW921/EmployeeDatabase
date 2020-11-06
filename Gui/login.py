@@ -44,6 +44,7 @@ class LoginScreen:
 
 
     def loginUser(self):
+        """Logins the user with credentials"""
         try:
             userId = int(self.username.get())
             password = self.password.get()
@@ -63,6 +64,7 @@ class LoginScreen:
             errorWindow("Could not find employee under id: " + str(userId))
 
     def newPassword(self):
+        """Opens new password window"""
         changePasswordWindow()
 
 

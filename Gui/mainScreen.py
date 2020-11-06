@@ -12,6 +12,7 @@ from scrollable import ScrollableFrame
 from Backend.employee import Employee
 from Database import database
 from errorMessage import errorWindow
+from empReport import empReporting
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -207,8 +208,8 @@ class MainMenu:
 
         #Create Company Buttons and place in grid
         self.addEmployeeButton = Button(self.frame5, text="Add Employee", command=self.addEmpButtonPressed)
-        self.paymentReportButton = Button(self.frame5, text="Generate Payment Report")
-        self.employeeReportButton = Button(self.frame5, text="Generate Employee Data Report")
+        self.paymentReportButton = Button(self.frame5, text="Generate Payment Report", command=self.paymentReportButtonPressed)
+        self.employeeReportButton = Button(self.frame5, text="Generate Employee Data Report", command=self.empReportButtonPressed)
 
         self.addEmployeeButton.grid(row=0, column=0, padx=5, pady=5)
         self.paymentReportButton.grid(row=0, column=1, padx=5, pady=5)
@@ -260,6 +261,7 @@ class MainMenu:
 
 
     def goButtonPressed(self):
+        "This function searches the database and displays relative inforation in the tree view"
 
         #Clear former rows
         formerRows = self.searchResults.get_children()
@@ -276,6 +278,8 @@ class MainMenu:
              iid += 1
 
     def selectRecordButtonPressed(self):
+        """This function takes the record you clicked on and displays the employees 
+        information in the boxes on the GUI"""
 
         try:
             curEmp = self.searchResults.focus()
@@ -429,6 +433,7 @@ class MainMenu:
 
     def editButtonPressed(self):
 
+        """This function unlocks the text areas and allows editing of an employee"""
         #Set the text entry states to normal
         self.firstNameLabelText['state'] = 'normal'
         self.lastNameLabelText['state'] = 'normal'
@@ -437,7 +442,6 @@ class MainMenu:
         self.stateLabelText['state'] = 'normal'
         self.zipLabelText['state'] = 'normal'
         self.phoneLabelText['state'] = 'normal'
-        self.usedPTOLabelText['state'] = 'normal'
         self.paymentOptionMenu.configure(state='normal')
         self.editorCheck['state'] = 'normal'
         self.accountingCheck['state'] = 'normal'
@@ -450,12 +454,14 @@ class MainMenu:
 
     
     def archiveEmpButtonPressed(self):
+        """"This will archive the currently selected employee"""
         employee = self.selectedUser
         self.selectedUser.Archived == True
         employee.save()
         errorWindow('Employee Archived!')
 
     def unArchiveEmpButtonPressed(self):
+        """This will unarchive the currently selected employee"""
         employee = self.selectedUser
         self.selectedUser.Archived == False
         employee.save()
@@ -463,15 +469,17 @@ class MainMenu:
         
 
     def addPTOButtonPressed(self):
+        """This button brings up the screen to add more PTO"""
         morePTO = addPTOWindow(self.selectedUser)
        
 
     def changePaymentTypePressed(self):
+        """This button brings up the screen to change the selected users payment type/pay amount"""
         newPayment = paymentWindow(self.selectedUser)
         
 
     def saveButtonPressed(self):
-
+        """This function saves the edited information for the currently selected employee"""
         #Initialize variables for text entry spaces
         firstName = self.firstNameLabelText.get()
         lastName = self.lastNameLabelText.get()
@@ -550,38 +558,37 @@ class MainMenu:
             self.selectRecordButtonPressed()
 
     def addEmpButtonPressed(self):
+        """This function brings up the new employee window"""
         newEmp = addEmpWindow()
         
 
     def paymentReportButtonPressed(self):
+        """This function brings up the payment report button"""
+        empReporting(self.selectedUser, 'payment')
         print("Payment report generated")
 
     def empReportButtonPressed(self):
+        """This function brings up the employee report button"""
+        empReporting(self.selectedUser, 'employee')
         print("Emp report generated")
 
     def usePTOButtonPressed(self):
+        """This function brings up the window to use PTO for logged in user"""
         lessPTO = usePTOWindow(self.loggedInUser)
         
 
     def changePasswordButtonPressed(self):
+        """This function brings up the window to change the password for a user"""
         newPassword = changePasswordWindow()
 
     def logoutButtonPressed(self):
+        """This function logs out the user"""
         from login import LoginScreen
         self.window.destroy()
         login = LoginScreen()
-
-
-    def setState(self, loggedInUser):
-        #Set up button states for loggedInUser
-
-        if not self.loggedInUser.permissions.Reporting_Permission:
-            self.paymentReportButton['state'] = 'disabled'
-            self.employeeReportButton['state'] = 'disabled'
             
-            
-
     def resetPTOButtonPressed(self):
+        """This function resets the users PTO"""
         self.selectedUser.PTO.Used_PTO = 0
         self.selectedUser.save()
         errorWindow("Used PTO reset to 0! Select record again to see update")

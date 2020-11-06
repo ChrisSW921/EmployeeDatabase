@@ -5,10 +5,13 @@ import os
 sys.path.insert(0,os.getcwd())
 
 class empReporting:
-    def __init__(self, user):
+
+    def __init__(self, user, reportType):
         self.user = user
         self.window = Tk()
-        self.window.title("Employee Report")
+        self.window.title("Report")
+        self.includeArchived = False
+        self.report = reportType
 
         #Create frame
         self.frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
@@ -31,8 +34,24 @@ class empReporting:
         self.cancelButton.grid(row=2, column=1)
 
     def saveButtonPressed(self):
+        """Processes the employee report/payment report"""
+        if self.archived == 1:
+            if self.report == 'employee':
+                print("Archived employee")
+                #Process employee report with all employees, including archived employees
+            elif self.report == 'payment':
+                print("Archived payment")
+                #Process employee report with all employees, including archived employees 
+        else:
+            if self.report == 'employee':
+                print("Archived employee")
+                #Process employee report with only unarchived employees
+            elif self.report == 'payment':
+                print("Archived payment")
+                #Process employee report with only unarchived employees
         print("Saved")
 
     def cancelButtonPressed(self):
+        """Cancels current process"""
         self.window.destroy()
         

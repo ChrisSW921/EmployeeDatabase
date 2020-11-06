@@ -51,6 +51,7 @@ class paymentWindow:
         self.cancelButton.grid(row=3,column=2, padx=15, pady=40)
 
     def makeSalariedButtonPressed(self):
+        """Changes the employees paytype to Salaried/disables other boxes"""
         self.salaryLabelText['state'] = 'normal'
         self.hourlyLabelText['state'] = 'disabled'
         self.commissionLabelText['state'] = 'disabled'
@@ -58,6 +59,7 @@ class paymentWindow:
     
 
     def makeCommissionedButtonPressed(self):
+        """Changes the employees paytype to Commissioned/disables other boxes"""
         self.salaryLabelText['state'] = 'disabled'
         self.hourlyLabelText['state'] = 'normal'
         self.commissionLabelText['state'] = 'normal'
@@ -65,6 +67,7 @@ class paymentWindow:
         
     
     def makeHourlyButtonPressed(self):
+        """Changes the employees paytype to Hourly/disables other boxes"""
         self.hourlyLabelText['state'] = 'normal'
         self.commissionLabelText['state'] = 'disabled'
         self.salaryLabelText['state'] = 'disabled'
@@ -72,7 +75,7 @@ class paymentWindow:
         
 
     def saveButtonPressed(self):
-
+        """This function saves the information to the database"""
         if self.chosen == 'Salaried':
             if not self.salaryLabelText.get().isalnum():
                 errorWindow('Only enter numbers, no special characters or spaces for salary')
@@ -107,6 +110,7 @@ class paymentWindow:
             errorWindow('Please choose which pay type and input values before saving.')
 
     def cancelButtonPressed(self):
+        """Cancels this process"""
         self.window.destroy()
         
             

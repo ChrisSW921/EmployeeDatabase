@@ -37,6 +37,7 @@ class changePasswordWindow:
         cancelButton.grid(row=3, column=1)
 
     def saveButtonPressed(self):
+        """Saves info to database"""
         try:
             empId = int(self.empIdTextBox.get())
             newPass = self.newPassTextBox.get()
@@ -60,5 +61,6 @@ class changePasswordWindow:
             errorWindow("Please enter an integer in the id field")
 
     def cancelButtonPressed(self):
+        """Cancels process"""
         self.window.destroy()
         print("canceled")
