@@ -171,6 +171,9 @@ def generate_employee_report(includeArchived : bool):
         LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
 
+    if (includeArchived != True):
+        query + " WHERE EMPLOYEES.archived = False"
+
     for emp in cursor.execute(query):
         empList.append(emp)
 

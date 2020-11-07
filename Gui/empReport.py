@@ -4,6 +4,9 @@ import sys
 import os
 sys.path.insert(0,os.getcwd())
 
+from Database import database
+
+
 class empReporting:
 
     def __init__(self, user, reportType):
@@ -24,7 +27,7 @@ class empReporting:
         self.archived = IntVar()
 
         self.archivedBox = Checkbutton(self.frame1, text="", variable=self.archived, state='normal', padx=20, pady=20) 
-        self.generateButton = Button(self.frame1, text="Generate")
+        self.generateButton = Button(self.frame1, text="Generate", command=self.generateButtonPressed)
         self.cancelButton = Button(self.frame1, text="Cancel", command=self.cancelButtonPressed)
 
         self.titleLabel.grid(row=0, column=1)
@@ -33,22 +36,21 @@ class empReporting:
         self.generateButton.grid(row=2, column=0)
         self.cancelButton.grid(row=2, column=1)
 
-    def saveButtonPressed(self):
+    def generateButtonPressed(self):
         """Processes the employee report/payment report"""
         if self.archived == 1:
             if self.report == 'employee':
-                print("Archived employee")
-                #Process employee report with all employees, including archived employees
+                database.generate_employee_report(True)
+
             elif self.report == 'payment':
-                print("Archived payment")
-                #Process employee report with all employees, including archived employees 
+                database.generate_payment_report()
         else:
             if self.report == 'employee':
-                print("Archived employee")
-                #Process employee report with only unarchived employees
+                database.generate_employee_report(False)
+
             elif self.report == 'payment':
-                print("Archived payment")
-                #Process employee report with only unarchived employees
+                database.generate_payment_report()
+
         print("Saved")
 
     def cancelButtonPressed(self):
