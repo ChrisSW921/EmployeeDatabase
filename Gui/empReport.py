@@ -39,24 +39,27 @@ class empReporting:
 
     def generateButtonPressed(self):
         """Processes the employee report/payment report"""
-        if self.archived == 1:
-            if self.report == 'employee':
-                database.generate_employee_report(True)
-                errorWindow("Successfully generated employee report")
+        try:
+            if self.archived == 1:
+                if self.report == 'employee':
+                    database.generate_employee_report(True)
+                    errorWindow("Successfully generated employee report")
 
-            elif self.report == 'payment':
-                database.generate_payment_report()
-                errorWindow("Successfully generated employee report")
+                elif self.report == 'payment':
+                    database.generate_payment_report()
+                    errorWindow("Successfully generated employee report")
 
-        else:
-            if self.report == 'employee':
-                database.generate_employee_report(False)
-                errorWindow("Successfully generated employee report")
+            else:
+                if self.report == 'employee':
+                    database.generate_employee_report(False)
+                    errorWindow("Successfully generated employee report")
 
 
-            elif self.report == 'payment':
-                database.generate_payment_report()
-                errorWindow("Successfully generated employee report")
+                elif self.report == 'payment':
+                    database.generate_payment_report()
+                    errorWindow("Successfully generated employee report")
+        except:
+            errorWindow("Could not generate report")
 
     def cancelButtonPressed(self):
         """Cancels current process"""
