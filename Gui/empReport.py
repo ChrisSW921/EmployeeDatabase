@@ -43,11 +43,11 @@ class empReporting:
             if self.archived == 1:
                 if self.report == 'employee':
                     database.generate_employee_report(True)
-                    errorWindow("Successfully generated employee report")
+                    errorWindow("Successfully generated employee report with archived employees")
 
                 elif self.report == 'payment':
                     database.generate_payment_report(True)
-                    errorWindow("Successfully generated employee report")
+                    errorWindow("Successfully generated payment report with archived employees")
 
             else:
                 if self.report == 'employee':
@@ -57,7 +57,7 @@ class empReporting:
 
                 elif self.report == 'payment':
                     database.generate_payment_report(False)
-                    errorWindow("Successfully generated employee report")
+                    errorWindow("Successfully generated payment report")
         except:
             errorWindow("Could not generate report")
 
