@@ -78,7 +78,7 @@ class MainMenu:
         self.IDLabel = Label(self.frame3, text="ID")
         self.firstNameLabel = Label(self.frame3, text="First Name")
         self.lastNameLabel = Label(self.frame3, text="Last Name")
-        self.addressLabel = Label(self.frame3, text="Adress")
+        self.addressLabel = Label(self.frame3, text="Address")
         self.cityLabel = Label(self.frame3, text="City")
         self.stateLabel = Label(self.frame3, text="State")
         self.zipLabel = Label(self.frame3, text="Zip")

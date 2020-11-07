@@ -26,7 +26,7 @@ class addEmpWindow:
         self.IDLabel = Label(self.frame3, text="NEW EMPLOYEE")
         self.firstNameLabel = Label(self.frame3, text="First Name")
         self.lastNameLabel = Label(self.frame3, text="Last Name")
-        self.addressLabel = Label(self.frame3, text="Adress")
+        self.addressLabel = Label(self.frame3, text="Address")
         self.cityLabel = Label(self.frame3, text="City")
         self.stateLabel = Label(self.frame3, text="State")
         self.zipLabel = Label(self.frame3, text="Zip")
@@ -208,7 +208,7 @@ class addEmpWindow:
         elif re.search('[a-zA-Z]', ssn):
             errorWindow("Only numbers allowed for SSN")
         elif len(ssn) != 9:
-             errorWindow('SSN must be 9 digits')
+             errorWindow('SSN must be 9 digits and no dashes')
         elif not salary.isalnum():
             errorWindow('Only enter numbers, no special characters or spaces for salary')
         elif not commission.isalnum():
