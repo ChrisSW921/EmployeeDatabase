@@ -5,6 +5,7 @@ import os
 sys.path.insert(0,os.getcwd())
 
 from Database import database
+from Gui.errorMessage import errorWindow
 
 
 class empReporting:
@@ -41,17 +42,21 @@ class empReporting:
         if self.archived == 1:
             if self.report == 'employee':
                 database.generate_employee_report(True)
+                errorWindow("Successfully generated employee report")
 
             elif self.report == 'payment':
                 database.generate_payment_report()
+                errorWindow("Successfully generated employee report")
+
         else:
             if self.report == 'employee':
                 database.generate_employee_report(False)
+                errorWindow("Successfully generated employee report")
+
 
             elif self.report == 'payment':
                 database.generate_payment_report()
-
-        print("Saved")
+                errorWindow("Successfully generated employee report")
 
     def cancelButtonPressed(self):
         """Cancels current process"""
