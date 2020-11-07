@@ -455,16 +455,14 @@ class MainMenu:
     
     def archiveEmpButtonPressed(self):
         """"This will archive the currently selected employee"""
-        employee = self.selectedUser
-        self.selectedUser.Archived == True
-        employee.save()
+        self.selectedUser.Archived = True
+        self.selectedUser.save()
         errorWindow('Employee Archived!')
 
     def unArchiveEmpButtonPressed(self):
         """This will unarchive the currently selected employee"""
-        employee = self.selectedUser
-        self.selectedUser.Archived == False
-        employee.save()
+        self.selectedUser.Archived = False
+        self.selectedUser.save()
         errorWindow('Employee Unarchived!')
         
 
