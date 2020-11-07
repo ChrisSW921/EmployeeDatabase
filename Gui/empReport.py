@@ -46,7 +46,7 @@ class empReporting:
                     errorWindow("Successfully generated employee report")
 
                 elif self.report == 'payment':
-                    database.generate_payment_report()
+                    database.generate_payment_report(True)
                     errorWindow("Successfully generated employee report")
 
             else:
@@ -56,7 +56,7 @@ class empReporting:
 
 
                 elif self.report == 'payment':
-                    database.generate_payment_report()
+                    database.generate_payment_report(False)
                     errorWindow("Successfully generated employee report")
         except:
             errorWindow("Could not generate report")
