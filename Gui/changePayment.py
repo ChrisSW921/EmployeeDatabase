@@ -60,8 +60,8 @@ class paymentWindow:
 
     def makeCommissionedButtonPressed(self):
         """Changes the employees paytype to Commissioned/disables other boxes"""
-        self.salaryLabelText['state'] = 'disabled'
-        self.hourlyLabelText['state'] = 'normal'
+        self.salaryLabelText['state'] = 'normal'
+        self.hourlyLabelText['state'] = 'disabled'
         self.commissionLabelText['state'] = 'normal'
         self.chosen = 'Commissioned'
         
@@ -88,7 +88,7 @@ class paymentWindow:
         elif self.chosen == 'Commissioned':
             if not self.salaryLabelText.get().isalnum():
                 errorWindow('Only enter numbers, no special characters or spaces for salary')
-            elif not self.commissionLabelText.get().isalnm():
+            elif not self.commissionLabelText.get().isalnum():
                 errorWindow('Only enter numbers, no special characters or spaces for Commission')
             else:
                 self.user.Salary = self.salaryLabelText.get()

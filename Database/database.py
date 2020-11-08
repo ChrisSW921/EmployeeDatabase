@@ -124,7 +124,7 @@ def get_employee(empId : int):
     empPermissions = EmployeePermissions(bool(empData[16]), bool(empData[17]), bool(empData[18]), bool(empData[19]))
     empPto = EmployeePTO(empData[21], empData[22], empData[23])
     empCredentials = EmployeeCredentials(empData[25], empData[29])
-    employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], False, empAddress, empPermissions, empPto, empCredentials)
+    employee = Employee(empData[1], empData[2], empData[3], empData[4], empData[5], empData[6], empData[7], empData[8], empData[9], empAddress, empPermissions, empPto, empCredentials)
     employee.EmpId = empData[0]
 
     currentDataContext.close()

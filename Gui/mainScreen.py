@@ -96,6 +96,7 @@ class MainMenu:
         self.reportLabel = Label(self.frame3, text="Reporting Permission")
         self.accountingLabel = Label(self.frame3, text="Accounting Permission")
         self.managerLabel = Label(self.frame3, text="Manager Permission")
+        self.archivedLabel = Label(self.frame3, text="Archived")
 
         self.IDLabel.grid(row=0, column=0) 
         self.firstNameLabel.grid(row=0, column=1)
@@ -118,6 +119,7 @@ class MainMenu:
         self.reportLabel.grid(row=6, column=3)
         self.accountingLabel.grid(row=6, column=4)
         self.managerLabel.grid(row=8, column=0)
+        self.archivedLabel.grid(row=8, column=1)
 
         #Add employee text boxes/checkmarks and put into frame
         self.IDLabelText = Entry(self.frame3, state='disabled')
@@ -170,16 +172,19 @@ class MainMenu:
         self.reporter = IntVar()
         self.accounting = IntVar()
         self.manager = IntVar()
+        self.archivedCheck = IntVar()
 
         self.editorCheck = Checkbutton(self.frame3, text="", variable=self.editor, state='disabled')
         self.reporterCheck = Checkbutton(self.frame3, text="", variable=self.reporter, state='disabled')
         self.accountingCheck = Checkbutton(self.frame3, text="", variable=self.accounting, state='disabled')
         self.managerCheck = Checkbutton(self.frame3, text="", variable=self.manager, state='disabled')
+        self.archivedCheck = Checkbutton(self.frame3, text="", variable=self.archivedCheck, state='disabled')
 
         self.editorCheck.grid(row=7, column=2)
         self.reporterCheck.grid(row=7, column=3)
         self.accountingCheck.grid(row=7, column=4)
         self.managerCheck.grid(row=9, column=0)
+        self.archivedCheck.grid(row=9, column=1)
 
         #Create Employee Action Button Frame
         self.frame4 = LabelFrame(self.frame0.scrollable_frame, text="Employee Actions", padx=20, pady=20)
@@ -268,14 +273,17 @@ class MainMenu:
         for row in formerRows:
             self.searchResults.delete(row)
 
-        #Find the list of employees you searched for 
-        queryResults = database.search_employees(self.searchBar.get())
+        #Find the list of employees you searched for
+        if self.searchBar.get() in ['1', 'System', 'Admin']:
+            queryResults = database.search_employees('0')
+        else:
+            queryResults = database.search_employees(self.searchBar.get())
         
         #Put employees into treeview
-        iid = 0
-        for item in queryResults:
-             self.searchResults.insert(parent='', index='end', iid=iid, text="", values=(item.EmpId,item.First_Name, item.Last_Name, item.Phone_Number))
-             iid += 1
+            iid = 0
+            for item in queryResults:
+                self.searchResults.insert(parent='', index='end', iid=iid, text="", values=(item.EmpId,item.First_Name, item.Last_Name, item.Phone_Number))
+                iid += 1
 
     def selectRecordButtonPressed(self):
         """This function takes the record you clicked on and displays the employees 
@@ -395,21 +403,49 @@ class MainMenu:
             self.editorCheck['state'] = 'normal'
             self.editorCheck.select()
             self.editorCheck['state'] = 'disabled'
+        else:
+            self.editorCheck['state'] = 'normal'
+            self.editorCheck.deselect()
+            self.editorCheck['state'] = 'disabled'
+            
 
         if selectedUser.Permissions.Accounting_Permission:
             self.accountingCheck['state'] = 'normal'
             self.accountingCheck.select()
+            self.accountingCheck['state'] = 'disabled'
+        else:
+            self.accountingCheck['state'] = 'normal'
+            self.accountingCheck.deselect()
             self.accountingCheck['state'] = 'disabled'
 
         if selectedUser.Permissions.Reporting_Permission:
             self.reporterCheck['state'] = 'normal'
             self.reporterCheck.select()
             self.reporterCheck['state'] = 'disabled'
+        else:
+            self.reporterCheck['state'] = 'normal'
+            self.reporterCheck.deselect()
+            self.reporterCheck['state'] = 'disabled'
 
         if selectedUser.Permissions.Manager_Permission:
             self.managerCheck['state'] = 'normal'
             self.managerCheck.select()
             self.managerCheck['state'] = 'disabled'
+        else:
+            self.managerCheck['state'] = 'normal'
+            self.managerCheck.deselect()
+            self.managerCheck['state'] = 'disabled'
+
+        if selectedUser.Archived:
+            self.archivedCheck['state'] = 'normal'
+            self.archivedCheck.select()
+            self.archivedCheck['state'] = 'disabled'
+        else:
+            self.archivedCheck['state'] = 'normal'
+            self.archivedCheck.deselect()
+            self.archivedCheck['state'] = 'disabled'
+        
+
 
 
         #Display certain buttons to logged in employee after selecting an employee
@@ -421,9 +457,11 @@ class MainMenu:
             self.changePaymentTypeButton['state'] = 'normal'
             self.resetPTOButton['state'] = 'normal'
             if selectedUser.Archived:
+                self.archiveEmployeeButton['state'] = 'disabled'
                 self.unarchiveEmployeeButton['state'] = 'normal'
             else:
                 self.archiveEmployeeButton['state'] = 'normal'
+                self.unarchiveEmployeeButton['state'] = 'disabled'
 
         if self.loggedInUser.Permissions.Editing_Permission:
             self.editButton['state'] = 'normal'
@@ -448,22 +486,22 @@ class MainMenu:
         self.reporterCheck['state'] = 'normal'
         self.managerCheck['state'] = 'normal'
 
-        
-        
-
-
     
     def archiveEmpButtonPressed(self):
         """"This will archive the currently selected employee"""
         self.selectedUser.Archived = True
         self.selectedUser.save()
+        self.selectRecordButtonPressed()
         errorWindow('Employee Archived!')
+        
 
     def unArchiveEmpButtonPressed(self):
         """This will unarchive the currently selected employee"""
         self.selectedUser.Archived = False
         self.selectedUser.save()
+        self.selectRecordButtonPressed()
         errorWindow('Employee Unarchived!')
+        
         
 
     def addPTOButtonPressed(self):
