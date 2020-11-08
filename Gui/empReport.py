@@ -4,6 +4,10 @@ import sys
 import os
 sys.path.insert(0,os.getcwd())
 
+from Database import database
+from Gui.errorMessage import errorWindow
+
+
 class empReporting:
 
     def __init__(self, user, reportType):
@@ -24,7 +28,7 @@ class empReporting:
         self.archived = IntVar()
 
         self.archivedBox = Checkbutton(self.frame1, text="", variable=self.archived, state='normal', padx=20, pady=20) 
-        self.generateButton = Button(self.frame1, text="Generate")
+        self.generateButton = Button(self.frame1, text="Generate", command=self.generateButtonPressed)
         self.cancelButton = Button(self.frame1, text="Cancel", command=self.cancelButtonPressed)
 
         self.titleLabel.grid(row=0, column=1)
@@ -33,23 +37,29 @@ class empReporting:
         self.generateButton.grid(row=2, column=0)
         self.cancelButton.grid(row=2, column=1)
 
-    def saveButtonPressed(self):
+    def generateButtonPressed(self):
         """Processes the employee report/payment report"""
-        if self.archived == 1:
-            if self.report == 'employee':
-                print("Archived employee")
-                #Process employee report with all employees, including archived employees
-            elif self.report == 'payment':
-                print("Archived payment")
-                #Process employee report with all employees, including archived employees 
-        else:
-            if self.report == 'employee':
-                print("Archived employee")
-                #Process employee report with only unarchived employees
-            elif self.report == 'payment':
-                print("Archived payment")
-                #Process employee report with only unarchived employees
-        print("Saved")
+        try:
+            if self.archived == 1:
+                if self.report == 'employee':
+                    database.generate_employee_report(True)
+                    errorWindow("Successfully generated employee report with archived employees")
+
+                elif self.report == 'payment':
+                    database.generate_payment_report(True)
+                    errorWindow("Successfully generated payment report with archived employees")
+
+            else:
+                if self.report == 'employee':
+                    database.generate_employee_report(False)
+                    errorWindow("Successfully generated employee report")
+
+
+                elif self.report == 'payment':
+                    database.generate_payment_report(False)
+                    errorWindow("Successfully generated payment report")
+        except:
+            errorWindow("Could not generate report")
 
     def cancelButtonPressed(self):
         """Cancels current process"""

@@ -171,6 +171,9 @@ def generate_employee_report(includeArchived : bool):
         LEFT JOIN EMPLOYEE_PTO ON EMPLOYEE_PTO.emp_id = EMPLOYEES.emp_id
         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
 
+    if (includeArchived != True):
+        query + " WHERE EMPLOYEES.archived = False"
+
     for emp in cursor.execute(query):
         empList.append(emp)
 
@@ -182,7 +185,7 @@ def generate_employee_report(includeArchived : bool):
     dataframe.to_excel(writer, sheet_name='Employee Records')
     writer.save()
 
-def generate_payment_report():
+def generate_payment_report(includeArchived : bool):
     currentDataContext = sqlite3.connect('Database/empdata.db')
     cursor = currentDataContext.cursor()
     empList = []
@@ -191,8 +194,10 @@ def generate_payment_report():
         SELECT EMPLOYEE_TIMECARDS.emp_id, ROUND(SUM(timecard_hours), 2) AS hours, EMPLOYEES.hourly AS rate, 
         ROUND((ROUND(SUM(timecard_hours), 2) * EMPLOYEES.hourly), 2) AS total_pay 
         FROM EMPLOYEE_TIMECARDS LEFT JOIN EMPLOYEES ON EMPLOYEES.emp_id = EMPLOYEE_TIMECARDS.emp_id 
-        GROUP BY EMPLOYEE_TIMECARDS.emp_id;
-    '''
+        GROUP BY EMPLOYEE_TIMECARDS.emp_id'''
+        
+    if (includeArchived != True):
+        query + " WHERE EMPLOYEES.archived = False"
 
     for emp in cursor.execute(query):
         empList.append(emp)
