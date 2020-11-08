@@ -66,8 +66,8 @@ def generate_employees():
                 newEmpPTO = EmployeePTO(50, 0, 75)
                 newEmpCredentials = EmployeeCredentials(None, None)
                 phoneNum = generate_phone_dashes(random.randint(2000000000, 9999999999))
-                payType = random.randint(1, 2)
-                payMethod = int(emp[7])
+                payType = int(emp[7])
+                payMethod = random.randint(1, 2)
                 newEmp = Employee(emp[1], emp[2], phoneNum, float(emp[8]), float(emp[10]), float(emp[9]), payType, payMethod, False, newEmpAddress, newEmpPermissions, newEmpPTO, newEmpCredentials)
                 newEmp.save()
 
