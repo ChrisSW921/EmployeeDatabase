@@ -166,6 +166,21 @@ class addEmpWindow:
         salary = self.salaryLabelText.get()
         hourly = self.hourlyLabelText.get()
         commission = self.commissionLabelText.get()
+
+        try:
+            salary = float(self.salaryLabelText.get())
+        except:
+            errorWindow('Only enter numbers, no special characters or spaces for salary')
+        try:
+            hourly = float(self.hourlyLabelText.get())
+        except:
+            errorWindow('Only enter numbers, no special characters or spaces for hourly')
+        try:
+            commission = float(self.commissionLabelText.get())
+        except:
+            errorWindow('Only enter numbers, no special characters or spaces for commission')
+        
+        
         currentPTO = self.currentPTOLabelText.get()
         ptoLimit = self.limitPTOLabelText.get()
         editing = self.editor.get()
@@ -175,7 +190,7 @@ class addEmpWindow:
         ssn = self.ssnLabelText.get()
 
         allFields = [firstName, lastName, address, city, state, zipcode, phone, payType, payMethod,
-        salary, commission, hourly, currentPTO, ptoLimit, ssn] 
+        str(salary), str(commission), str(hourly), currentPTO, ptoLimit, ssn] 
         
         #Error checking to make sure state is valid and all fields are filled out
         empty = 0
@@ -195,12 +210,6 @@ class addEmpWindow:
             errorWindow("Only numbers allowed for phone number")
         elif re.search('[a-zA-Z]', zipcode):
             errorWindow("Only numbers allowed for zipcode")
-        elif re.search('[a-zA-Z]', salary):
-            errorWindow("Only numbers allowed for salary")
-        elif re.search('[a-zA-Z]', hourly):
-            errorWindow("Only numbers allowed for hourly")
-        elif re.search('[a-zA-Z]', commission):
-            errorWindow("Only numbers allowed for commission")
         elif re.search('[a-zA-Z]', currentPTO):
             errorWindow("Only numbers allowed for current PTO")
         elif re.search('[a-zA-Z]', ptoLimit):
@@ -208,13 +217,7 @@ class addEmpWindow:
         elif re.search('[a-zA-Z]', ssn):
             errorWindow("Only numbers allowed for SSN")
         elif len(ssn) != 9:
-             errorWindow('SSN must be 9 digits and no dashes')
-        elif not salary.isalnum():
-            errorWindow('Only enter numbers, no special characters or spaces for salary')
-        elif not commission.isalnum():
-            errorWindow('Only enter numbers, no special characters or spaces for commission')
-        elif not hourly.isalnum():
-            errorWindow('Only enter numbers, no special characters or spaces for hourly')
+             errorWindow('SSN must be 9 digits and no dashes')   
         elif not currentPTO.isalnum():
             errorWindow('Only enter numbers, no special characters or spaces for current PTO')
         elif not ptoLimit.isalnum():
@@ -225,6 +228,7 @@ class addEmpWindow:
             errorWindow('Only enter numbers, no special characters or spaces for SSN')
         else:
             #Creating new employee and saving to database
+
             managerperm = False
             accountperm = False
             reportperm = False
@@ -244,7 +248,7 @@ class addEmpWindow:
             if payType == "Salaried":
                 intPayType = 1
             elif payType == "Commissioned":
-                intPayType == 2
+                intPayType = 2
             elif payType == "Hourly":
                 intPayType = 3
 

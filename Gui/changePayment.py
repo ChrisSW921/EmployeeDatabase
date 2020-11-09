@@ -77,35 +77,33 @@ class paymentWindow:
     def saveButtonPressed(self):
         """This function saves the information to the database"""
         if self.chosen == 'Salaried':
-            if not self.salaryLabelText.get().isalnum():
-                errorWindow('Only enter numbers, no special characters or spaces for salary')
-            else:
-                self.user.Salary = self.salaryLabelText.get()
+            try:
+                self.user.Salary = float(self.salaryLabelText.get())
                 self.user.Pay_Type = 1
                 self.user.save()
                 self.window.destroy()
                 errorWindow('Employee Salary Updated! Select employee again to see changes')
-        elif self.chosen == 'Commissioned':
-            if not self.salaryLabelText.get().isalnum():
+            except:
                 errorWindow('Only enter numbers, no special characters or spaces for salary')
-            elif not self.commissionLabelText.get().isalnum():
-                errorWindow('Only enter numbers, no special characters or spaces for Commission')
-            else:
-                self.user.Salary = self.salaryLabelText.get()
-                self.user.Commission = self.commissionLabelText.get()
+        elif self.chosen == 'Commissioned':
+            try:
+                self.user.Salary = float(self.salaryLabelText.get())
+                self.user.Commission = float(self.commissionLabelText.get())
                 self.user.Pay_Type = 2
                 self.user.save()
                 self.window.destroy()
                 errorWindow('Employee Salary and Commission Updated! Select employee again to see changes')
+            except:
+                errorWindow('Only enter numbers, no special characters or spaces for salary or commission')    
         elif self.chosen == 'Hourly':
-            if not self.hourlyLabelText.get().isalnum():
-                errorWindow('Only enter numbers, no special characters or spaces for Hourly')
-            else:
-                self.user.Hourly = self.hourlyLabelText.get()
+            try:
+                self.user.Hourly = float(self.hourlyLabelText.get())
                 self.user.Pay_Type = 3
                 self.user.save()
                 self.window.destroy()
                 errorWindow('Employee Hourly Updated! Select employee again to see changes')
+            except:
+                errorWindow('Only enter numbers, no special characters or spaces for Hourly')
         else:
             errorWindow('Please choose which pay type and input values before saving.')
 
