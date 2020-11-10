@@ -210,7 +210,7 @@ def generate_payment_report(includeArchived : bool):
         empTotalHours.append(emp)
     
     for emp in cursor.execute('SELECT emp_id, ROUND(SUM(receipt), 2) as receipts FROM EMPLOYEE_RECEIPTS GROUP by emp_id'):
-        empReceipts.append(emp)
+        empTotalReceipts.append(emp)
 
     query = '''
         SELECT emp_id, pay_type, hourly, salary, commission FROM EMPLOYEES
