@@ -205,8 +205,12 @@ def generate_payment_report(includeArchived : bool):
     cursor = currentDataContext.cursor()
 
     empTotalHours = []
+    empTotalReceipts = []
     for emp in cursor.execute('SELECT emp_id, ROUND(SUM(timecard_hours), 2) as total_hours FROM EMPLOYEE_TIMECARDS GROUP by emp_id'):
         empTotalHours.append(emp)
+    
+    for emp in cursor.execute('SELECT emp_id, ROUND(SUM(receipt), 2) as receipts FROM EMPLOYEE_RECEIPTS GROUP by emp_id'):
+        empReceipts.append(emp)
 
     query = '''
         SELECT emp_id, pay_type, hourly, salary, commission FROM EMPLOYEES
@@ -232,11 +236,11 @@ def generate_payment_report(includeArchived : bool):
         # IF PAY_TYPE COMMISSION HANDLE COMMISSION ADD TO NEW LIST
         elif (int(emp[1] == 2)):
             biWeeklyPay = float(emp[3]) / 24.0
-            empHours = [hours[1] for hours in empTotalHours if hours[0] == emp[0]]
-            if (empHours.__len__() <= 0):
-                empHours.append(0)
-            biWeeklyPay = (biWeeklyPay + (empHours[0] * (emp[4]/100)))
-            empData = (emp[0], emp[3], empHours[0], emp[4], biWeeklyPay)
+            empReceipts = [receipt[1] for receipt in empTotalReceipts if receipt[0] == emp[0]]
+            if (empReceipts.__len__() <= 0):
+                empReceipts.append(0)
+            biWeeklyPay = (biWeeklyPay + (empReceipts[0] * (emp[4]/100)))
+            empData = (emp[0], emp[3], empReceipts[0], emp[4], biWeeklyPay)
             commissionEmps.append(empData)
 
         # IF PAY_TYPE HOURLY HANDLE HOURLY ADD TO NEW LIST
@@ -262,7 +266,7 @@ def generate_payment_report(includeArchived : bool):
     dataframe = pandas.DataFrame(salaryEmps, columns=columnNames)
     dataframe.to_excel(writer, sheet_name='Salary Pay Employees')
 
-    columnNames = ['Id', 'Salary', 'Hours Worked', 'Commission', 'Total Pay']
+    columnNames = ['Id', 'Salary', 'Total Sale Value', 'Commission', 'Total Pay']
     dataframe = pandas.DataFrame(commissionEmps, columns=columnNames)
     dataframe.to_excel(writer, sheet_name='Comission Pay Employees')
     writer.save()
