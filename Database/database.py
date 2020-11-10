@@ -188,26 +188,64 @@ def generate_employee_report(includeArchived : bool):
 def generate_payment_report(includeArchived : bool):
     currentDataContext = sqlite3.connect('Database/empdata.db')
     cursor = currentDataContext.cursor()
-    empList = []
+
+    empTotalHours = []
+    for emp in cursor.execute('SELECT emp_id, ROUND(SUM(timecard_hours), 2) as total_hours FROM EMPLOYEE_TIMECARDS GROUP by emp_id'):
+        empTotalHours.append(emp)
 
     query = '''
-        SELECT EMPLOYEE_TIMECARDS.emp_id, ROUND(SUM(timecard_hours), 2) AS hours, EMPLOYEES.hourly AS rate, 
-        ROUND((ROUND(SUM(timecard_hours), 2) * EMPLOYEES.hourly), 2) AS total_pay 
-        FROM EMPLOYEE_TIMECARDS LEFT JOIN EMPLOYEES ON EMPLOYEES.emp_id = EMPLOYEE_TIMECARDS.emp_id 
-        GROUP BY EMPLOYEE_TIMECARDS.emp_id'''
+        SELECT emp_id, pay_type, hourly, salary, commission FROM EMPLOYEES
+    '''
         
     if (includeArchived != True):
         query + " WHERE EMPLOYEES.archived = False"
 
+    salaryEmps = []
+    commissionEmps = []
+    hourlyEmps = []
     for emp in cursor.execute(query):
-        empList.append(emp)
+        # SKIP EMPLOYEES WHERE PAY_TYPE IS NULL
+        if (emp[1] == None):
+            continue
+
+        # IF PAY_TYPE SALARY HANDLE SALARY ADD TO NEW LIST
+        elif (int(emp[1]) == 1):
+            biWeeklyPay = float(emp[3]) / 24.0
+            empData = (emp[0], emp[3], biWeeklyPay)
+            salaryEmps.append(empData)
+
+        # IF PAY_TYPE COMMISSION HANDLE COMMISSION ADD TO NEW LIST
+        elif (int(emp[1] == 2)):
+            biWeeklyPay = float(emp[3]) / 24.0
+            empHours = [hours[1] for hours in empTotalHours if hours[0] == emp[0]]
+            if (empHours.__len__() <= 0):
+                empHours.append(0)
+            biWeeklyPay = (biWeeklyPay + (empHours[0] * (emp[4]/100)))
+            empData = (emp[0], emp[3], empHours[0], emp[4], biWeeklyPay)
+            commissionEmps.append(empData)
+
+        # IF PAY_TYPE HOURLY HANDLE HOURLY ADD TO NEW LIST
+        else:
+            empHours = [hours[1] for hours in empTotalHours if hours[0] == emp[0]]
+            totalPay = float(emp[2]) * empHours[0]
+            empData = (emp[0], emp[2], empHours[0], totalPay)
+            hourlyEmps.append(empData)
 
     currentDataContext.close()
 
-    columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
-    dataframe = pandas.DataFrame(empList, columns=columnNames)
+    # HANDLE EACH OF THE CREATED LISTS INDIVIDUALLY TO DATAFRAMES THAT WILL BE ADDED
     writer = pandas.ExcelWriter('new.xlsx')
-    dataframe.to_excel(writer, sheet_name='Employee Records')
+    columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
+    dataframe = pandas.DataFrame(hourlyEmps, columns=columnNames)
+    dataframe.to_excel(writer, sheet_name='Hourly Pay Employees')
+
+    columnNames = ['Id', 'Salary', 'Bi-Weekly Pay']
+    dataframe = pandas.DataFrame(salaryEmps, columns=columnNames)
+    dataframe.to_excel(writer, sheet_name='Salary Pay Employees')
+
+    columnNames = ['Id', 'Salary', 'Hours Worked', 'Commission', 'Total Pay']
+    dataframe = pandas.DataFrame(commissionEmps, columns=columnNames)
+    dataframe.to_excel(writer, sheet_name='Comission Pay Employees')
     writer.save()
 
 database = sqlite3.connect('Database/empdata.db')
