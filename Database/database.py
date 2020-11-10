@@ -227,7 +227,11 @@ def generate_payment_report(includeArchived : bool):
         # IF PAY_TYPE HOURLY HANDLE HOURLY ADD TO NEW LIST
         else:
             empHours = [hours[1] for hours in empTotalHours if hours[0] == emp[0]]
+            if (empHours.__len__() <= 0):
+                empHours.append(0)
             totalPay = float(emp[2]) * empHours[0]
+            if (totalPay == 0):
+                totalPay = "No Pay"
             empData = (emp[0], emp[2], empHours[0], totalPay)
             hourlyEmps.append(empData)
 
@@ -235,7 +239,7 @@ def generate_payment_report(includeArchived : bool):
 
     # HANDLE EACH OF THE CREATED LISTS INDIVIDUALLY TO DATAFRAMES THAT WILL BE ADDED
     writer = pandas.ExcelWriter('new.xlsx')
-    columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
+    columnNames = ['Id', 'Hourly Rate', 'Hours Worked', 'Total Pay']
     dataframe = pandas.DataFrame(hourlyEmps, columns=columnNames)
     dataframe.to_excel(writer, sheet_name='Hourly Pay Employees')
 
