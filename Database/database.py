@@ -13,6 +13,7 @@ from Backend.employee_permissions import EmployeePermissions
 from Backend.employee_pto import EmployeePTO
 from Backend.employee_credentials import EmployeeCredentials
 from Backend.employee_timecard import EmployeeTimecard
+from Backend.employee_receipt import EmployeeReceipt
 '''
     Database Class
 
@@ -74,6 +75,10 @@ def generate_employees(filePath : str):
 
                 for timecard in generate_timecards():
                     newEmp.add_timecard(timecard)
+                
+                if (newEmp.Pay_Type == 2):
+                    for receipt in generate_receipts():
+                        newEmp.add_receipt(receipt)
 
                 tempPassword = ''.join(random.choice(string.ascii_letters) for i in range(8))
                 newEmp.set_password(tempPassword)
@@ -97,6 +102,16 @@ def generate_timecards():
         timecards.append(timecard)
         numOfTimecards = numOfTimecards - 1
     return timecards
+
+def generate_receipts():
+    receipts = []
+    numOfReceipts = random.randint(1, 5)
+    while(numOfReceipts != 0):
+        receipt = round(random.uniform(400, 850), 2)
+        empReceipt = EmployeeReceipt(receipt)
+        receipts.append(empReceipt)
+        numOfReceipts = numOfReceipts - 1
+    return receipts
 
 def verify_credentials(empId : int, password : str):
     filePath = os.path.dirname(os.path.realpath(__file__))
@@ -199,24 +214,68 @@ def generate_payment_report(includeArchived : bool):
 
     currentDataContext = sqlite3.connect(filePath + '\empdata.db')
     cursor = currentDataContext.cursor()
-    empList = []
+
+    empTotalHours = []
+    empTotalReceipts = []
+    for emp in cursor.execute('SELECT emp_id, ROUND(SUM(timecard_hours), 2) as total_hours FROM EMPLOYEE_TIMECARDS GROUP by emp_id'):
+        empTotalHours.append(emp)
+    
+    for emp in cursor.execute('SELECT emp_id, ROUND(SUM(receipt), 2) as receipts FROM EMPLOYEE_RECEIPTS GROUP by emp_id'):
+        empTotalReceipts.append(emp)
 
     query = '''
-        SELECT EMPLOYEE_TIMECARDS.emp_id, ROUND(SUM(timecard_hours), 2) AS hours, EMPLOYEES.hourly AS rate, 
-        ROUND((ROUND(SUM(timecard_hours), 2) * EMPLOYEES.hourly), 2) AS total_pay 
-        FROM EMPLOYEE_TIMECARDS LEFT JOIN EMPLOYEES ON EMPLOYEES.emp_id = EMPLOYEE_TIMECARDS.emp_id 
-        GROUP BY EMPLOYEE_TIMECARDS.emp_id'''
+        SELECT emp_id, pay_type, hourly, salary, commission FROM EMPLOYEES
+    '''
         
     if (includeArchived != True):
         query + " WHERE EMPLOYEES.archived = False"
 
+    salaryEmps = []
+    commissionEmps = []
+    hourlyEmps = []
     for emp in cursor.execute(query):
-        empList.append(emp)
+        # SKIP EMPLOYEES WHERE PAY_TYPE IS NULL
+        if (emp[1] == None):
+            continue
+
+        # IF PAY_TYPE SALARY HANDLE SALARY ADD TO NEW LIST
+        elif (int(emp[1]) == 1):
+            biWeeklyPay = round(float(emp[3]) / 24.0, 2)
+            empData = (emp[0], emp[3], biWeeklyPay)
+            salaryEmps.append(empData)
+
+        # IF PAY_TYPE COMMISSION HANDLE COMMISSION ADD TO NEW LIST
+        elif (int(emp[1] == 2)):
+            biWeeklyPay = float(emp[3]) / 24.0
+            empReceipts = [receipt[1] for receipt in empTotalReceipts if receipt[0] == emp[0]]
+            if (empReceipts.__len__() <= 0):
+                empReceipts.append(0)
+            biWeeklyPay = round((biWeeklyPay + (empReceipts[0] * (emp[4]/100))), 2)
+            empData = (emp[0], emp[3], empReceipts[0], emp[4], biWeeklyPay)
+            commissionEmps.append(empData)
+
+        # IF PAY_TYPE HOURLY HANDLE HOURLY ADD TO NEW LIST
+        else:
+            empHours = [hours[1] for hours in empTotalHours if hours[0] == emp[0]]
+            if (empHours.__len__() <= 0):
+                empHours.append(0)
+            totalPay = round(float(emp[2]) * empHours[0], 2)
+            empData = (emp[0], emp[2], empHours[0], totalPay)
+            hourlyEmps.append(empData)
 
     currentDataContext.close()
 
-    columnNames = ['Id', 'Hours Worked', 'Hourly Rate', 'Total Pay']
-    dataframe = pandas.DataFrame(empList, columns=columnNames)
+    # HANDLE EACH OF THE CREATED LISTS INDIVIDUALLY TO DATAFRAMES THAT WILL BE ADDED
     writer = pandas.ExcelWriter('new.xlsx')
-    dataframe.to_excel(writer, sheet_name='Employee Records')
+    columnNames = ['Id', 'Hourly Rate', 'Hours Worked', 'Total Pay']
+    dataframe = pandas.DataFrame(hourlyEmps, columns=columnNames)
+    dataframe.to_excel(writer, sheet_name='Hourly Pay Employees')
+
+    columnNames = ['Id', 'Salary', 'Bi-Weekly Pay']
+    dataframe = pandas.DataFrame(salaryEmps, columns=columnNames)
+    dataframe.to_excel(writer, sheet_name='Salary Pay Employees')
+
+    columnNames = ['Id', 'Salary', 'Total Sale Value', 'Commission', 'Total Pay']
+    dataframe = pandas.DataFrame(commissionEmps, columns=columnNames)
+    dataframe.to_excel(writer, sheet_name='Comission Pay Employees')
     writer.save()

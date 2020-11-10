@@ -29,6 +29,7 @@ from Backend.employee_pto import EmployeePTO
 from Backend.employee_permissions import EmployeePermissions
 from Backend.employee_credentials import EmployeeCredentials
 from Backend.employee_timecard import EmployeeTimecard
+from Backend.employee_receipt import EmployeeReceipt
 
 class Employee:
     def __init__(self, firstName : str, lastName : str, phoneNumber : str, salary : float, hourly : float, commission : float, payType : int, payMethod : int, archived : bool, address : EmployeeAddress, permissions : EmployeePermissions, pto : EmployeePTO, credentials : EmployeeCredentials):
@@ -77,6 +78,15 @@ class Employee:
         cursor = currentDataContext.cursor()
 
         cursor.execute('INSERT INTO EMPLOYEE_TIMECARDS VALUES (?,?)', (self.EmpId, timecard.Hours))
+
+        currentDataContext.commit()
+        currentDataContext.close()
+
+    def add_receipt(self, receipt : EmployeeReceipt):
+        currentDataContext = sqlite3.connect('Database/empdata.db')
+        cursor = currentDataContext.cursor()
+
+        cursor.execute('INSERT INTO EMPLOYEE_RECEIPTS VALUES (?,?)', (self.EmpId, receipt.Receipt))
 
         currentDataContext.commit()
         currentDataContext.close()
