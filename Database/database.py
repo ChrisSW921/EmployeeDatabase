@@ -229,7 +229,7 @@ def generate_payment_report(includeArchived : bool):
 
         # IF PAY_TYPE SALARY HANDLE SALARY ADD TO NEW LIST
         elif (int(emp[1]) == 1):
-            biWeeklyPay = float(emp[3]) / 24.0
+            biWeeklyPay = round(float(emp[3]) / 24.0, 2)
             empData = (emp[0], emp[3], biWeeklyPay)
             salaryEmps.append(empData)
 
@@ -239,7 +239,7 @@ def generate_payment_report(includeArchived : bool):
             empReceipts = [receipt[1] for receipt in empTotalReceipts if receipt[0] == emp[0]]
             if (empReceipts.__len__() <= 0):
                 empReceipts.append(0)
-            biWeeklyPay = (biWeeklyPay + (empReceipts[0] * (emp[4]/100)))
+            biWeeklyPay = round((biWeeklyPay + (empReceipts[0] * (emp[4]/100))), 2)
             empData = (emp[0], emp[3], empReceipts[0], emp[4], biWeeklyPay)
             commissionEmps.append(empData)
 
@@ -248,9 +248,7 @@ def generate_payment_report(includeArchived : bool):
             empHours = [hours[1] for hours in empTotalHours if hours[0] == emp[0]]
             if (empHours.__len__() <= 0):
                 empHours.append(0)
-            totalPay = float(emp[2]) * empHours[0]
-            if (totalPay == 0):
-                totalPay = "No Pay"
+            totalPay = round(float(emp[2]) * empHours[0], 2)
             empData = (emp[0], emp[2], empHours[0], totalPay)
             hourlyEmps.append(empData)
 
