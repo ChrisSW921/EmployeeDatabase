@@ -24,15 +24,16 @@ from Backend.employee_timecard import EmployeeTimecard
         Close - Void - Closes execution on current stream
 
 '''
-
 def initialize_employee_database():
-    database = sqlite3.connect(os.path.abspath('.') + '/Database/EmpData.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    database = sqlite3.connect(filePath + '\empdata.db')
     cursor = database.cursor()
 
-    with open(os.path.abspath('.') + '/Database/EmpDataSchema.sql') as databaseFile:
+    with open(filePath + '\EmpDataSchema.sql') as databaseFile:
         database_commands = databaseFile.read().replace('\n', ' ').split(';')
 
-    with open(os.path.abspath('.') + '/Database/EmpDataTriggers.sql') as databaseTriggers:
+    with open(filePath + '\EmpDataTriggers.sql') as databaseTriggers:
         database_triggers = databaseTriggers.read().replace('\n', ' ')
 
     for command in database_commands:
@@ -43,11 +44,11 @@ def initialize_employee_database():
 
     numOfRows = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES').fetchone()[0]
     if(numOfRows <= 0):
-        generate_employees()
+        generate_employees(filePath)
     
     database.close()
 
-def generate_employees():
+def generate_employees(filePath : str):
     adminAddress = EmployeeAddress(None, None, None, None)
     adminPermissions = EmployeePermissions(True, True, True, True)
     adminPTO = EmployeePTO(50, 0, 100)
@@ -56,7 +57,7 @@ def generate_employees():
     admin.save()
     admin.set_password('admin')
 
-    with open('Database/employees.csv') as employeeFile:
+    with open(filePath + '\employees.csv') as employeeFile:
         lineCount = 0
         for emp in employeeFile:
             if(lineCount > 0):
@@ -98,7 +99,9 @@ def generate_timecards():
     return timecards
 
 def verify_credentials(empId : int, password : str):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    currentDataContext = sqlite3.connect(filePath + '\empdata.db')
     cursor = currentDataContext.cursor()
 
     currentEmpPassword = cursor.execute('SELECT emp_password, emp_password_salt FROM EMPLOYEE_CREDENTIALS WHERE emp_id=?', (empId,)).fetchone()
@@ -109,7 +112,9 @@ def verify_credentials(empId : int, password : str):
     return currentEmpPassword[0] == comparedPassword
 
 def get_employee(empId : int):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    currentDataContext = sqlite3.connect(filePath + '\empdata.db')
     cursor = currentDataContext.cursor()
     query = '''
         SELECT * FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
@@ -132,7 +137,9 @@ def get_employee(empId : int):
     return employee
 
 def search_employees(searchParam : str):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    currentDataContext = sqlite3.connect(filePath + '\empdata.db')
     cursor = currentDataContext.cursor()
     employeeList = []
 
@@ -159,7 +166,9 @@ def search_employees(searchParam : str):
 def generate_employee_report(includeArchived : bool):
     # May need to check and see if the user has that filename open?
     # Should user be able to name file?
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    currentDataContext = sqlite3.connect(filePath + '\empdata.db')
     cursor = currentDataContext.cursor()
     empList = []
 
@@ -186,7 +195,9 @@ def generate_employee_report(includeArchived : bool):
     writer.save()
 
 def generate_payment_report(includeArchived : bool):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    currentDataContext = sqlite3.connect(filePath + '\empdata.db')
     cursor = currentDataContext.cursor()
     empList = []
 
