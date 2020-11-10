@@ -26,13 +26,13 @@ from Backend.employee_timecard import EmployeeTimecard
 '''
 
 def initialize_employee_database():
-    database = sqlite3.connect('Database/EmpData.db')
+    database = sqlite3.connect(os.path.abspath('.') + '/Database/EmpData.db')
     cursor = database.cursor()
 
-    with open('Database/EmpDataSchema.sql') as databaseFile:
+    with open(os.path.abspath('.') + '/Database/EmpDataSchema.sql') as databaseFile:
         database_commands = databaseFile.read().replace('\n', ' ').split(';')
 
-    with open('Database/EmpDataTriggers.sql') as databaseTriggers:
+    with open(os.path.abspath('.') + '/Database/EmpDataTriggers.sql') as databaseTriggers:
         database_triggers = databaseTriggers.read().replace('\n', ' ')
 
     for command in database_commands:
@@ -209,10 +209,3 @@ def generate_payment_report(includeArchived : bool):
     writer = pandas.ExcelWriter('new.xlsx')
     dataframe.to_excel(writer, sheet_name='Employee Records')
     writer.save()
-
-database = sqlite3.connect('Database/empdata.db')
-cursor = database.cursor()
-
-
-initialize_employee_database()
-cursor.close()
