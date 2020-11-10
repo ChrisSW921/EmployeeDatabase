@@ -13,6 +13,7 @@ from Backend.employee_permissions import EmployeePermissions
 from Backend.employee_pto import EmployeePTO
 from Backend.employee_credentials import EmployeeCredentials
 from Backend.employee_timecard import EmployeeTimecard
+from Backend.employee_receipt import EmployeeReceipt
 '''
     Database Class
 
@@ -73,6 +74,10 @@ def generate_employees():
 
                 for timecard in generate_timecards():
                     newEmp.add_timecard(timecard)
+                
+                if (newEmp.Pay_Type == 2):
+                    for receipt in generate_receipts():
+                        newEmp.add_receipt(receipt)
 
                 tempPassword = ''.join(random.choice(string.ascii_letters) for i in range(8))
                 newEmp.set_password(tempPassword)
@@ -96,6 +101,16 @@ def generate_timecards():
         timecards.append(timecard)
         numOfTimecards = numOfTimecards - 1
     return timecards
+
+def generate_receipts():
+    receipts = []
+    numOfReceipts = random.randint(1, 5)
+    while(numOfReceipts != 0):
+        receipt = round(random.uniform(400, 850), 2)
+        empReceipt = EmployeeReceipt(receipt)
+        receipts.append(empReceipt)
+        numOfReceipts = numOfReceipts - 1
+    return receipts
 
 def verify_credentials(empId : int, password : str):
     currentDataContext = sqlite3.connect('Database/empdata.db')
