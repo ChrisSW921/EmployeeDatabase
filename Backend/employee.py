@@ -83,7 +83,7 @@ class Employee:
         currentDataContext.close()
 
     def add_receipt(self, receipt : EmployeeReceipt):
-        currentDataContext = sqlite3.connect('Database/empdata.db')
+        currentDataContext = sqlite3.connect(database_file_path())
         cursor = currentDataContext.cursor()
 
         cursor.execute('INSERT INTO EMPLOYEE_RECEIPTS VALUES (?,?)', (self.EmpId, receipt.Receipt))
