@@ -71,4 +71,5 @@ class LoginScreen:
 
 
 if __name__ == '__main__':
+    database.initialize_employee_database()
     test = LoginScreen()
