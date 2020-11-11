@@ -120,5 +120,7 @@ class Employee:
 def database_file_path():
     filePath = os.path.dirname(os.path.realpath(__file__))
     parentDir = os.path.abspath(os.path.join(filePath, '..'))
-
-    return parentDir + '\Database\empdata.db'
+    if sys.platform == 'win32':
+        return parentDir + '\Database\empdata.db'
+    else:
+        return parentDir + '/Database/empdata.db'

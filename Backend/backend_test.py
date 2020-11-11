@@ -9,6 +9,7 @@ from Backend.employee_pto import EmployeePTO
 from Backend.employee_credentials import EmployeeCredentials
 from Database import database
 
+
 database.initialize_employee_database()
 # Tests we should build
 # -- Adding new Employee works
