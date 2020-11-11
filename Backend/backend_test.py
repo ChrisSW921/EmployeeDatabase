@@ -9,7 +9,8 @@ from Backend.employee_pto import EmployeePTO
 from Backend.employee_credentials import EmployeeCredentials
 from Database import database
 
-database.generate_payment_report(False)
+
+database.initialize_employee_database()
 # Tests we should build
 # -- Adding new Employee works
 # -- Setting new Passwords works

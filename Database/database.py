@@ -25,15 +25,17 @@ from Backend.employee_receipt import EmployeeReceipt
         Close - Void - Closes execution on current stream
 
 '''
-
 def initialize_employee_database():
-    database = sqlite3.connect('Database/EmpData.db')
+
+   # filePath = os.path.dirname(os.path.realpath(__file__))
+
+    database = sqlite3.connect(database_path())
     cursor = database.cursor()
 
-    with open('Database/EmpDataSchema.sql') as databaseFile:
+    with open(schema_path()) as databaseFile:
         database_commands = databaseFile.read().replace('\n', ' ').split(';')
 
-    with open('Database/EmpDataTriggers.sql') as databaseTriggers:
+    with open(triggers_path()) as databaseTriggers:
         database_triggers = databaseTriggers.read().replace('\n', ' ')
 
     for command in database_commands:
@@ -57,7 +59,7 @@ def generate_employees():
     admin.save()
     admin.set_password('admin')
 
-    with open('Database/employees.csv') as employeeFile:
+    with open(employees_path()) as employeeFile:
         lineCount = 0
         for emp in employeeFile:
             if(lineCount > 0):
@@ -113,7 +115,8 @@ def generate_receipts():
     return receipts
 
 def verify_credentials(empId : int, password : str):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+
+    currentDataContext = sqlite3.connect(database_path())
     cursor = currentDataContext.cursor()
 
     currentEmpPassword = cursor.execute('SELECT emp_password, emp_password_salt FROM EMPLOYEE_CREDENTIALS WHERE emp_id=?', (empId,)).fetchone()
@@ -124,7 +127,7 @@ def verify_credentials(empId : int, password : str):
     return currentEmpPassword[0] == comparedPassword
 
 def get_employee(empId : int):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    currentDataContext = sqlite3.connect(database_path())
     cursor = currentDataContext.cursor()
     query = '''
         SELECT * FROM EMPLOYEES LEFT JOIN EMPLOYEE_ADDRESS ON EMPLOYEE_ADDRESS.emp_id = EMPLOYEES.emp_id 
@@ -147,7 +150,7 @@ def get_employee(empId : int):
     return employee
 
 def search_employees(searchParam : str):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    currentDataContext = sqlite3.connect(database_path())
     cursor = currentDataContext.cursor()
     employeeList = []
 
@@ -174,7 +177,8 @@ def search_employees(searchParam : str):
 def generate_employee_report(includeArchived : bool):
     # May need to check and see if the user has that filename open?
     # Should user be able to name file?
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+
+    currentDataContext = sqlite3.connect(database_path())
     cursor = currentDataContext.cursor()
     empList = []
 
@@ -201,7 +205,9 @@ def generate_employee_report(includeArchived : bool):
     writer.save()
 
 def generate_payment_report(includeArchived : bool):
-    currentDataContext = sqlite3.connect('Database/empdata.db')
+    filePath = os.path.dirname(os.path.realpath(__file__))
+
+    currentDataContext = sqlite3.connect(database_path())
     cursor = currentDataContext.cursor()
 
     empTotalHours = []
@@ -269,9 +275,35 @@ def generate_payment_report(includeArchived : bool):
     dataframe.to_excel(writer, sheet_name='Comission Pay Employees')
     writer.save()
 
-database = sqlite3.connect('Database/empdata.db')
-cursor = database.cursor()
+def database_path():
+    filePath = os.path.dirname(os.path.realpath(__file__))
 
+    if sys.platform == 'win32':
+        return filePath + '\empdata.db'
+    else:
+        print("Mac")
+        return filePath + '/empdata.db'
 
-initialize_employee_database()
-cursor.close()
+def schema_path():
+    filePath = os.path.dirname(os.path.realpath(__file__))
+    if sys.platform == 'win32':
+        return filePath + '\EmpDataSchema.sql'
+    else:
+        print("Mac")
+        return filePath + '/EmpDataSchema.sql'
+
+def triggers_path():
+    filePath = os.path.dirname(os.path.realpath(__file__))
+    if sys.platform == 'win32':
+        return filePath + '\EmpDataTriggers.sql'
+    else:
+        print("Mac")
+        return filePath + '/EmpDataTriggers.sql'
+
+def employees_path():
+    filePath = os.path.dirname(os.path.realpath(__file__))
+    if sys.platform == 'win32':
+        return filePath + '\employees.csv'
+    else:
+        print("Mac")
+        return filePath + '/employees.csv'
