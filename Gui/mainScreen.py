@@ -13,6 +13,7 @@ from Backend.employee import Employee
 from Database import database
 from errorMessage import errorWindow
 from empReport import empReporting
+from addReceipt import addReceiptWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -192,12 +193,14 @@ class MainMenu:
 
         #Create Buttons and place in grid
         self.editButton = Button(self.frame4, text="Edit Employee Info", command=self.editButtonPressed)
-        self.archiveEmployeeButton = Button(self.frame4, text="Archive Employee", command=self.archiveEmpButtonPressed)
-        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive Employee", command=self.unArchiveEmpButtonPressed)
+        self.archiveEmployeeButton = Button(self.frame4, text="Archive", command=self.archiveEmpButtonPressed)
+        self.unarchiveEmployeeButton = Button(self.frame4, text="Unarchive", command=self.unArchiveEmpButtonPressed)
         self.saveChangesButton = Button(self.frame4, text="Save Changes", command=self.saveButtonPressed)
         self.addPTOButton = Button(self.frame4, text="Add PTO", command=self.addPTOButtonPressed)
-        self.resetPTOButton = Button(self.frame4, text="Reset Used PTO to 0", command=self.resetPTOButtonPressed)
+        self.resetPTOButton = Button(self.frame4, text="Clear Used PTO", command=self.resetPTOButtonPressed)
         self.changePaymentTypeButton = Button(self.frame4, text="Change Payment Type", command=self.changePaymentTypePressed)
+        self.addReceiptButton = Button(self.frame4, text="Add Receipt", command=self.addReceiptButtonPressed)
+        self.addTimeCardButton = Button(self.frame4, text="Add Time Card", command=self.addTimeCardButtonPressed)
 
         self.editButton.grid(row=0, column=0, padx=5, pady=5, sticky=W)
         self.archiveEmployeeButton.grid(row=0, column=1, padx=5, pady=5, sticky=W)
@@ -206,6 +209,8 @@ class MainMenu:
         self.addPTOButton.grid(row=0, column=3, padx=5, pady=5, sticky=W)
         self.resetPTOButton.grid(row=0, column=4, padx=5, pady=5, sticky=W)
         self.changePaymentTypeButton.grid(row=0, column=5, padx=5, pady=5, sticky=W)
+        self.addReceiptButton.grid(row=0, column=6, padx=5, pady=5, sticky=W)
+        self.addTimeCardButton.grid(row=0, column=7, padx=5, pady=5, sticky=W)
 
         #Create Company Buttons Frame
         self.frame5 = LabelFrame(self.frame0.scrollable_frame, text="Company Actions", padx=20, pady=20)
@@ -253,6 +258,8 @@ class MainMenu:
         self.saveChangesButton['state'] = 'disabled'
         self.changePaymentTypeButton['state'] = 'disabled'
         self.resetPTOButton['state'] = 'disabled'
+        self.addReceiptButton['state'] = 'disabled'
+        self.addTimeCardButton['state'] = 'disabled'
 
         if not self.loggedInUser.Permissions.Reporting_Permission or not self.loggedInUser.Permissions.Manager_Permission:
             self.paymentReportButton['state'] = 'disabled'
@@ -456,6 +463,17 @@ class MainMenu:
             self.saveChangesButton['state'] = 'normal'
             self.changePaymentTypeButton['state'] = 'normal'
             self.resetPTOButton['state'] = 'normal'
+
+            if self.selectedUser.Pay_Type == 3:
+                self.addTimeCardButton['state'] = 'normal'
+                self.addReceiptButton['state'] = 'disabled'
+            elif self.selectedUser.Pay_Type == 2:
+                self.addReceiptButton['state'] = 'normal'
+                self.addTimeCardButton['state'] = 'disabled'
+            else:
+                self.addTimeCardButton['state'] = 'disabled'
+                self.addReceiptButton['state'] = 'disabled'
+                
             if selectedUser.Archived:
                 self.archiveEmployeeButton['state'] = 'disabled'
                 self.unarchiveEmployeeButton['state'] = 'normal'
@@ -628,6 +646,12 @@ class MainMenu:
         self.selectedUser.PTO.Used_PTO = 0
         self.selectedUser.save()
         errorWindow("Used PTO reset to 0! Select record again to see update")
+
+    def addReceiptButtonPressed(self):
+        addingReceipt = addReceiptWindow(self.selectedUser)
+    
+    def addTimeCardButtonPressed(self):
+        print("ok")
 
     
         
