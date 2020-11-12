@@ -53,7 +53,7 @@ class Employee:
         return self.First_Name + " " + self.Last_Name
 
     def save(self):
-        currentDataContext = sqlite3.connect('Database/empdata.db')
+        currentDataContext = sqlite3.connect(database_file_path())
         cursor = currentDataContext.cursor()
 
         if (self.EmpId != None):
@@ -74,7 +74,7 @@ class Employee:
         currentDataContext.close()
 
     def add_timecard(self, timecard : EmployeeTimecard):
-        currentDataContext = sqlite3.connect('Database/empdata.db')
+        currentDataContext = sqlite3.connect(database_file_path())
         cursor = currentDataContext.cursor()
 
         cursor.execute('INSERT INTO EMPLOYEE_TIMECARDS VALUES (?,?)', (self.EmpId, timecard.Hours))
@@ -83,7 +83,7 @@ class Employee:
         currentDataContext.close()
 
     def add_receipt(self, receipt : EmployeeReceipt):
-        currentDataContext = sqlite3.connect('Database/empdata.db')
+        currentDataContext = sqlite3.connect(database_file_path())
         cursor = currentDataContext.cursor()
 
         cursor.execute('INSERT INTO EMPLOYEE_RECEIPTS VALUES (?,?)', (self.EmpId, receipt.Receipt))
@@ -92,7 +92,7 @@ class Employee:
         currentDataContext.close()
 
     def set_password(self, password : str):
-        currentDataContext = sqlite3.connect('Database/empdata.db')
+        currentDataContext = sqlite3.connect(database_file_path())
         cursor = currentDataContext.cursor()
 
         salt = os.urandom(32)
@@ -105,7 +105,7 @@ class Employee:
 
     def set_social_security(self, social : str):
         # The number passed into this function needs to be a 9-digit integer casted to a string... We should do parsing on the front end
-        currentDataContext = sqlite3.connect('Database/empdata.db')
+        currentDataContext = sqlite3.connect(database_file_path())
         cursor = currentDataContext.cursor()
         initialSocial = social[:5]
         lastSocial = social[5:9]
@@ -116,3 +116,11 @@ class Employee:
         
         currentDataContext.commit()
         currentDataContext.close()
+
+def database_file_path():
+    filePath = os.path.dirname(os.path.realpath(__file__))
+    parentDir = os.path.abspath(os.path.join(filePath, '..'))
+    if sys.platform == 'win32':
+        return parentDir + '\Database\empdata.db'
+    else:
+        return parentDir + '/Database/empdata.db'
