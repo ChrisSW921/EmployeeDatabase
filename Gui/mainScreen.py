@@ -14,6 +14,7 @@ from Database import database
 from errorMessage import errorWindow
 from empReport import empReporting
 from addReceipt import addReceiptWindow
+from addTimeCard import addTimeCardWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
@@ -651,7 +652,7 @@ class MainMenu:
         addingReceipt = addReceiptWindow(self.selectedUser)
     
     def addTimeCardButtonPressed(self):
-        print("ok")
+        addingTimeCard = addTimeCardWindow(self.selectedUser)
 
     
         

@@ -34,12 +34,8 @@ class addReceiptWindow:
         receipt = self.inputTextBox.get()
         try:
              receipt = float(receipt)
-             print("OK")
              receiptToAdd = EmployeeReceipt(receipt)
-             print("OK2")
-             print(receiptToAdd.Receipt)
-             self.user.addReceipt(receiptToAdd)
-             print("OK3")
+             self.user.add_receipt(receiptToAdd)
              self.window.destroy()
              errorWindow("Receipt Added! Select record again to refresh")
         except:

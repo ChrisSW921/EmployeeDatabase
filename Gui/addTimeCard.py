@@ -6,18 +6,18 @@ import sys
 import os
 sys.path.insert(0,os.getcwd())
 
-class addPTOWindow:
+class addTimeCardWindow:
     def __init__(self, user):
         self.user = user
         self.window = Tk()
-        self.window.title("Add PTO")
+        self.window.title("Add Time Card")
 
         #Create frame
         self.frame1 = LabelFrame(self.window, text="", padx=20, pady=20)
         self.frame1.pack()
 
         #Create labels/text areas and buttons and put on screen
-        self.titleLabel = Label(self.frame1, text="Add PTO")
+        self.titleLabel = Label(self.frame1, text="Add Time Card")
         self.hoursLabel = Label(self.frame1, text="Hours:")
         self.inputTextBox = Entry(self.frame1)
         self.saveButton = Button(self.frame1, text="Save", command=self.saveButtonPressed)
@@ -31,16 +31,15 @@ class addPTOWindow:
 
     def saveButtonPressed(self):
         """Saves info to database"""
-        ptoAdded = self.inputTextBox.get()
-        if ptoAdded.isdigit():
-            self.user.PTO.Current_PTO += int(ptoAdded)
-            self.user.save()
-            self.window.destroy()
-            errorWindow("PTO Added! Select record again to see updates")
-
-        else:
-            errorWindow("Only whole numbers allowed")
-
+        card = self.inputTextBox.get()
+        try:
+             card = float(card)
+             cardToAdd = EmployeeTimecard(card)
+             self.user.add_timecard(cardToAdd)
+             self.window.destroy()
+             errorWindow("Time Card Added! Select record again to refresh")
+        except:
+            errorWindow("Only numbers or decimals allowed")
         
 
     def cancelButtonPressed(self):
