@@ -281,7 +281,6 @@ def database_path():
     if sys.platform == 'win32':
         return filePath + '\empdata.db'
     else:
-        print("Mac")
         return filePath + '/empdata.db'
 
 def schema_path():
@@ -289,7 +288,6 @@ def schema_path():
     if sys.platform == 'win32':
         return filePath + '\EmpDataSchema.sql'
     else:
-        print("Mac")
         return filePath + '/EmpDataSchema.sql'
 
 def triggers_path():
@@ -297,7 +295,6 @@ def triggers_path():
     if sys.platform == 'win32':
         return filePath + '\EmpDataTriggers.sql'
     else:
-        print("Mac")
         return filePath + '/EmpDataTriggers.sql'
 
 def employees_path():
@@ -305,5 +302,4 @@ def employees_path():
     if sys.platform == 'win32':
         return filePath + '\employees.csv'
     else:
-        print("Mac")
         return filePath + '/employees.csv'
