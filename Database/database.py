@@ -2,9 +2,20 @@ import sqlite3
 import random
 import string
 import hashlib
-import pandas
 import sys
 import os
+try:
+    import pandas
+except:
+    os.system("pip install pandas")
+    import pandas
+
+try:
+    import openpyxl
+except:
+    os.system("pip install openpyxl")
+    import openpyxl
+
 sys.path.insert(0,os.getcwd())
 
 from Backend.employee import Employee
