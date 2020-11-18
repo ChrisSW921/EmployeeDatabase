@@ -39,9 +39,6 @@ from Backend.employee_receipt import EmployeeReceipt
 
 '''
 def initialize_employee_database():
-
-   # filePath = os.path.dirname(os.path.realpath(__file__))
-
     database = sqlite3.connect(database_path())
     cursor = database.cursor()
 
@@ -59,6 +56,7 @@ def initialize_employee_database():
 
     numOfRows = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES').fetchone()[0]
     if(numOfRows <= 0):
+        print("Please wait a moment, the database is being generated and filled")
         generate_employees()
     
     database.close()

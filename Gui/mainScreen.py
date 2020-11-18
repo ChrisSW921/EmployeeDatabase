@@ -6,7 +6,6 @@ from tkinter import ttk
 import sys
 import os
 sys.path.insert(0,os.getcwd())
-from Gui.login import LoginScreen
 from Gui.changePayment import paymentWindow
 from Gui.lessPTO import usePTOWindow
 from Gui.morePTO import addPTOWindow
@@ -641,7 +640,8 @@ class MainMenu:
     def logoutButtonPressed(self):
         """This function logs out the user"""
         self.window.destroy()
-        login = LoginScreen()
+        from Gui.login import LoginScreen
+        LoginScreen()
             
     def resetPTOButtonPressed(self):
         """This function resets the users PTO"""
