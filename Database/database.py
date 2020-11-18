@@ -213,7 +213,7 @@ def generate_employee_report(includeArchived : bool):
 
     columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
     dataframe =pandas.DataFrame(empList, columns=columnNames)
-    writer = pandas.ExcelWriter('new.xlsx')
+    writer = pandas.ExcelWriter(get_downloads_path() + 'EMPLOYEE_REPORT.xlsx')
     dataframe.to_excel(writer, sheet_name='Employee Records')
     writer.save()
 
@@ -274,7 +274,7 @@ def generate_payment_report(includeArchived : bool):
     currentDataContext.close()
 
     # HANDLE EACH OF THE CREATED LISTS INDIVIDUALLY TO DATAFRAMES THAT WILL BE ADDED
-    writer = pandas.ExcelWriter('new.xlsx')
+    writer = pandas.ExcelWriter(get_downloads_path() + 'PAYMENT_REPORT.xlsx')
     columnNames = ['Id', 'Hourly Rate', 'Hours Worked', 'Total Pay']
     dataframe = pandas.DataFrame(hourlyEmps, columns=columnNames)
     dataframe.to_excel(writer, sheet_name='Hourly Pay Employees')
@@ -316,3 +316,8 @@ def employees_path():
         return filePath + '\employees.csv'
     else:
         return filePath + '/employees.csv'
+
+def get_downloads_path():
+    filePath = os.path.expanduser("~") + "/Downloads/"
+
+    return filePath
