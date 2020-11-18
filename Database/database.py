@@ -204,7 +204,7 @@ def generate_employee_report(includeArchived : bool):
         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
 
     if (includeArchived != True):
-        query + " WHERE EMPLOYEES.archived = False"
+        query = query + " WHERE EMPLOYEES.archived = False"
 
     for emp in cursor.execute(query):
         display = (emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6], emp[7], emp[8], bool(emp[9]), bool(emp[10]), bool(emp[11]), bool(emp[12]), bool(emp[13]), emp[14], emp[15], emp[16], emp[17])
@@ -237,7 +237,7 @@ def generate_payment_report(includeArchived : bool):
     '''
         
     if (includeArchived != True):
-        query + " WHERE EMPLOYEES.archived = False"
+        query = query + " WHERE EMPLOYEES.archived = False"
 
     salaryEmps = []
     commissionEmps = []
