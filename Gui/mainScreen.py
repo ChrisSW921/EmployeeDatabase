@@ -19,6 +19,8 @@ import sys
 import os
 sys.path.insert(0,os.getcwd())
 
+from Gui.currentUserPassChange import changeUserPassword
+
 class MainMenu:
 
     def __init__(self, user):
@@ -634,7 +636,7 @@ class MainMenu:
 
     def changePasswordButtonPressed(self):
         """This function brings up the window to change the password for a user"""
-        newPassword = changePasswordWindow()
+        newPassword = changeUserPassword(self.loggedInUser)
 
     def logoutButtonPressed(self):
         """This function logs out the user"""
