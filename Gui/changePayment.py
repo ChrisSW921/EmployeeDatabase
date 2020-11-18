@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import ttk
-from errorMessage import errorWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
+from Gui.errorMessage import errorWindow
 
 class paymentWindow:
     def __init__(self, user):

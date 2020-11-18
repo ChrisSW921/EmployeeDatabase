@@ -2,9 +2,22 @@ import sqlite3
 import random
 import string
 import hashlib
-import pandas
 import sys
 import os
+try:
+    import pandas
+except:
+    os.system("pip install pandas")
+    os.system("pip3 install pandas")
+    import pandas
+
+try:
+    import openpyxl
+except:
+    os.system("pip install openpyxl")
+    os.system("pip3 install openpyxl")
+    import openpyxl
+
 sys.path.insert(0,os.getcwd())
 
 from Backend.employee import Employee
@@ -26,9 +39,6 @@ from Backend.employee_receipt import EmployeeReceipt
 
 '''
 def initialize_employee_database():
-
-   # filePath = os.path.dirname(os.path.realpath(__file__))
-
     database = sqlite3.connect(database_path())
     cursor = database.cursor()
 
@@ -46,6 +56,7 @@ def initialize_employee_database():
 
     numOfRows = cursor.execute('SELECT COUNT(*) FROM EMPLOYEES').fetchone()[0]
     if(numOfRows <= 0):
+        print("Please wait a moment, the database is being generated and filled")
         generate_employees()
     
     database.close()
@@ -191,16 +202,17 @@ def generate_employee_report(includeArchived : bool):
         LEFT JOIN EMPLOYEE_CREDENTIALS ON EMPLOYEE_CREDENTIALS.emp_id = EMPLOYEES.emp_id'''
 
     if (includeArchived != True):
-        query + " WHERE EMPLOYEES.archived = False"
+        query = query + " WHERE EMPLOYEES.archived = False"
 
     for emp in cursor.execute(query):
-        empList.append(emp)
+        display = (emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6], emp[7], emp[8], bool(emp[9]), bool(emp[10]), bool(emp[11]), bool(emp[12]), bool(emp[13]), emp[14], emp[15], emp[16], emp[17])
+        empList.append(display)
 
     currentDataContext.close()
 
     columnNames = ['Id', 'First Name', 'Last Name', 'Phone Number', 'Salary', 'Hourly', 'Commission', 'Pay Type', 'Pay Method', 'Is Archived', 'Can Report', 'Can Account', 'Can Edit', 'Manager', 'Current PTO', 'PTO Used', 'PTO Limit', 'SSN Last 4']
     dataframe =pandas.DataFrame(empList, columns=columnNames)
-    writer = pandas.ExcelWriter('new.xlsx')
+    writer = pandas.ExcelWriter(get_downloads_path() + 'EMPLOYEE_REPORT.xlsx')
     dataframe.to_excel(writer, sheet_name='Employee Records')
     writer.save()
 
@@ -223,7 +235,7 @@ def generate_payment_report(includeArchived : bool):
     '''
         
     if (includeArchived != True):
-        query + " WHERE EMPLOYEES.archived = False"
+        query = query + " WHERE EMPLOYEES.archived = False"
 
     salaryEmps = []
     commissionEmps = []
@@ -261,7 +273,7 @@ def generate_payment_report(includeArchived : bool):
     currentDataContext.close()
 
     # HANDLE EACH OF THE CREATED LISTS INDIVIDUALLY TO DATAFRAMES THAT WILL BE ADDED
-    writer = pandas.ExcelWriter('new.xlsx')
+    writer = pandas.ExcelWriter(get_downloads_path() + 'PAYMENT_REPORT.xlsx')
     columnNames = ['Id', 'Hourly Rate', 'Hours Worked', 'Total Pay']
     dataframe = pandas.DataFrame(hourlyEmps, columns=columnNames)
     dataframe.to_excel(writer, sheet_name='Hourly Pay Employees')
@@ -303,3 +315,8 @@ def employees_path():
         return filePath + '\employees.csv'
     else:
         return filePath + '/employees.csv'
+
+def get_downloads_path():
+    filePath = os.path.expanduser("~") + "/Downloads/"
+
+    return filePath

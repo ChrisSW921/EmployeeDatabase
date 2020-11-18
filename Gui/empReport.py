@@ -58,6 +58,7 @@ class empReporting:
                 elif self.report == 'payment':
                     database.generate_payment_report(False)
                     errorWindow("Successfully generated payment report")
+            self.window.destroy()
         except:
             errorWindow("Could not generate report")
 

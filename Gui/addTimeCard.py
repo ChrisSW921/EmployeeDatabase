@@ -1,10 +1,10 @@
 from tkinter import *
 from tkinter import ttk
-from errorMessage import errorWindow
-from Backend.employee_timecard import EmployeeTimecard
 import sys
 import os
 sys.path.insert(0,os.getcwd())
+from Gui.errorMessage import errorWindow
+from Backend.employee_timecard import EmployeeTimecard
 
 class addTimeCardWindow:
     def __init__(self, user):
