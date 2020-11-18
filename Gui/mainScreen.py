@@ -3,22 +3,22 @@
 
 from tkinter import *
 from tkinter import ttk
-from changePayment import paymentWindow
-from lessPTO import usePTOWindow
-from morePTO import addPTOWindow
-from newEmp import addEmpWindow
-from newPassword import changePasswordWindow
-from scrollable import ScrollableFrame
-from Backend.employee import Employee
-from Database import database
-from errorMessage import errorWindow
-from empReport import empReporting
-from addReceipt import addReceiptWindow
-from addTimeCard import addTimeCardWindow
 import sys
 import os
 sys.path.insert(0,os.getcwd())
-
+from Gui.login import LoginScreen
+from Gui.changePayment import paymentWindow
+from Gui.lessPTO import usePTOWindow
+from Gui.morePTO import addPTOWindow
+from Gui.newEmp import addEmpWindow
+from Gui.newPassword import changePasswordWindow
+from Gui.scrollable import ScrollableFrame
+from Backend.employee import Employee
+from Database import database
+from Gui.errorMessage import errorWindow
+from Gui.empReport import empReporting
+from Gui.addReceipt import addReceiptWindow
+from Gui.addTimeCard import addTimeCardWindow
 from Gui.currentUserPassChange import changeUserPassword
 
 class MainMenu:
@@ -640,7 +640,6 @@ class MainMenu:
 
     def logoutButtonPressed(self):
         """This function logs out the user"""
-        from login import LoginScreen
         self.window.destroy()
         login = LoginScreen()
             

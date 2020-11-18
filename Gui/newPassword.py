@@ -1,10 +1,8 @@
+from tkinter import *
+from tkinter import ttk
 import sys
 import os
 sys.path.insert(0,os.getcwd())
-
-from tkinter import *
-from tkinter import ttk
-
 from Gui.errorMessage import errorWindow
 from Database import database
 

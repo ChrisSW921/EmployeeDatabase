@@ -1,18 +1,17 @@
 """GUI Code File"""
+from tkinter import *
+from tkinter import ttk
 import sys
 import os
 sys.path.insert(0,os.getcwd())
-
-from tkinter import *
-from tkinter import ttk
-from mainScreen import MainMenu
-from morePTO import addPTOWindow
-from lessPTO import usePTOWindow
-from newPassword import changePasswordWindow
-from newEmp import addEmpWindow
-from errorMessage import errorWindow
-from changePayment import paymentWindow
-from empReport import empReporting
+from Gui.mainScreen import MainMenu
+from Gui.morePTO import addPTOWindow
+from Gui.lessPTO import usePTOWindow
+from Gui.newPassword import changePasswordWindow
+from Gui.newEmp import addEmpWindow
+from Gui.errorMessage import errorWindow
+from Gui.changePayment import paymentWindow
+from Gui.empReport import empReporting
 
 from Backend.employee import Employee
 from Database import database
