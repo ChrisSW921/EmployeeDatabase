@@ -4,6 +4,8 @@ from errorMessage import errorWindow
 import sys
 import os
 import re
+import random
+import string
 sys.path.insert(0,os.getcwd())
 from Backend.employee import Employee
 from Backend.employee_address import EmployeeAddress
@@ -268,6 +270,8 @@ class addEmpWindow:
             newEmployee = Employee(firstName, lastName, phone, float(salary), float(hourly), float(commission), intPayType, intPayMethod, False, newEmployeeAddress, newEmployeePermissions, newEmployeePTO, newEmployeeCrednetials) 
             newEmployee.save()
             newEmployee.set_social_security(ssn)
+            randomPassword = "".join(random.choice(string.ascii_letters) for i in range(10))
+            newEmployee.set_password(randomPassword)
             errorWindow("Employee saved!")
             self.window.destroy()
 
