@@ -8,12 +8,14 @@ try:
     import pandas
 except:
     os.system("pip install pandas")
+    os.system("pip3 install pandas")
     import pandas
 
 try:
     import openpyxl
 except:
     os.system("pip install openpyxl")
+    os.system("pip3 install openpyxl")
     import openpyxl
 
 sys.path.insert(0,os.getcwd())
