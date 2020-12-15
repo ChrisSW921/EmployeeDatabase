@@ -6,7 +6,7 @@ INSTALLATION
 To install this program, you can clone it from the page and download onto your own machine. 
 
 PREREQUISITES
-This program requires you to have the a version of pip or pip3 installed as well as python or python 3. 
+This program requires you to have a version of pip or pip3 installed as well as python or python 3. 
 Further than those, there are no prerequisites. It will run on Windows and Mac. 
 
 USING THE PROGRAM
